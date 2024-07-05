@@ -3,6 +3,7 @@ class barChart {
   constructor() {
     this.data = null;
     this.categoryCounts = null;
+    this.cScale = null;
   }
 
   initData(data) {
@@ -24,6 +25,10 @@ class barChart {
 
       this.data = data;
       this.categoryCounts = categoryCounts;
+      this.cScale = d3.scaleOrdinal()
+      .domain(category)
+      .range(["#4E79A7", "#7B848F", "#A0CBE8", "#F28E2B", "#FFBE7D", "#59A14F", "#8CD17D", "#B6992D", "#F1CE63", "#499894", "#86BCB6",
+        "#E15759", "#FF9D9A", "#79706E", "#BAB0AC", "#D37295", "#FABFD2", "#B07AA1", "#D4A6C8", "#9D7660", "#D7B5A6"]);
       this.drawBarChart(categoryCounts);
     }
     catch(error) {
@@ -62,7 +67,7 @@ class barChart {
     const bar_width = 500 / category.length;
     bar.append("rect")
       .attr("class", "bar")
-      .attr("fill", "steelblue")
+      .attr("fill", d => { return this.cScale(d.category); })
       .attr("x", d => { return bar_width / 7 + xScale(d.category); })
       .attr("y", yScale(0))
       .attr("width", bar_width);
