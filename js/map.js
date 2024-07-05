@@ -59,7 +59,7 @@ d3.json("data/Gyeongju.geojson").then((data) => {
     .attr("transform", "rotate(-1.5,400,300)")
     .style("stroke", "black")
     .style("stroke-width", "0.3px")
-    .on("dblclick", function(event, d) {
+    .on("click", function(event, d) {
       const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
       if (isSelected) {
         d3.select(this).attr("class", d.properties.EMD_KOR_NM)

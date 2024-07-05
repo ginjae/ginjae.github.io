@@ -1,5 +1,5 @@
 const bar = new barChart();
-const scatter = new ScatterPlot();
+// const scatter = new ScatterPlot();
 
 d3.csv("data/6470000_경상북도_07_24_04_P_일반음식점.csv").then(data => {
 
