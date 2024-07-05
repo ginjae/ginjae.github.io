@@ -1,0 +1,151 @@
+const margin = { top: 5, right: 30, bottom: 120, left: 120 },
+  width = 800,
+  height = 600;
+
+const svg = d3.select("#map")
+  .append("svg")
+  .attr("id", "maps")
+  .attr("width", width)
+  .attr("height", height)
+  .style("background-color", "#FAFAFA");
+
+//const getColor = () => "#" + Math.round(Math.random() * 0xffffff).toString(16);
+
+// const clip = svg.append("defs").append("clipPath")
+//   .attr("id", "clip")
+//   .append("rect")
+//   .attr("width", width)
+//   .attr("height", height);
+
+const zoom = d3.zoom()
+  .scaleExtent([.5, 10000])
+  .on("zoom", updateMap);
+
+// svg.append("rect")
+//   .attr("width", width)
+//   .attr("height", height)
+//   .style("fill", "black")
+//   .style("pointer-events", "all")
+//   .call(zoom);
+
+svg.call(zoom)
+  .on("dblclick.zoom", null);
+
+const projection = d3.geoMercator()
+  .center([129.2270222, 35.85316944])
+  .scale(50000)
+  // .scale(100000)
+  .translate([width / 2, height / 2]);
+
+const geoPath = d3.geoPath().projection(projection);
+
+var regions = [];
+var selectedRegion = [];
+
+d3.json("data/Gyeongju.geojson").then((data) => {
+  regions = data.features.map(d => { return d.properties.EMD_KOR_NM; });
+  d3.select("#maps")
+    // .append("g")
+    // .attr("clip-path", "url(#clip)")
+    .append("g")
+    .selectAll("path")
+    .data(data.features)
+    .enter()
+    .append("path")
+    .attr("fill", "#EAEAEA")
+    .attr("fill-opacity", "0.5")
+    .attr("d", geoPath)
+    .attr("class", d => { return d.properties.EMD_KOR_NM; })
+    .attr("transform", "rotate(-1.5,400,300)")
+    .style("stroke", "black")
+    .style("stroke-width", "0.3px")
+    .on("dblclick", function(event, d) {
+      const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
+      if (isSelected) {
+        d3.select(this).attr("class", d.properties.EMD_KOR_NM)
+          .attr("fill", "steelblue");
+        selectedRegion.splice(selectedRegion.indexOf(d.properties.EMD_KOR_NM), 1);
+      }
+      else {
+        d3.select(this).attr("class", d.properties.EMD_KOR_NM + "selected")
+          .attr("fill", "purple");
+        selectedRegion.push(d.properties.EMD_KOR_NM);
+      }
+      bar.filterBarDataByRegion(selectedRegion);
+    })
+    .on("mouseover", function(event, d) {
+      showTooltip(event, d);
+      const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
+      if (isSelected)
+        d3.select(this).attr("fill", "purple");
+      else 
+        d3.select(this).attr("fill", "steelblue");
+    })
+    .on("mousemove", moveTooltip)
+    .on("mouseout", function(event, d) {
+      hideTooltip(event, d);
+      const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
+      if (isSelected)
+        d3.select(this).attr("fill", "red");
+      else 
+        d3.select(this).attr("fill", "#EAEAEA");
+    });
+
+});
+
+function updateMap(event) {
+  // console.log(event.transform);
+  d3.select("#maps")
+    .selectAll("path")
+    .attr("transform", event.transform + "rotate(-1.5,400,300)");
+
+  tooltip
+    .style("left", (event.sourceEvent.clientX + 10) + "px")
+    .style("top", (event.sourceEvent.clientY + 10) + "px");
+
+  scatter.updateScatterPlot(event);
+  // const newX = event.transform.rescaleX(xScale);
+  // const newY = event.transform.rescaleX(yScale);
+  // d3.select("#maps")
+  //   .selectAll("circle")
+  //   .attr("cx", d => { return newX(d["좌표정보(x)"]); })
+  //   .attr("cy", d => { return newY(d["좌표정보(y)"]); });
+}
+
+
+const tooltip = d3.select("#map")
+  .append("div")
+  .style("opacity", 0)
+  .attr("class", "tooltip")
+  .style("background-color", "black")
+  .style("border-radius", "5px")
+  .style("padding", "5px")
+  .style("color", "white")
+  .style("display", "inline")
+  .style("position", "fixed")
+  .style("pointer-events", "none")
+  .style("font-size", "10px");
+
+function showTooltip(event, d) {
+  tooltip
+    .transition()
+    .duration(10)
+    .style("opacity", 1);
+  tooltip
+    .html(d.properties.EMD_KOR_NM)
+    .style("left", (event.clientX + 10) + "px")
+    .style("top", (event.clientY + 10) + "px");
+}
+
+function moveTooltip(event, d) {
+  tooltip
+    .style("left", (event.clientX + 10) + "px")
+    .style("top", (event.clientY + 10) + "px");
+}
+
+function hideTooltip(event, d) {
+  tooltip
+    .transition()
+    .duration(200)
+    .style("opacity", 0);
+}
