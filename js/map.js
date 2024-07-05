@@ -29,7 +29,7 @@ const zoom = d3.zoom()
 //   .call(zoom);
 
 svg.call(zoom)
-  // .on("dblclick.zoom", null);
+  .on("dblclick.zoom", null);
 
 const projection = d3.geoMercator()
   .center([129.2270222, 35.85316944])
@@ -62,13 +62,21 @@ d3.json("data/Gyeongju.geojson").then((data) => {
     .on("click", function(event, d) {
       const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
       if (isSelected) {
-        d3.select(this).attr("class", d.properties.EMD_KOR_NM)
-          .attr("fill", "steelblue");
+        d3.select(this).attr("class", d.properties.EMD_KOR_NM);
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr("fill", "#EAEAEA");
+          // .attr("fill", "steelblue");
         selectedRegion.splice(selectedRegion.indexOf(d.properties.EMD_KOR_NM), 1);
       }
       else {
-        d3.select(this).attr("class", d.properties.EMD_KOR_NM + "selected")
-          .attr("fill", "purple");
+        d3.select(this).attr("class", d.properties.EMD_KOR_NM + "selected");
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr("fill", "steelblue");
+          // .attr("fill", "purple");
         selectedRegion.push(d.properties.EMD_KOR_NM);
       }
       bar.filterBarDataByRegion(selectedRegion);
@@ -77,19 +85,26 @@ d3.json("data/Gyeongju.geojson").then((data) => {
     .on("mouseover", function(event, d) {
       showTooltip(event, d);
       const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
-      if (isSelected)
-        d3.select(this).attr("fill", "purple");
-      else 
-        d3.select(this).attr("fill", "steelblue");
+      d3.select(this)
+        .raise()
+        .style("stroke-width", "1px")
+        .style("stroke", "red");
+      // if (isSelected)
+      //   d3.select(this).attr("fill", "purple");
+      // else 
+      //   d3.select(this).attr("fill", "steelblue");
     })
     .on("mousemove", moveTooltip)
     .on("mouseout", function(event, d) {
       hideTooltip(event, d);
       const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
-      if (isSelected)
-        d3.select(this).attr("fill", "red");
-      else 
-        d3.select(this).attr("fill", "#EAEAEA");
+      d3.select(this)
+        .style("stroke-width", "0.3px")
+        .style("stroke", "black");
+      // if (isSelected)
+      //   d3.select(this).attr("fill", "red");
+      // else 
+      //   d3.select(this).attr("fill", "#EAEAEA");
     });
 
 });
