@@ -87,7 +87,7 @@ d3.json("data/Gyeongju.geojson").then((data) => {
       const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
       d3.select(this)
         .raise()
-        .style("stroke-width", "1px")
+        .style("stroke-width", "0.6px")
         .style("stroke", "red");
       // if (isSelected)
       //   d3.select(this).attr("fill", "purple");
