@@ -7,6 +7,7 @@ class ScatterPlot {
 
   initData(data) {
     try {
+      this.data = data;
       // console.log(data);
       this.drawScatterPlot(data);
     }
@@ -20,7 +21,7 @@ class ScatterPlot {
 
     const xScale = d3.scaleLinear()
       .domain(d3.extent(data, d => { return d["좌표정보(x)"]; }))
-      .range([195, 655]);
+      .range([192, 655]);
     this.xScale = xScale;
     // console.log(xScale(409480.516431452));  // 571
     // console.log(xScale(393737.265213606));  // 259
@@ -41,13 +42,22 @@ class ScatterPlot {
       .data(data)
       .enter()
       .append("circle")
+      .attr("class", d => {
+        for (var region of regions) {
+          if (d['소재지전체주소'].includes(region)) {
+            return "dot" + region;
+          }
+        }
+      })
+      // .attr("opacity", "0")
       .attr("cx", d => { return xScale(d["좌표정보(x)"]); })
       .attr("cy", d => { return yScale(d["좌표정보(y)"]); })
       .attr("r", "1")
       .attr("fill", d => { return cScale(d["업태구분명"]); })
-      .on("click", function(d) {
-        console.log(d.target.__data__);
-      });
+      .attr("pointer-events", "none");
+      // .on("click", function(d) {
+      //   console.log(d.target.__data__);
+      // });
       
   }
 
@@ -59,5 +69,14 @@ class ScatterPlot {
       .attr("cx", d => { return newX(d["좌표정보(x)"]); })
       .attr("cy", d => { return newY(d["좌표정보(y)"]); })
       .attr("r", Math.sqrt(event.transform.k));
+  }
+  
+  filterScatterDataByRegion(regionList) {
+    for (var region of regions) {
+      d3.selectAll(".dot" + region).attr("opacity", "0");
+    }
+    for (var region of regionList) {
+      d3.selectAll(".dot" + region).attr("opacity", "50");
+    }
   }
 }

@@ -46,8 +46,6 @@ d3.csv("data/6470000_경상북도_07_24_04_P_일반음식점.csv").then(data => 
     
     // console.log(categoryCounts);
 
-
-
     bar.initData(filteredData);
     scatter.initData(filteredData);
 

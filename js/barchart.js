@@ -40,7 +40,7 @@ class barChart {
 
     var category = d3.map(data, function(d) { return d.category; });
 
-    const margin = { top: 5, right: 30, bottom: 120, left: 120 },
+    const margin = { top: 5, right: 30, bottom: 120, left: 60 },
       width = 800 - margin.left - margin.right,
       height = 600 - margin.top - margin.bottom;
 

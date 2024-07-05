@@ -29,7 +29,7 @@ const zoom = d3.zoom()
 //   .call(zoom);
 
 svg.call(zoom)
-  .on("dblclick.zoom", null);
+  // .on("dblclick.zoom", null);
 
 const projection = d3.geoMercator()
   .center([129.2270222, 35.85316944])
@@ -72,6 +72,7 @@ d3.json("data/Gyeongju.geojson").then((data) => {
         selectedRegion.push(d.properties.EMD_KOR_NM);
       }
       bar.filterBarDataByRegion(selectedRegion);
+      // scatter.filterScatterDataByRegion(selectedRegion);
     })
     .on("mouseover", function(event, d) {
       showTooltip(event, d);
@@ -94,7 +95,6 @@ d3.json("data/Gyeongju.geojson").then((data) => {
 });
 
 function updateMap(event) {
-  // console.log(event.transform);
   d3.select("#maps")
     .selectAll("path")
     .attr("transform", event.transform + "rotate(-1.5,400,300)");
@@ -104,12 +104,6 @@ function updateMap(event) {
     .style("top", (event.sourceEvent.clientY + 10) + "px");
 
   scatter.updateScatterPlot(event);
-  // const newX = event.transform.rescaleX(xScale);
-  // const newY = event.transform.rescaleX(yScale);
-  // d3.select("#maps")
-  //   .selectAll("circle")
-  //   .attr("cx", d => { return newX(d["좌표정보(x)"]); })
-  //   .attr("cy", d => { return newY(d["좌표정보(y)"]); });
 }
 
 
