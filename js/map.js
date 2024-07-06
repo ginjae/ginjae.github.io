@@ -1,5 +1,5 @@
 const margin = { top: 5, right: 30, bottom: 120, left: 120 },
-  width = 800,
+  width = 1100,
   height = 600;
 
 const svg = d3.select("#map")

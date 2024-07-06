@@ -3,6 +3,7 @@ class ScatterPlot {
     this.data = null;
     this.xScale = null;
     this.yScale = null;
+    this.currentK = null;
   }
 
   initData(data) {
@@ -21,14 +22,15 @@ class ScatterPlot {
 
     const xScale = d3.scaleLinear()
       .domain(d3.extent(data, d => { return d["좌표정보(x)"]; }))
-      .range([192, 655]);
+      .range([342, 805])
+      // .range([192, 655]);
     this.xScale = xScale;
     // console.log(xScale(409480.516431452));  // 571
     // console.log(xScale(393737.265213606));  // 259
 
     const yScale = d3.scaleLinear()
       .domain(d3.extent(data, d => { return d["좌표정보(y)"]; }))
-      .range([520, 68]);
+      .range([515, 67]);
     this.yScale = yScale;
 
     const cScale = d3.scaleOrdinal()
@@ -54,21 +56,49 @@ class ScatterPlot {
       .attr("cy", d => { return yScale(d["좌표정보(y)"]); })
       .attr("r", "1")
       .attr("fill", d => { return cScale(d["업태구분명"]); })
-      .attr("pointer-events", "none");
-      // .on("click", function(d) {
-      //   console.log(d.target.__data__);
-      // });
+      // .attr("pointer-events", "none");
+      .on("click", function(d) {
+        d3.select("#maps")
+          .selectAll("circle")
+          .style("stroke", "none");
+        d3.select(this)
+          .raise()
+          .style("stroke-width", 0.6 * this.currentK + "px")
+          .style("stroke", "blue");
+        info.html("상세정보" +
+          "<br>사업장명: " + d.target.__data__["사업장명"] +
+          "<br>구분: " + d.target.__data__["업태구분명"] +
+          "<br>도로명주소: " + d.target.__data__["도로명전체주소"] +
+          "<br>지번주소: " + d.target.__data__["소재지전체주소"]);
+      })
+      .on("mouseover", function(event, d) {
+        if (d3.select(this).style("stroke") !== "blue") {
+          d3.select(this)
+            .raise()
+            .style("stroke-width", 0.6 * this.currentK + "px")
+            .style("stroke", "red");
+        }
+      })
+      .on("mouseout", function(event, d) {
+        if (d3.select(this).style("stroke") !== "blue") {
+          d3.select(this)
+            .style("stroke", "none");
+        }
+      });
       
   }
 
   updateScatterPlot(event) {
+    this.currentK = Math.sqrt(event.transform.k);
     const newX = event.transform.rescaleX(this.xScale);
     const newY = event.transform.rescaleY(this.yScale);
     d3.select("#maps")
       .selectAll("circle")
       .attr("cx", d => { return newX(d["좌표정보(x)"]); })
       .attr("cy", d => { return newY(d["좌표정보(y)"]); })
-      .attr("r", Math.sqrt(event.transform.k));
+      .attr("r", this.currentK)
+      .style("stroke-width", 0.6 * this.currentK);
+    this.currentK = event.transform.k;
   }
   
   filterScatterDataByRegion(regionList) {
