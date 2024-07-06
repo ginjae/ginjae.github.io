@@ -22,7 +22,8 @@ class ScatterPlot {
 
     const xScale = d3.scaleLinear()
       .domain(d3.extent(data, d => { return d["좌표정보(x)"]; }))
-      .range([342, 805])
+      .range([293, 755]);
+      // .range([342, 805]); // 1100
       // .range([192, 655]);
     this.xScale = xScale;
     // console.log(xScale(409480.516431452));  // 571
@@ -30,7 +31,8 @@ class ScatterPlot {
 
     const yScale = d3.scaleLinear()
       .domain(d3.extent(data, d => { return d["좌표정보(y)"]; }))
-      .range([515, 67]);
+      .range([517, 68]);
+      // .range([515, 67]); // 1100
     this.yScale = yScale;
 
     const cScale = d3.scaleOrdinal()

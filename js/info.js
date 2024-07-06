@@ -24,8 +24,7 @@ const info = d3.select("#map")
   .style("padding", "5px")
   .style("color", "white")
   .style("display", "inline")
-  .style("position", "fixed")
-  .style("pointer-events", "none")
+  .style("position", "absolute")
   .style("font-size", "15px")
   .style("line-height", "150%");
 
