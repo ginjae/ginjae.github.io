@@ -41,7 +41,7 @@ class barChart {
     var category = d3.map(data, function(d) { return d.category; });
 
     const margin = { top: 5, right: 30, bottom: 120, left: 60 },
-      width = 800 - margin.left - margin.right,
+      width = 1200 - margin.left - margin.right,
       height = 600 - margin.top - margin.bottom;
 
     const svg = d3.select("#barchart")
@@ -56,7 +56,7 @@ class barChart {
       .range([0, width]);
     
     const yScale = d3.scaleLinear()
-      .domain([0, 1.1 * d3.max(data, d => { return d.count; })])
+      .domain([0, 1 + 1.1 * d3.max(data, d => { return d.count; })])
       .range([height, 0]);
 
     var bar = svg.append("g")
@@ -64,7 +64,7 @@ class barChart {
       .data(data)
       .enter();
 
-    const bar_width = 500 / category.length;
+    const bar_width = width * 0.8 / category.length;
     bar.append("rect")
       .attr("class", "bar")
       .attr("fill", d => { return this.cScale(d.category); })
@@ -94,7 +94,11 @@ class barChart {
 
 
       const xAxis = d3.axisBottom(xScale);
-      const yAxis = d3.axisLeft(yScale);
+      const yAxisTicks = yScale.ticks()
+        .filter(tick => Number.isInteger(tick));
+      const yAxis = d3.axisLeft(yScale)
+        .tickValues(yAxisTicks)
+        .tickFormat(d3.format('d'));
 
       svg.append("g")
           .attr("class", "x-axis")
@@ -111,17 +115,11 @@ class barChart {
   }
 
   filterBarDataByRegion(regionList) {
-    var categoryCounts = [];
-    var category = [];
+    var categoryCounts = this.categoryCounts;
+    categoryCounts.forEach(d => { d.count = 0; });
     if (regionList.length == 0) {
       for (var d of this.data) {
-        if (category.includes(d["업태구분명"])) {
-          categoryCounts.find(obj => obj["category"] == d["업태구분명"]).count += 1;
-        }
-        else {
-          categoryCounts.push({ category: d["업태구분명"], count: 1 });
-          category.push(d["업태구분명"]);
-        }
+        categoryCounts.find(obj => obj["category"] == d["업태구분명"]).count += 1;
       }
       categoryCounts = categoryCounts.sort((a, b) => b.count - a.count);
       d3.select("#barchart").select("svg").remove();
@@ -139,13 +137,7 @@ class barChart {
         return isSelected;
       })
       for (var d of filteredData) {
-        if (category.includes(d["업태구분명"])) {
-          categoryCounts.find(obj => obj["category"] == d["업태구분명"]).count += 1;
-        }
-        else {
-          categoryCounts.push({ category: d["업태구분명"], count: 1 });
-          category.push(d["업태구분명"]);
-        }
+        categoryCounts.find(obj => obj["category"] == d["업태구분명"]).count += 1;
       }
       categoryCounts = categoryCounts.sort((a, b) => b.count - a.count);
       d3.select("#barchart").select("svg").remove();
