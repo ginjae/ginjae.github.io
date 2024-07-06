@@ -88,6 +88,7 @@ class ScatterPlot {
         }
       });
       
+      document.getElementById("load").style.display = "none";
   }
 
   updateScatterPlot(event) {
