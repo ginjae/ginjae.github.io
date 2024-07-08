@@ -72,11 +72,13 @@ d3.json("data/Gyeongju.geojson").then((data) => {
         selectedRegion.splice(selectedRegion.indexOf(d.properties.EMD_KOR_NM), 1);
         scatter.RemoveDotsByRegion(d.properties.EMD_KOR_NM);
 
-        if (selected_restaurant["소재지전체주소"].includes(d.properties.EMD_KOR_NM)) {
-          selected_restaurant = null;
-          d3.select("#maps")
-            .selectAll("#dot" + d.properties.EMD_KOR_NM)
-            .style("stroke", "none");
+        if (selectedRestaurant !== null) {
+          if (selectedRestaurant["소재지전체주소"].includes(d.properties.EMD_KOR_NM)) {
+            selectedRestaurant = null;
+            d3.select("#maps")
+              .selectAll("#dot" + d.properties.EMD_KOR_NM)
+              .style("stroke", "none");
+          }
         }
       }
       else {
@@ -87,10 +89,10 @@ d3.json("data/Gyeongju.geojson").then((data) => {
           .attr("fill", "steelblue");
           // .attr("fill", "purple");
         selectedRegion.push(d.properties.EMD_KOR_NM);
-        scatter.AddDotsByRegion(d.properties.EMD_KOR_NM);
+        scatter.AddDotsByRegion(d.properties.EMD_KOR_NM, true);
       }
 
-      if (selected_restaurant === null) {
+      if (selectedRestaurant === null) {
         if (selectedRegion.length === 0) {
           info.html("<b>상세정보</b><br>[읍, 면, 동] 선택 후, 사업장을 선택해주세요.");
           repositionInfo();
@@ -110,6 +112,7 @@ d3.json("data/Gyeongju.geojson").then((data) => {
         .raise()
         .style("stroke-width", "0.6px")
         .style("stroke", "red");
+      scatter.AddDotsByRegion(d.properties.EMD_KOR_NM, false);
       // if (isSelected)
       //   d3.select(this).attr("fill", "purple");
       // else 
@@ -122,6 +125,9 @@ d3.json("data/Gyeongju.geojson").then((data) => {
       d3.select(this)
         .style("stroke-width", "0.3px")
         .style("stroke", "black");
+      if (!isSelected) {
+        scatter.RemoveDotsByRegion(d.properties.EMD_KOR_NM);
+      }
       // if (isSelected)
       //   d3.select(this).attr("fill", "red");
       // else 

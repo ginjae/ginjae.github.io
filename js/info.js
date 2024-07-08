@@ -11,7 +11,7 @@ const width_details = 250,
 //   .style("padding", "10px")
 //   .style("color", "white");
   
-var selected_restaurant = null;
+var selectedRestaurant = null;
 
 const drag = d3.drag()
   

@@ -77,7 +77,7 @@ class ScatterPlot {
           "<br>도로명주소: " + d.target.__data__["도로명전체주소"] +
           "<br>지번주소: " + d.target.__data__["소재지전체주소"]);
         repositionInfo();
-        selected_restaurant = d.target.__data__;
+        selectedRestaurant = d.target.__data__;
       })
       .on("mouseover", function(event, d) {
         if (d3.select(this).style("stroke") !== "blue") {
@@ -111,11 +111,18 @@ class ScatterPlot {
     this.lastEvent = event;
   }
 
-  AddDotsByRegion(region) {
-    d3.selectAll("#dot" + region)
-      .attr("class", "selected")
-      .attr("pointer-events", "all")
-      .style("opacity", "1");
+  AddDotsByRegion(region, isClicked) {
+    if (isClicked) {
+      d3.selectAll("#dot" + region)
+        .attr("class", "selected")
+        .attr("pointer-events", "all")
+        .style("opacity", "1");
+    }
+    else {
+      d3.selectAll("#dot" + region)
+        .attr("class", "selected")
+        .style("opacity", "1");
+    }
     if (this.lastEvent !== null) {
       this.updateScatterPlot(this.lastEvent);
     }
