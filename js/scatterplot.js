@@ -78,22 +78,22 @@ class ScatterPlot {
         repositionInfo();
         selected_restaurant = d.target.__data__;
       })
-      .on("mouseover", function(event, d) {
-        if (d3.select(this).style("stroke") !== "blue") {
-          d3.select(this)
-            .raise()
-            .style("stroke-width", 0.6 * this.currentK + "px")
-            .style("stroke", "red");
-        }
-      })
-      .on("mouseout", function(event, d) {
-        if (d3.select(this).style("stroke") !== "blue") {
-          d3.select(this)
-            .style("stroke", "none");
-        }
-      });
+      // .on("mouseover", function(event, d) {
+      //   if (d3.select(this).style("stroke") !== "blue") {
+      //     d3.select(this)
+      //       .raise()
+      //       .style("stroke-width", 0.6 * this.currentK + "px")
+      //       .style("stroke", "red");
+      //   }
+      // })
+      // .on("mouseout", function(event, d) {
+      //   if (d3.select(this).style("stroke") !== "blue") {
+      //     d3.select(this)
+      //       .style("stroke", "none");
+      //   }
+      // });
       
-      document.getElementById("load").style.display = "none";
+      document.getElementById("load").style.display = "none";   // loading ends
   }
 
   updateScatterPlot(event) {

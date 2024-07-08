@@ -101,30 +101,30 @@ d3.json("data/Gyeongju.geojson").then((data) => {
       }
       scatter.filterScatterDataByRegion(selectedRegion, nodeList);
     })
-    .on("mouseover", function(event, d) {
-      showTooltip(event, d);
-      const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
-      d3.select(this)
-        .raise()
-        .style("stroke-width", "0.6px")
-        .style("stroke", "red");
-      // if (isSelected)
-      //   d3.select(this).attr("fill", "purple");
-      // else 
-      //   d3.select(this).attr("fill", "steelblue");
-    })
-    .on("mousemove", moveTooltip)
-    .on("mouseout", function(event, d) {
-      hideTooltip(event, d);
-      const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
-      d3.select(this)
-        .style("stroke-width", "0.3px")
-        .style("stroke", "black");
-      // if (isSelected)
-      //   d3.select(this).attr("fill", "red");
-      // else 
-      //   d3.select(this).attr("fill", "#EAEAEA");
-    });
+    // .on("mouseover", function(event, d) {
+    //   showTooltip(event, d);
+    //   const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
+    //   d3.select(this)
+    //     .raise()
+    //     .style("stroke-width", "0.6px")
+    //     .style("stroke", "red");
+    //   // if (isSelected)
+    //   //   d3.select(this).attr("fill", "purple");
+    //   // else 
+    //   //   d3.select(this).attr("fill", "steelblue");
+    // })
+    // .on("mousemove", moveTooltip)
+    // .on("mouseout", function(event, d) {
+    //   hideTooltip(event, d);
+    //   const isSelected = d3.select(this).attr("class") === d.properties.EMD_KOR_NM + "selected";
+    //   d3.select(this)
+    //     .style("stroke-width", "0.3px")
+    //     .style("stroke", "black");
+    //   // if (isSelected)
+    //   //   d3.select(this).attr("fill", "red");
+    //   // else 
+    //   //   d3.select(this).attr("fill", "#EAEAEA");
+    // });
 
 });
 
