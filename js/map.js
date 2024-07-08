@@ -66,8 +66,8 @@ d3.json("data/Gyeongju.geojson").then((data) => {
       if (isSelected) {
         d3.select(this).attr("class", d.properties.EMD_KOR_NM);
         d3.select(this)
-          .transition()
-          .duration(200)
+          // .transition()
+          // .duration(200)
           .attr("fill", "#EAEAEA");
           // .attr("fill", "steelblue");
         selectedRegion.splice(selectedRegion.indexOf(d.properties.EMD_KOR_NM), 1);
@@ -79,8 +79,8 @@ d3.json("data/Gyeongju.geojson").then((data) => {
       else {
         d3.select(this).attr("class", d.properties.EMD_KOR_NM + "selected");
         d3.select(this)
-          .transition()
-          .duration(200)
+          // .transition()
+          // .duration(200)
           .attr("fill", "steelblue");
           // .attr("fill", "purple");
         selectedRegion.push(d.properties.EMD_KOR_NM);

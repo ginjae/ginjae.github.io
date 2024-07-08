@@ -117,15 +117,15 @@ class ScatterPlot {
     d3.selectAll("circle")
       .attr("class", "not_selected")
       .attr("pointer-events", "none")
-      .transition()
-      .duration(200)
+      // .transition()
+      // .duration(200)
       .style("opacity", "0");
     for (var region of regionList) {
       d3.selectAll("#dot" + region)
         .attr("class", "selected")
         .attr("pointer-events", "all")
-        .transition()
-        .duration(200)
+        // .transition()
+        // .duration(200)
         .style("opacity", "1");
     }
     if (this.lastEvent !== null) {
