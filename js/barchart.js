@@ -41,7 +41,7 @@ class barChart {
     var category = d3.map(data, function(d) { return d.category; });
 
     const margin = { top: 5, right: 30, bottom: 120, left: 60 },
-      width = 1000 - margin.left - margin.right,
+      width = 800 - margin.left - margin.right,
       height = 600 - margin.top - margin.bottom;
 
     const svg = d3.select("#barchart")

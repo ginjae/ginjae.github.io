@@ -23,17 +23,16 @@ class ScatterPlot {
 
     const xScale = d3.scaleLinear()
       .domain(d3.extent(data, d => { return d["좌표정보(x)"]; }))
-      .range([293, 755]);
+      // .range([293, 755]); // 1000
       // .range([342, 805]); // 1100
-      // .range([192, 655]);
+      .range([192, 655]);
     this.xScale = xScale;
-    // console.log(xScale(409480.516431452));  // 571
-    // console.log(xScale(393737.265213606));  // 259
 
     const yScale = d3.scaleLinear()
       .domain(d3.extent(data, d => { return d["좌표정보(y)"]; }))
-      .range([516, 68]);
+      // .range([516, 68]); // 1000
       // .range([515, 67]); // 1100
+      .range([519, 70.5]);
     this.yScale = yScale;
 
     const cScale = d3.scaleOrdinal()
@@ -58,7 +57,6 @@ class ScatterPlot {
           }
         }
       })
-      // .attr("opacity", "0")
       .attr("cx", d => { return xScale(d["좌표정보(x)"]); })
       .attr("cy", d => { return yScale(d["좌표정보(y)"]); })
       .attr("r", "1")
@@ -103,7 +101,8 @@ class ScatterPlot {
     const newX = event.transform.rescaleX(this.xScale);
     const newY = event.transform.rescaleY(this.yScale);
     d3.select("#maps")
-      .selectAll(".selected")
+      .selectAll("circle")
+      // .selectAll(".selected")
       .attr("cx", d => { return newX(d["좌표정보(x)"]); })
       .attr("cy", d => { return newY(d["좌표정보(y)"]); })
       .attr("r", this.currentK)
