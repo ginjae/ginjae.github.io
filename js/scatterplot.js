@@ -78,20 +78,20 @@ class ScatterPlot {
         repositionInfo();
         selected_restaurant = d.target.__data__;
       })
-      // .on("mouseover", function(event, d) {
-      //   if (d3.select(this).style("stroke") !== "blue") {
-      //     d3.select(this)
-      //       .raise()
-      //       .style("stroke-width", 0.6 * this.currentK + "px")
-      //       .style("stroke", "red");
-      //   }
-      // })
-      // .on("mouseout", function(event, d) {
-      //   if (d3.select(this).style("stroke") !== "blue") {
-      //     d3.select(this)
-      //       .style("stroke", "none");
-      //   }
-      // });
+      .on("mouseover", function(event, d) {
+        if (d3.select(this).style("stroke") !== "blue") {
+          d3.select(this)
+            .raise()
+            .style("stroke-width", 0.6 * this.currentK + "px")
+            .style("stroke", "red");
+        }
+      })
+      .on("mouseout", function(event, d) {
+        if (d3.select(this).style("stroke") !== "blue") {
+          d3.select(this)
+            .style("stroke", "none");
+        }
+      });
       
       document.getElementById("load").style.display = "none";   // loading ends
   }
@@ -114,15 +114,15 @@ class ScatterPlot {
     d3.selectAll("circle")
       .attr("class", "not_selected")
       .attr("pointer-events", "none")
-      // .transition()
-      // .duration(200)
+      .transition()
+      .duration(200)
       .style("opacity", "0");
     for (var region of regionList) {
       d3.selectAll("#dot" + region)
         .attr("class", "selected")
         .attr("pointer-events", "all")
-        // .transition()
-        // .duration(200)
+        .transition()
+        .duration(200)
         .style("opacity", "1");
     }
     if (this.lastEvent !== null) {

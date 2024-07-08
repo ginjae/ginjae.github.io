@@ -74,9 +74,9 @@ class barChart {
       // .attr("width", 20)
       // .attr("height", d => { return height - yScale(d.count); });
     bar.selectAll("rect")
-      // .transition()
-      // .duration(500)
-      // .ease(d3.easeCubicInOut)
+      .transition()
+      .duration(500)
+      .ease(d3.easeCubicInOut)
       .attr("y", d => { return yScale(d.count); })
       .attr("height", d => { return height - yScale(d.count); });
     bar.append("text")
@@ -86,9 +86,9 @@ class barChart {
       .attr("text-anchor", "middle")
       .attr("font-size", 10);
     bar.selectAll("text")
-      // .transition()
-      // .duration(500)
-      // .ease(d3.easeCubicInOut)
+      .transition()
+      .duration(500)
+      .ease(d3.easeCubicInOut)
       .attr("y", d => { return yScale(d.count) - 3; })
       .attr("height", d => { return height - yScale(d.count); });
 
