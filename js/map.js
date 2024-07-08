@@ -41,7 +41,6 @@ const geoPath = d3.geoPath().projection(projection);
 
 var regions = [];
 var selectedRegion = [];
-var nodeList = [];
 
 d3.json("data/Gyeongju.geojson").then((data) => {
   regions = data.features.map(d => { return d.properties.EMD_KOR_NM; });
@@ -95,11 +94,7 @@ d3.json("data/Gyeongju.geojson").then((data) => {
         repositionInfo();
       }
       bar.filterBarDataByRegion(selectedRegion);
-
-      for (var node of d3.selectAll("#dot"+d.properties.EMD_KOR_NM)._groups[0]) {
-        nodeList.push(node);
-      }
-      scatter.filterScatterDataByRegion(selectedRegion, nodeList);
+      scatter.filterScatterDataByRegion(selectedRegion);
     })
     // .on("mouseover", function(event, d) {
     //   showTooltip(event, d);

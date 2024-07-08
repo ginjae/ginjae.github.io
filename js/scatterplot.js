@@ -100,15 +100,12 @@ class ScatterPlot {
     this.currentK = Math.sqrt(event.transform.k);
     const newX = event.transform.rescaleX(this.xScale);
     const newY = event.transform.rescaleY(this.yScale);
-    // d3.select("#maps")
-    //   .selectAll(".selected")
-    for (var node of nodeList) {
-      d3.select(node)
-        .attr("cx", d => { return newX(d["좌표정보(x)"]); })
-        .attr("cy", d => { return newY(d["좌표정보(y)"]); })
-        .attr("r", this.currentK)
-        .style("stroke-width", 0.6 * this.currentK);
-    }
+    d3.select("#maps")
+      .selectAll(".selected")
+      .attr("cx", d => { return newX(d["좌표정보(x)"]); })
+      .attr("cy", d => { return newY(d["좌표정보(y)"]); })
+      .attr("r", this.currentK)
+      .style("stroke-width", 0.6 * this.currentK);
     this.currentK = event.transform.k;
     this.lastEvent = event;
   }
