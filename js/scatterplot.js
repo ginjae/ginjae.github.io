@@ -101,8 +101,7 @@ class ScatterPlot {
     const newX = event.transform.rescaleX(this.xScale);
     const newY = event.transform.rescaleY(this.yScale);
     d3.select("#maps")
-      .selectAll("circle")
-      // .selectAll(".selected")
+      .selectAll(".selected")
       .attr("cx", d => { return newX(d["좌표정보(x)"]); })
       .attr("cy", d => { return newY(d["좌표정보(y)"]); })
       .attr("r", this.currentK)
