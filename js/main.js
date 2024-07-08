@@ -1,3 +1,15 @@
+var filter = "win16|win32|win64|mac|macintel";
+
+if (navigator.platform) {
+    if (filter.indexOf(navigator.platform.toLowerCase()) >= 0) {
+        d3.select("#charts")
+            .style("display", "flex")
+            .style("flex_direction", "row");
+    }
+}
+
+
+
 const bar = new barChart();
 const scatter = new ScatterPlot();
 

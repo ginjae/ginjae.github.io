@@ -4,6 +4,7 @@ class ScatterPlot {
     this.xScale = null;
     this.yScale = null;
     this.currentK = null;
+    this.lastEvent = null;
   }
 
   initData(data) {
@@ -31,7 +32,7 @@ class ScatterPlot {
 
     const yScale = d3.scaleLinear()
       .domain(d3.extent(data, d => { return d["좌표정보(y)"]; }))
-      .range([517, 68]);
+      .range([516, 68]);
       // .range([515, 67]); // 1100
     this.yScale = yScale;
 
@@ -46,7 +47,10 @@ class ScatterPlot {
       .data(data)
       .enter()
       .append("circle")
-      .attr("class", d => {
+      .attr("class", "not_selected")
+      // .attr("display", "none")
+      .style("opacity", "0")
+      .attr("id", d => {
         for (var region of regions) {
           if (d['소재지전체주소'].includes(region)) {
             return "dot" + region;
@@ -72,6 +76,7 @@ class ScatterPlot {
           "<br>구분: " + d.target.__data__["업태구분명"] +
           "<br>도로명주소: " + d.target.__data__["도로명전체주소"] +
           "<br>지번주소: " + d.target.__data__["소재지전체주소"]);
+        selected_restaurant = d.target.__data__;
       })
       .on("mouseover", function(event, d) {
         if (d3.select(this).style("stroke") !== "blue") {
@@ -96,20 +101,32 @@ class ScatterPlot {
     const newX = event.transform.rescaleX(this.xScale);
     const newY = event.transform.rescaleY(this.yScale);
     d3.select("#maps")
-      .selectAll("circle")
+      .selectAll(".selected")
       .attr("cx", d => { return newX(d["좌표정보(x)"]); })
       .attr("cy", d => { return newY(d["좌표정보(y)"]); })
       .attr("r", this.currentK)
       .style("stroke-width", 0.6 * this.currentK);
     this.currentK = event.transform.k;
+    this.lastEvent = event;
   }
   
   filterScatterDataByRegion(regionList) {
     for (var region of regions) {
-      d3.selectAll(".dot" + region).attr("opacity", "0");
+      d3.selectAll("#dot" + region)
+        .attr("class", "not_selected")
+        .transition()
+        .duration(200)
+        .style("opacity", "0");
     }
     for (var region of regionList) {
-      d3.selectAll(".dot" + region).attr("opacity", "50");
+      d3.selectAll("#dot" + region)
+        .attr("class", "selected")
+        .transition()
+        .duration(200)
+        .style("opacity", "1");
+    }
+    if (this.lastEvent !== null) {
+      this.updateScatterPlot(this.lastEvent);
     }
   }
 }

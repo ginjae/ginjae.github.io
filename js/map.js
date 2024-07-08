@@ -53,7 +53,7 @@ d3.json("data/Gyeongju.geojson").then((data) => {
     .enter()
     .append("path")
     .attr("fill", "#EAEAEA")
-    .attr("fill-opacity", "0.5")
+    .attr("fill-opacity", "0.4")
     .attr("d", geoPath)
     .attr("class", d => { return d.properties.EMD_KOR_NM; })
     .attr("transform", "rotate(-1.5,400,300)")
@@ -69,6 +69,10 @@ d3.json("data/Gyeongju.geojson").then((data) => {
           .attr("fill", "#EAEAEA");
           // .attr("fill", "steelblue");
         selectedRegion.splice(selectedRegion.indexOf(d.properties.EMD_KOR_NM), 1);
+        selected_restaurant = null;
+        d3.select("#maps")
+          .selectAll("#dot" + d.properties.EMD_KOR_NM)
+          .style("stroke", "none");
       }
       else {
         d3.select(this).attr("class", d.properties.EMD_KOR_NM + "selected");
@@ -79,8 +83,15 @@ d3.json("data/Gyeongju.geojson").then((data) => {
           // .attr("fill", "purple");
         selectedRegion.push(d.properties.EMD_KOR_NM);
       }
+
+      if (selectedRegion.length === 0) {
+        info.html("상세정보<br>[읍, 면, 동] 선택 후, 사업장을 선택해주세요.");
+      }
+      else {
+        info.html("상세정보<br> 사업장을 선택해주세요.");
+      }
       bar.filterBarDataByRegion(selectedRegion);
-      // scatter.filterScatterDataByRegion(selectedRegion);
+      scatter.filterScatterDataByRegion(selectedRegion);
     })
     .on("mouseover", function(event, d) {
       showTooltip(event, d);
