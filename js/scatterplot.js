@@ -40,7 +40,8 @@ class ScatterPlot {
       .range(["#4E79A7", "#7B848F", "#A0CBE8", "#F28E2B", "#FFBE7D", "#59A14F", "#8CD17D", "#B6992D", "#F1CE63", "#499894", "#86BCB6",
         "#E15759", "#FF9D9A", "#79706E", "#BAB0AC", "#D37295", "#FABFD2", "#B07AA1", "#D4A6C8", "#9D7660", "#D7B5A6"]);
 
-    d3.select("#maps")
+    // d3.select("#maps")
+    svg
       .append("g")
       .selectAll("circle")
       .data(data)
@@ -109,24 +110,41 @@ class ScatterPlot {
     this.currentK = event.transform.k;
     this.lastEvent = event;
   }
-  
-  filterScatterDataByRegion(regionList) {
-    d3.selectAll("circle")
-      .attr("class", "not_selected")
-      .attr("pointer-events", "none")
-      .transition()
-      .duration(200)
-      .style("opacity", "0");
-    for (var region of regionList) {
-      d3.selectAll("#dot" + region)
-        .attr("class", "selected")
-        .attr("pointer-events", "all")
-        .transition()
-        .duration(200)
-        .style("opacity", "1");
-    }
+
+  AddDotsByRegion(region) {
+    d3.selectAll("#dot" + region)
+      .attr("class", "selected")
+      .attr("pointer-events", "all")
+      .style("opacity", "1");
     if (this.lastEvent !== null) {
       this.updateScatterPlot(this.lastEvent);
     }
   }
+
+  RemoveDotsByRegion(region) {
+    d3.selectAll("#dot" + region)
+      .attr("class", "not_selected")
+      .attr("pointer-events", "none")
+      .style("opacity", "0");
+  }
+  
+  // filterScatterDataByRegion(regionList) {
+  //   // d3.selectAll("circle")
+  //   //   .attr("class", "not_selected")
+  //   //   .attr("pointer-events", "none")
+  //   //   .transition()
+  //   //   .duration(200)
+  //   //   .style("opacity", "0");
+  //   for (var region of regionList) {
+  //     d3.selectAll("#dot" + region)
+  //       .attr("class", "selected")
+  //       .attr("pointer-events", "all")
+  //       .transition()
+  //       .duration(200)
+  //       .style("opacity", "1");
+  //   }
+  //   if (this.lastEvent !== null) {
+  //     this.updateScatterPlot(this.lastEvent);
+  //   }
+  // }
 }
