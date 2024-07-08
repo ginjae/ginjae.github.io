@@ -44,6 +44,7 @@ var selectedRegion = [];
 
 d3.json("data/Gyeongju.geojson").then((data) => {
   regions = data.features.map(d => { return d.properties.EMD_KOR_NM; });
+  regions.sort((a, b) => b.length - a.length);
   d3.select("#maps")
     // .append("g")
     // .attr("clip-path", "url(#clip)")
@@ -85,10 +86,12 @@ d3.json("data/Gyeongju.geojson").then((data) => {
       }
 
       if (selectedRegion.length === 0) {
-        info.html("상세정보<br>[읍, 면, 동] 선택 후, 사업장을 선택해주세요.");
+        info.html("<b>상세정보</b><br>[읍, 면, 동] 선택 후, 사업장을 선택해주세요.");
+        repositionInfo();
       }
       else {
-        info.html("상세정보<br> 사업장을 선택해주세요.");
+        info.html("<b>상세정보</b><br> 사업장을 선택해주세요.");
+        repositionInfo();
       }
       bar.filterBarDataByRegion(selectedRegion);
       scatter.filterScatterDataByRegion(selectedRegion);

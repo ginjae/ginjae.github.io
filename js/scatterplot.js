@@ -50,6 +50,7 @@ class ScatterPlot {
       .attr("class", "not_selected")
       // .attr("display", "none")
       .style("opacity", "0")
+      .attr("pointer-events", "none")
       .attr("id", d => {
         for (var region of regions) {
           if (d['소재지전체주소'].includes(region)) {
@@ -71,11 +72,12 @@ class ScatterPlot {
           .raise()
           .style("stroke-width", 0.6 * this.currentK + "px")
           .style("stroke", "blue");
-        info.html("상세정보" +
+        info.html("<b>상세정보</b>" +
           "<br>사업장명: " + d.target.__data__["사업장명"] +
           "<br>구분: " + d.target.__data__["업태구분명"] +
           "<br>도로명주소: " + d.target.__data__["도로명전체주소"] +
           "<br>지번주소: " + d.target.__data__["소재지전체주소"]);
+        repositionInfo();
         selected_restaurant = d.target.__data__;
       })
       .on("mouseover", function(event, d) {
@@ -111,16 +113,16 @@ class ScatterPlot {
   }
   
   filterScatterDataByRegion(regionList) {
-    for (var region of regions) {
-      d3.selectAll("#dot" + region)
-        .attr("class", "not_selected")
-        .transition()
-        .duration(200)
-        .style("opacity", "0");
-    }
+    d3.selectAll("circle")
+      .attr("class", "not_selected")
+      .attr("pointer-events", "none")
+      .transition()
+      .duration(200)
+      .style("opacity", "0");
     for (var region of regionList) {
       d3.selectAll("#dot" + region)
         .attr("class", "selected")
+        .attr("pointer-events", "all")
         .transition()
         .duration(200)
         .style("opacity", "1");
