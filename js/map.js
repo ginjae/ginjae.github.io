@@ -72,7 +72,7 @@ d3.json("data/Gyeongju.geojson").then((data) => {
           .attr("fill", "#EAEAEA");
           // .attr("fill", "steelblue");
         selectedRegion.splice(selectedRegion.indexOf(d.properties.EMD_KOR_NM), 1);
-        scatter.RemoveDotsByRegion(d.properties.EMD_KOR_NM);
+        // scatter.RemoveDotsByRegion(d.properties.EMD_KOR_NM);
 
         if (selectedRestaurant !== null) {
           if (selectedRestaurant["소재지전체주소"].includes(d.properties.EMD_KOR_NM)) {
