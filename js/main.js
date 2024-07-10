@@ -22,7 +22,7 @@ d3.csv("data/6470000_경상북도_07_24_04_P_일반음식점.csv").then(data => 
             d["상세영업상태명"].includes("영업") &&
             d["좌표정보(x)"] != 0 && d["좌표정보(y)"] != 0;
     })
-    console.log(regions);
+    // console.log(regions);
     filteredData = filteredData.filter(d => {
         var isIn = false;
         for (var r of regions) {

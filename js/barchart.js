@@ -20,8 +20,8 @@ class barChart {
         }
       }
       categoryCounts = categoryCounts.sort((a, b) => b.count - a.count);
-      console.log(data);
-      console.log(categoryCounts);
+      // console.log(data);
+      // console.log(categoryCounts);
 
       this.data = data;
       this.categoryCounts = categoryCounts;
