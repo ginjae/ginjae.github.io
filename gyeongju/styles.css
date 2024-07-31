@@ -13,13 +13,12 @@
     opacity: 0.8;
     background: white;
     z-index: 99;
-    text-align: center;
 }
 
-#load > img {
+#load > b {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-32px, -32px);
+    transform: translate(-50%, -50%);
     z-index: 100;
 }
