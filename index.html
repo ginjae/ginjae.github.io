@@ -10,16 +10,16 @@
   
   <script>
     const ns = [
-      { id: "ginjae main", url: "https://ginjae.github.io", group: 0, value: 30},
-      { id: "Github", url: "https://github.com/ginjae", group: 0, value: 20},
-      { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 1, value: 20},
-      { id: "Solvedac", url: "https://solved.ac/profile/jamk", group: 2, value: 20},
+      { id: "ginjae", url: "https://ginjae.github.io", group: 0, value: 40},
+      { id: "Github", url: "https://github.com/ginjae", group: 0, value: 30},
+      { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 1, value: 30},
+      { id: "Solved.ac", url: "https://solved.ac/profile/jamk", group: 2, value: 35},
     ];
     const ls = [
-      { source: "ginjae main", target: "Github", value: 20},
-      { source: "InfoVis", target: "Github", value: 20},
-      { source: "ginjae main", target: "InfoVis", value: 20},
-      { source: "ginjae main", target: "Solvedac", value: 10},
+      { source: "ginjae", target: "Github", value: 40},
+      { source: "InfoVis", target: "Github", value: 50},
+      { source: "ginjae", target: "InfoVis", value: 40},
+      { source: "ginjae", target: "Solved.ac", value: 40},
     ]
     const data = {
       nodes : ns,
@@ -28,7 +28,6 @@
 
     // Specify the dimensions of the chart.
     var graph = document.getElementById('graph');
-    console.log(graph);
     const width = graph.clientWidth;
     const height = graph.clientHeight;
 
@@ -57,22 +56,31 @@
     // Add a line for each link, and a circle for each node.
     const link = svg.append("g")
         .attr("stroke", "white")
-        .attr("stroke-opacity", 0.5)
+        .attr("stroke-opacity", 0.3)
       .selectAll()
       .data(links)
       .join("line")
-        .attr("stroke-width", d => Math.sqrt(d.value));
+        .attr("stroke-width", d => Math.sqrt(d.value))
+        .attr("stroke-linecap", "round");
 
     const node = svg.append("g")
-      .selectAll()
-      .data(nodes)
-      .join("circle")
-        // .attr("xlink:href", d => d.url)
+      .selectAll(".node")
+      .data(nodes);
+
+    const circles = node.join("circle")
         .attr("r", d => d.value)
         .attr("fill", d => color(d.group))
         .attr("stroke", "white")
         .on("click", function(d) {
           window.open(d.srcElement.__data__.url);
+        })
+        .on("mouseover", function(d) {
+          var color = d3.color(d3.select(this).attr("fill"));
+          color = color.brighter(-3);
+          d3.select(this).attr("fill", color)
+        })
+        .on("mouseout", function(d) {
+          d3.select(this).attr("fill", d => color(d.group));
         });
         // .append("text")
         // .text(d => d.id)
@@ -81,8 +89,14 @@
         // .style("text-anchor", "middle")
         // .on("click", "none");
 
+    const text = node.join("text")
+        .text(d => d.id)
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("pointer-events", "none");
+
     // Add a drag behavior.
-    node.call(d3.drag()
+    circles.call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)
           .on("end", dragended));
@@ -95,9 +109,13 @@
           .attr("x2", d => d.target.x)
           .attr("y2", d => d.target.y);
 
-      node
+      circles
           .attr("cx", d => d.x)
           .attr("cy", d => d.y);
+
+      text
+          .attr("dx", d => d.x)
+          .attr("dy", d => d.y + 4.5);
     }
 
     // Reheat the simulation when drag starts, and fix the subject position.
