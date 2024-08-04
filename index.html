@@ -10,13 +10,16 @@
   
   <script>
     const ns = [
-      { id: "ginjae main", url: "https://ginjae.github.io", group: 0, value: 20},
-      { id: "Github", url: "https://github.com/ginjae", group: 1, value: 10},
-      { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 1, value: 10}
+      { id: "ginjae main", url: "https://ginjae.github.io", group: 0, value: 30},
+      { id: "Github", url: "https://github.com/ginjae", group: 0, value: 20},
+      { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 1, value: 20},
+      { id: "Solvedac", url: "https://solved.ac/profile/jamk", group: 2, value: 20},
     ];
     const ls = [
-      { source: "ginjae main", target: "Github", value: 10},
-      { source: "ginjae main", target: "InfoVis", value: 10}
+      { source: "ginjae main", target: "Github", value: 20},
+      { source: "InfoVis", target: "Github", value: 20},
+      { source: "ginjae main", target: "InfoVis", value: 20},
+      { source: "ginjae main", target: "Solvedac", value: 10},
     ]
     const data = {
       nodes : ns,
@@ -39,7 +42,7 @@
 
     // Create a simulation with several forces.
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).strength(0.1).distance(100))
+        .force("link", d3.forceLink(links).id(d => d.id).strength(0.3).distance(150))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(width / 2, height / 2))
         .on("tick", ticked);
