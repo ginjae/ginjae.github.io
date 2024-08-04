@@ -2,12 +2,120 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
   <title>ginjae main</title>
 </head>
 <body>
-  <h1>ginjae</h1>
+  <!-- <h1>ginjae</h1>
   <a href="https://github.com/ginjae">Github</a>
-  <a href="https://ginjae.github.io/gyeongju">InfoVis</a>
+  <a href="https://ginjae.github.io/gyeongju">InfoVis</a> -->
+  
+  <div id="graph"></div>
+  
+  <script>
+    const ns = [
+      { id: "ginjae main", url: "https://ginjae.github.io", group: 0, value: 10},
+      { id: "Github", url: "https://github.com/ginjae", group: 1, value: 10},
+      { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 1, value: 10}
+    ];
+    const ls = [
+      { source: "ginjae main", target: "Github", value: 3},
+      { source: "ginjae main", target: "InfoVis", value: 3}
+    ]
+    const data = {
+      nodes : ns,
+      links : ls
+    }
+
+    // Specify the dimensions of the chart.
+    const width = 800;
+    const height = 600;
+
+    // Specify the color scale.
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+    // The force simulation mutates links and nodes, so create a copy
+    // so that re-evaluating this cell produces the same result.
+    const links = data.links.map(d => ({...d}));
+    const nodes = data.nodes.map(d => ({...d}));
+
+    // Create a simulation with several forces.
+    const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.id).strength(0.1).distance(100))
+        .force("charge", d3.forceManyBody())
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .on("tick", ticked);
+
+    // Create the SVG container.
+    const svg = d3.select("#graph")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", [0, 0, width, height])
+        .attr("style", "max-width: 100%; height: auto;")
+        .style("background-color", "#FAFAFA")
+        .style("border-radius", "10px")
+        .style("border", "1.5px solid black");
+
+    // Add a line for each link, and a circle for each node.
+    const link = svg.append("g")
+        .attr("stroke", "#999")
+        .attr("stroke-opacity", 0.5)
+      .selectAll()
+      .data(links)
+      .join("line")
+        .attr("stroke-width", d => Math.sqrt(d.value));
+
+    const node = svg.append("g")
+      .selectAll()
+      .data(nodes)
+      .join("a")
+        .attr("xlink:href", d => d.url)
+        .append("text")
+        .text(d => d.id)
+        .style("stroke", d => color(d.group))
+        .style("text-anchor", "middle");
+
+    // Add a drag behavior.
+    node.call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
+
+    // Set the position attributes of links and nodes each time the simulation ticks.
+    function ticked() {
+      link
+          .attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+
+      node
+          .attr("x", d => d.x)
+          .attr("y", d => d.y + 5);
+    }
+
+    // Reheat the simulation when drag starts, and fix the subject position.
+    function dragstarted(event) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      event.subject.fx = event.subject.x;
+      event.subject.fy = event.subject.y;
+    }
+
+    // Update the subject (dragged node) position during drag.
+    function dragged(event) {
+      event.subject.fx = event.x;
+      event.subject.fy = event.y;
+    }
+
+    // Restore the target alpha so the simulation cools after dragging ends.
+    // Unfix the subject position now that it’s no longer being dragged.
+    function dragended(event) {
+      if (!event.active) simulation.alphaTarget(0);
+      event.subject.fx = null;
+      event.subject.fy = null;
+    }
+
+  </script>
 </body>
 </html>
