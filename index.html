@@ -14,13 +14,13 @@
   
   <script>
     const ns = [
-      { id: "ginjae main", url: "https://ginjae.github.io", group: 0, value: 10},
+      { id: "ginjae main", url: "https://ginjae.github.io", group: 0, value: 20},
       { id: "Github", url: "https://github.com/ginjae", group: 1, value: 10},
       { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 1, value: 10}
     ];
     const ls = [
-      { source: "ginjae main", target: "Github", value: 3},
-      { source: "ginjae main", target: "InfoVis", value: 3}
+      { source: "ginjae main", target: "Github", value: 10},
+      { source: "ginjae main", target: "InfoVis", value: 10}
     ]
     const data = {
       nodes : ns,
@@ -53,13 +53,13 @@
         .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
         .attr("style", "max-width: 100%; height: auto;")
-        .style("background-color", "#FAFAFA")
+        .style("background-color", "#212121")
         .style("border-radius", "10px")
         .style("border", "1.5px solid black");
 
     // Add a line for each link, and a circle for each node.
     const link = svg.append("g")
-        .attr("stroke", "#999")
+        .attr("stroke", "white")
         .attr("stroke-opacity", 0.5)
       .selectAll()
       .data(links)
@@ -71,10 +71,12 @@
       .data(nodes)
       .join("circle")
         // .attr("xlink:href", d => d.url)
-        .attr("r", 5)
+        .attr("r", d => d.value)
         .attr("fill", d => color(d.group))
-        .attr("stroke", "black")
-        .attr("stroke-opacity", 0.5)
+        .attr("stroke", "white")
+        .on("click", function(d) {
+          window.open(d.srcElement.__data__.url);
+        });
         // .append("text")
         // .text(d => d.id)
         // .attr("fill", d => color(d.group))
