@@ -70,11 +70,13 @@
       .selectAll()
       .data(nodes)
       .join("a")
-        .attr("xlink:href", d => d.url)
+        // .attr("xlink:href", d => d.url)
         .append("text")
         .text(d => d.id)
-        .style("stroke", d => color(d.group))
-        .style("text-anchor", "middle");
+        .attr("fill", d => color(d.group))
+        .attr("font-weight", "bold")
+        .style("text-anchor", "middle")
+        .on("click", "none");
 
     // Add a drag behavior.
     node.call(d3.drag()
