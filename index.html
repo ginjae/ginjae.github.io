@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="overflow:hidden;">
 <head>
   <meta charset="UTF-8">
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <title>ginjae main</title>
 </head>
-<body style="touch-action:none">
-  <div id="graph" style="width:100%;height:80vh"></div>
+<body style="touch-action:none;">
+  <div id="graph" style="width:100vw;height:100vh;"></div>
   
   <script>
     const ns = [
@@ -53,9 +53,7 @@
         .attr("width", "100%")
         .attr("height", "100%")
         .attr("viewBox", [0, 0, width, height])
-        .style("background-color", "#212121")
-        .style("border-radius", "10px")
-        .style("border", "1.5px solid black");
+        .style("background-color", "#212121");
 
     // Add a line for each link, and a circle for each node.
     const link = svg.append("g")
