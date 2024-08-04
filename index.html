@@ -10,16 +10,17 @@
   
   <script>
     const ns = [
-      { id: "ginjae", url: "https://ginjae.github.io", group: 0, value: 40},
-      { id: "Github", url: "https://github.com/ginjae", group: 0, value: 30},
-      { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 1, value: 30},
-      { id: "Solved.ac", url: "https://solved.ac/profile/jamk", group: 2, value: 35},
+      { id: "     ginjae     ", url: "https://ginjae.github.io", group: 0},
+      { id: "GitHub", url: "https://github.com/ginjae", group: 2},
+      { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 1},
+      { id: "Solved.ac", url: "https://solved.ac/profile/jamk", group: 2},
+      { id: "cpp-sokoban", url: "https://github.com/ginjae/cpp-sokoban", group: 1}
     ];
     const ls = [
-      { source: "ginjae", target: "Github", value: 40},
-      { source: "InfoVis", target: "Github", value: 50},
-      { source: "ginjae", target: "InfoVis", value: 40},
-      { source: "ginjae", target: "Solved.ac", value: 40},
+      { source: "     ginjae     ", target: "GitHub", value: 40},
+      { source: "InfoVis", target: "GitHub", value: 40},
+      { source: "     ginjae     ", target: "Solved.ac", value: 40},
+      { source: "GitHub", target: "cpp-sokoban", value: 40},
     ]
     const data = {
       nodes : ns,
@@ -32,7 +33,7 @@
     const height = graph.clientHeight;
 
     // Specify the color scale.
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
+    const color = d3.scaleOrdinal(["#4e79a7","#f28e2c","#e15759","#76b7b2","#59a14f","#edc949","#af7aa1","#ff9da7","#9c755f","#bab0ab"]);
 
     // The force simulation mutates links and nodes, so create a copy
     // so that re-evaluating this cell produces the same result.
@@ -42,8 +43,8 @@
     // Create a simulation with several forces.
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).strength(0.3).distance(150))
-        .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("charge", d3.forceManyBody().strength(-1500))
+        .force("center", d3.forceCenter(width / 2, height * 3 / 7))
         .on("tick", ticked);
 
     // Create the SVG container.
@@ -51,7 +52,8 @@
         .append("svg")
         .attr("width", "100%")
         .attr("height", "100%")
-        .attr("viewBox", [0, 0, width, height]);
+        .attr("viewBox", [0, 0, width, height])
+        .style("user-select", "none");
 
     // Add a line for each link, and a circle for each node.
     const link = svg.append("g")
@@ -67,27 +69,26 @@
       .selectAll(".node")
       .data(nodes);
 
-    const circles = node.join("circle")
-        .attr("r", d => d.value)
+    const circle = node.join("circle")
+        .attr("r", d => d.id.length * 5)
         .attr("fill", d => color(d.group))
         .attr("stroke", "white")
         .on("click", function(d) {
-          window.open(d.srcElement.__data__.url);
+          if (d.srcElement.__data__.id !== "     ginjae     ")
+            window.open(d.srcElement.__data__.url);
         })
         .on("mouseover", function(d) {
-          var color = d3.color(d3.select(this).attr("fill"));
-          color = color.brighter(-3);
-          d3.select(this).attr("fill", color)
+          if (d.srcElement.__data__.id !== "     ginjae     ") {
+            var color = d3.color(d3.select(this).attr("fill"));
+            color = color.brighter(-3);
+            d3.select(this).attr("fill", color);
+          }
         })
         .on("mouseout", function(d) {
-          d3.select(this).attr("fill", d => color(d.group));
+          if (d.srcElement.__data__.id !== "     ginjae     ") {
+            d3.select(this).attr("fill", d => color(d.group));
+          }
         });
-        // .append("text")
-        // .text(d => d.id)
-        // .attr("fill", d => color(d.group))
-        // .attr("font-weight", "bold")
-        // .style("text-anchor", "middle")
-        // .on("click", "none");
 
     const text = node.join("text")
         .text(d => d.id)
@@ -96,7 +97,7 @@
         .attr("pointer-events", "none");
 
     // Add a drag behavior.
-    circles.call(d3.drag()
+    circle.call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)
           .on("end", dragended));
@@ -109,7 +110,7 @@
           .attr("x2", d => d.target.x)
           .attr("y2", d => d.target.y);
 
-      circles
+      circle
           .attr("cx", d => d.x)
           .attr("cy", d => d.y);
 
@@ -120,7 +121,7 @@
 
     // Reheat the simulation when drag starts, and fix the subject position.
     function dragstarted(event) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
+      if (!event.active) simulation.alphaTarget(0.5).restart();
       event.subject.fx = event.subject.x;
       event.subject.fy = event.subject.y;
     }
