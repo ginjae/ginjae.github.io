@@ -5,7 +5,7 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <title>ginjae main</title>
 </head>
-<body style="touch-action:none;">
+<body style="background-color:#212121;touch-action:none;">
   <div id="graph" style="width:100vw;height:100vh;"></div>
   
   <script>
@@ -52,8 +52,7 @@
         .append("svg")
         .attr("width", "100%")
         .attr("height", "100%")
-        .attr("viewBox", [0, 0, width, height])
-        .style("background-color", "#212121");
+        .attr("viewBox", [0, 0, width, height]);
 
     // Add a line for each link, and a circle for each node.
     const link = svg.append("g")
