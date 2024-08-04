@@ -70,13 +70,18 @@
       .selectAll()
       .data(nodes)
       .join("a")
-        // .attr("xlink:href", d => d.url)
-        .append("text")
-        .text(d => d.id)
+        .attr("xlink:href", d => d.url)
+        .append("circle")
+        .attr("r", 5)
         .attr("fill", d => color(d.group))
-        .attr("font-weight", "bold")
-        .style("text-anchor", "middle")
-        .on("click", "none");
+        .attr("stroke", "black")
+        .attr("stroke-opacity", 0.5)
+        // .append("text")
+        // .text(d => d.id)
+        // .attr("fill", d => color(d.group))
+        // .attr("font-weight", "bold")
+        // .style("text-anchor", "middle")
+        // .on("click", "none");
 
     // Add a drag behavior.
     node.call(d3.drag()
@@ -93,8 +98,8 @@
           .attr("y2", d => d.target.y);
 
       node
-          .attr("x", d => d.x)
-          .attr("y", d => d.y + 5);
+          .attr("cx", d => d.x)
+          .attr("cy", d => d.y);
     }
 
     // Reheat the simulation when drag starts, and fix the subject position.
