@@ -6,11 +6,7 @@
   <title>ginjae main</title>
 </head>
 <body>
-  <!-- <h1>ginjae</h1>
-  <a href="https://github.com/ginjae">Github</a>
-  <a href="https://ginjae.github.io/gyeongju">InfoVis</a> -->
-  
-  <div id="graph"></div>
+  <div id="graph" style="width:100%;height:97vh"></div>
   
   <script>
     const ns = [
@@ -28,8 +24,10 @@
     }
 
     // Specify the dimensions of the chart.
-    const width = 800;
-    const height = 600;
+    var graph = document.getElementById('graph');
+    console.log(graph);
+    const width = graph.clientWidth;
+    const height = graph.clientHeight;
 
     // Specify the color scale.
     const color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -49,10 +47,9 @@
     // Create the SVG container.
     const svg = d3.select("#graph")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("width", "100%")
+        .attr("height", "100%")
         .attr("viewBox", [0, 0, width, height])
-        .attr("style", "max-width: 100%; height: auto;")
         .style("background-color", "#212121")
         .style("border-radius", "10px")
         .style("border", "1.5px solid black");
