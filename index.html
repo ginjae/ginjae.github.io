@@ -94,7 +94,14 @@
         .text(d => d.id)
         .attr("fill", "white")
         .attr("text-anchor", "middle")
-        .attr("pointer-events", "none");
+        .attr("pointer-events", "none")
+        .attr("font-weight", "bold")
+        .attr("font-size", d => {
+          if (d.id === "     ginjae     ")
+            return "50px";
+          else
+            return "16px";
+        });
 
     // Add a drag behavior.
     circle.call(d3.drag()
@@ -116,7 +123,10 @@
 
       text
           .attr("dx", d => d.x)
-          .attr("dy", d => d.y + 4.5);
+          .attr("dy", function(d) {
+            const size = parseInt(d3.select(this).attr("font-size"));
+            return d.y + Math.sqrt(size);
+          });
     }
 
     // Reheat the simulation when drag starts, and fix the subject position.
