@@ -10,16 +10,16 @@
   
   <script>
     const ns = [
-      { id: "     ginjae     ", url: "https://ginjae.github.io", group: 0},
+      { id: "   ginjae   ", url: "https://ginjae.github.io", group: 0},
       { id: "GitHub", url: "https://github.com/ginjae", group: 2},
       { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 1},
       { id: "Solved.ac", url: "https://solved.ac/profile/jamk", group: 2},
       { id: "cpp-sokoban", url: "https://github.com/ginjae/cpp-sokoban", group: 1}
     ];
     const ls = [
-      { source: "     ginjae     ", target: "GitHub", value: 40},
+      { source: "   ginjae   ", target: "GitHub", value: 40},
       { source: "InfoVis", target: "GitHub", value: 40},
-      { source: "     ginjae     ", target: "Solved.ac", value: 40},
+      { source: "   ginjae   ", target: "Solved.ac", value: 40},
       { source: "GitHub", target: "cpp-sokoban", value: 40},
     ]
     const data = {
@@ -42,7 +42,7 @@
 
     // Create a simulation with several forces.
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).strength(0.3).distance(150))
+        .force("link", d3.forceLink(links).id(d => d.id).strength(0.3).distance(100))
         .force("charge", d3.forceManyBody().strength(-1500))
         .force("center", d3.forceCenter(width / 2, height * 3 / 7))
         .on("tick", ticked);
@@ -70,22 +70,22 @@
       .data(nodes);
 
     const circle = node.join("circle")
-        .attr("r", d => d.id.length * 5)
+        .attr("r", d => d.id.length * 7)
         .attr("fill", d => color(d.group))
         .attr("stroke", "white")
         .on("click", function(d) {
-          if (d.srcElement.__data__.id !== "     ginjae     ")
+          if (d.srcElement.__data__.id !== "   ginjae   ")
             window.open(d.srcElement.__data__.url);
         })
         .on("mouseover", function(d) {
-          if (d.srcElement.__data__.id !== "     ginjae     ") {
+          if (d.srcElement.__data__.id !== "   ginjae   ") {
             var color = d3.color(d3.select(this).attr("fill"));
             color = color.brighter(-3);
             d3.select(this).attr("fill", color);
           }
         })
         .on("mouseout", function(d) {
-          if (d.srcElement.__data__.id !== "     ginjae     ") {
+          if (d.srcElement.__data__.id !== "   ginjae   ") {
             d3.select(this).attr("fill", d => color(d.group));
           }
         });
@@ -95,12 +95,13 @@
         .attr("fill", "white")
         .attr("text-anchor", "middle")
         .attr("pointer-events", "none")
+        .attr("font-family", "sans-serif")
         .attr("font-weight", "bold")
         .attr("font-size", d => {
-          if (d.id === "     ginjae     ")
+          if (d.id === "   ginjae   ")
             return "50px";
           else
-            return "16px";
+            return "20px";
         });
 
     // Add a drag behavior.
@@ -125,7 +126,7 @@
           .attr("dx", d => d.x)
           .attr("dy", function(d) {
             const size = parseInt(d3.select(this).attr("font-size"));
-            return d.y + Math.sqrt(size);
+            return d.y + size / 4;
           });
     }
 
