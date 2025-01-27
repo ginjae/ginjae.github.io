@@ -128,7 +128,7 @@
     node.transition()
         .duration(500)
         .ease(d3.easeCubicInOut)
-        .style("opacity", 1);
+        .style("opacity", 0.9);
 
     const circle = node.append("circle")
         .attr("fill", d => color(d.group))
@@ -151,13 +151,21 @@
           }
         });
 
+    svg.append("defs")
+        .append("filter")
+        .attr("id", "text-shadow")
+        .append("feDropShadow")
+        .attr("dx", 1)   // X축 방향 그림자 오프셋
+        .attr("dy", 1)   // Y축 방향 그림자 오프셋
+        .attr("stdDeviation", 1);  // 그림자의 흐림 정도
+
     const text = node.append("text")
         .text(d => d.id)
-        .style("text-shadow", "1px 1px 5px black")
         .attr("fill", "#eeeeee")
         .attr("text-anchor", "middle")
         .attr("dominant-baseline", "middle")
         .attr("pointer-events", "none")
+        .attr("filter", "url(#text-shadow)")
         .attr("font-family", "sans-serif")
         .attr("font-weight", "bold")
         .attr("font-size", d => {
