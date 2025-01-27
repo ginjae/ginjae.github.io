@@ -72,17 +72,22 @@
     const link = svg.append("g")
         .attr("stroke", "white")
         .attr("stroke-opacity", 0.3)
-      .selectAll()
-      .data(links)
-      .join("line")
+        .selectAll()
+        .data(links)
+        .join("line")
         .attr("stroke-width", d => Math.sqrt(d.value))
         .attr("stroke-linecap", "round");
 
-    const node = svg.append("g")
-      .selectAll(".node")
-      .data(nodes);
+    const node = svg.selectAll(".node")
+        .data(nodes)
+        .join("g")
+        .attr("class", "node")
+        .call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
 
-    const circle = node.join("circle")
+    const circle = node.append("circle")
         .attr("r", d => d.id.length * 7)
         .attr("fill", d => color(d.group))
         .attr("stroke", "white")
@@ -103,10 +108,11 @@
           }
         });
 
-    const text = node.join("text")
+    const text = node.append("text")
         .text(d => d.id)
         .attr("fill", "white")
         .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
         .attr("pointer-events", "none")
         .attr("font-family", "sans-serif")
         .attr("font-weight", "bold")
@@ -117,12 +123,6 @@
             return "20px";
         });
 
-    // Add a drag behavior.
-    circle.call(d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended));
-
     // Set the position attributes of links and nodes each time the simulation ticks.
     function ticked() {
       link
@@ -131,16 +131,8 @@
           .attr("x2", d => d.target.x)
           .attr("y2", d => d.target.y);
 
-      circle
-          .attr("cx", d => d.x)
-          .attr("cy", d => d.y);
-
-      text
-          .attr("dx", d => d.x)
-          .attr("dy", function(d) {
-            const size = parseInt(d3.select(this).attr("font-size"));
-            return d.y + size / 4;
-          });
+      node
+          .attr("transform", d => `translate(${d.x},${d.y})`);
     }
 
     // Reheat the simulation when drag starts, and fix the subject position.
