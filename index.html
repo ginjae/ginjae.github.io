@@ -8,7 +8,7 @@
   <title>ginjae main</title>
 </head>
 <body style="background-color:#212121;touch-action:none;">
-  <div id="graph" style="width:100vw;height:100vh;"></div>
+  <div id="graph" style="width:100vw;height:100vh;min-width:600px;min-height:400px"></div>
   
   <script>
     const ns = [
@@ -56,6 +56,17 @@
         .attr("height", "100%")
         .attr("viewBox", [0, 0, width, height])
         .style("user-select", "none");
+
+    function resizeSVG() {
+      const width = graph.clientWidth;
+      const height = graph.clientHeight;
+      svg.attr("width", "100%")
+          .attr("height", "100%")
+          .attr("viewBox", [0, 0, width, height]);
+      simulation.force("center", d3.forceCenter(width / 2, height * 3 / 7));
+      simulation.restart();
+    }
+    window.addEventListener("resize", resizeSVG);
 
     // Add a line for each link, and a circle for each node.
     const link = svg.append("g")
