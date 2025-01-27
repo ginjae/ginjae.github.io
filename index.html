@@ -43,6 +43,15 @@
     // so that re-evaluating this cell produces the same result.
     const links = data.links.map(d => ({...d}));
     const nodes = data.nodes.map(d => ({...d}));
+    nodes.forEach(node => {
+      if (node.id == "   ginjae   ") {
+        node.x = width / 2;
+        node.y = height / 2;
+      } else {
+        node.x = Math.random() * width;
+        node.y = Math.random() * height;
+      }
+    })
 
     // Create a simulation with several forces.
     function customForceCenter(targetNodes, x, y) {
@@ -95,18 +104,19 @@
         .join("g")
         .attr("class", "node")
         .style("opacity", 0)
+        .attr("transform", d => `translate(${d.x}, ${d.y})`)
         .call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)
           .on("end", dragended));
 
     link.transition()
-        .duration(2000)
+        .duration(1000)
         .ease(d3.easeCubicInOut)
         .style("opacity", 1);
 
     node.transition()
-        .duration(1000)
+        .duration(500)
         .ease(d3.easeCubicInOut)
         .style("opacity", 1);
 
