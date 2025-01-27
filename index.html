@@ -6,18 +6,29 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <title>ginjae main</title>
+  <style>
+    #graph {
+      width: 100vw;
+      min-width: 300px;
+      height: 100vh;
+      box-sizing: border-box;
+      border: 2px solid #515151;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+  </style>
 </head>
-<body style="background-color:#212121;touch-action:none;">
-  <div id="graph" style="width:100vw;height:100vh;min-width:600px;min-height:300px"></div>
+<body style="background-color:#212121;touch-action:none;margin:0;">
+  <div id="graph"></div>
   
   <script>
     const ns = [
       { id: "   ginjae   ", url: "https://ginjae.github.io", group: 0},
       { id: "GitHub", url: "https://github.com/ginjae", group: 1},
       { id: "Solved.ac", url: "https://solved.ac/profile/jamk", group: 1},
+      { id: "Baekjoon", url: "https://www.acmicpc.net/user/jamk", group: 1},
       { id: "SpringBoot", url: "http://springboot-blog-env.eba-amscp3sq.ap-northeast-2.elasticbeanstalk.com/articles", group: 2},
       { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 2},
-      { id: "Baekjoon", url: "https://www.acmicpc.net/user/jamk", group: 1},
     ];
     const ls = [
       { source: "   ginjae   ", target: "GitHub", value: 40},
@@ -33,8 +44,8 @@
 
     // Specify the dimensions of the chart.
     var graph = document.getElementById('graph');
-    const width = graph.clientWidth;
-    const height = graph.clientHeight;
+    width = graph.clientWidth;
+    height = graph.clientHeight;
 
     // Specify the color scale.
     const color = d3.scaleOrdinal(["#4e79a7","#f28e2c","#e15759","#76b7b2","#59a14f","#edc949","#af7aa1","#ff9da7","#9c755f","#bab0ab"]);
@@ -83,8 +94,8 @@
       svg.attr("width", "100%")
           .attr("height", "100%")
           .attr("viewBox", [0, 0, width, height]);
-      simulation.force("center", d3.forceCenter(width / 2, height * 3 / 7));
-      simulation.restart();
+      simulation.force("center", customForceCenter(nodes.filter(node => node.id === "   ginjae   "), width / 2, height / 2))
+      simulation.alpha(1).restart();
     }
     window.addEventListener("resize", resizeSVG);
 
@@ -158,14 +169,18 @@
 
     // Set the position attributes of links and nodes each time the simulation ticks.
     function ticked() {
+      node
+          .attr("transform", d => {
+            d.x = Math.max(15, Math.min(width - 15, d.x));
+            d.y = Math.max(15, Math.min(height - 15, d.y));
+            return `translate(${d.x},${d.y})`;
+          });
+
       link
           .attr("x1", d => d.source.x)
           .attr("y1", d => d.source.y)
           .attr("x2", d => d.target.x)
           .attr("y2", d => d.target.y);
-
-      node
-          .attr("transform", d => `translate(${d.x},${d.y})`);
     }
 
     // Reheat the simulation when drag starts, and fix the subject position.
