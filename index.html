@@ -12,7 +12,7 @@
       min-width: 300px;
       height: 100vh;
       box-sizing: border-box;
-      border: 1.5px solid #212121;
+      border: 2px solid #212121;
       border-radius: 10px;
       overflow: hidden;
     }
@@ -31,9 +31,9 @@
       { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 2},
     ];
     const ls = [
-      { source: "   ginjae   ", target: "GitHub", value: 40},
-      { source: "   ginjae   ", target: "Solved.ac", value: 40},
-      { source: "   ginjae   ", target: "Baekjoon", value: 40},
+      { source: "   ginjae   ", target: "GitHub", value: 80},
+      { source: "   ginjae   ", target: "Solved.ac", value: 80},
+      { source: "   ginjae   ", target: "Baekjoon", value: 80},
       { source: "InfoVis", target: "GitHub", value: 40},
       { source: "SpringBoot", target: "GitHub", value: 40},
     ]
@@ -76,7 +76,7 @@
 
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).strength(0.3).distance(100))
-        .force("charge", d3.forceManyBody().strength(-1500))
+        .force("charge", d3.forceManyBody().strength(-2000))
         .force("center", customForceCenter(nodes.filter(node => node.id === "   ginjae   "), width / 2, height / 2))
         .on("tick", ticked);
 
@@ -101,20 +101,19 @@
 
     // Add a line for each link, and a circle for each node.
     const link = svg.append("g")
-        .attr("stroke", "white")
-        .attr("stroke-opacity", 0.3)
         .selectAll()
         .data(links)
         .join("line")
-        .style("opacity", 0)
+        .attr("stroke", "white")
+        .attr("stroke-opacity", 0)
         .attr("stroke-width", d => Math.sqrt(d.value))
         .attr("stroke-linecap", "round");
 
     const node = svg.selectAll(".node")
         .data(nodes)
         .join("g")
+        .style("opacity", 0.1)
         .attr("class", "node")
-        .style("opacity", 0)
         .attr("transform", d => `translate(${d.x}, ${d.y})`)
         .call(d3.drag()
           .on("start", dragstarted)
@@ -124,7 +123,7 @@
     link.transition()
         .duration(1000)
         .ease(d3.easeCubicInOut)
-        .style("opacity", 1);
+        .attr("stroke-opacity", 0.3);
 
     node.transition()
         .duration(500)
@@ -132,9 +131,9 @@
         .style("opacity", 1);
 
     const circle = node.append("circle")
-        .attr("r", d => d.id.length * 7)
         .attr("fill", d => color(d.group))
-        .attr("stroke", "white")
+        .attr("stroke", "#eeeeee")
+        .attr("stroke-width", "3px")
         .on("click", function(d) {
           if (d.srcElement.__data__.id !== "   ginjae   ")
             window.open(d.srcElement.__data__.url);
@@ -142,8 +141,8 @@
         .on("mouseover", function(d) {
           if (d.srcElement.__data__.id !== "   ginjae   ") {
             var color = d3.color(d3.select(this).attr("fill"));
-            color = color.brighter(-3);
-            d3.select(this).attr("fill", color);
+            color = color.brighter(-1);
+            d3.select(this).attr("fill", color).style("cursor", "pointer");
           }
         })
         .on("mouseout", function(d) {
@@ -154,7 +153,8 @@
 
     const text = node.append("text")
         .text(d => d.id)
-        .attr("fill", "white")
+        .style("text-shadow", "1px 1px 5px black")
+        .attr("fill", "#eeeeee")
         .attr("text-anchor", "middle")
         .attr("dominant-baseline", "middle")
         .attr("pointer-events", "none")
@@ -165,7 +165,12 @@
             return "50px";
           else
             return "20px";
+        })
+        .each(function(d) {
+          d.width = this.getBBox().width;
         });
+        
+        circle.attr("r", d => (d.width + 20) / 2);
 
     // Set the position attributes of links and nodes each time the simulation ticks.
     function ticked() {
