@@ -118,19 +118,10 @@
         .ease(d3.easeCubicInOut)
         .style("opacity", 1);
 
-    svg.append("defs")
-        .append("filter")
-        .attr("id", "shadow")
-        .append("feDropShadow")
-        .attr("dx", 1)
-        .attr("dy", 1)
-        .attr("stdDeviation", 1);
-
     const circle = node.append("circle")
         .attr("fill", d => color(d.group))
         .attr("stroke", "#eeeeee")
         .attr("stroke-width", "3px")
-        .attr("filter", "url(#shadow)")
         .on("click", function(d) {
           if (d.srcElement.__data__.id !== "ginjae")
             window.open(d.srcElement.__data__.url);
@@ -147,6 +138,14 @@
             d3.select(this).attr("fill", d => color(d.group));
           }
         });
+
+    svg.append("defs")
+        .append("filter")
+        .attr("id", "shadow")
+        .append("feDropShadow")
+        .attr("dx", 1)
+        .attr("dy", 1)
+        .attr("stdDeviation", 1);
 
     const text = node.append("text")
         .text(d => d.id)
