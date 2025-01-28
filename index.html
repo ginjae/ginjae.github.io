@@ -6,24 +6,13 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <title>ginjae main</title>
-  <style>
-    #graph {
-      width: 100vw;
-      min-width: 300px;
-      height: 100vh;
-      box-sizing: border-box;
-      border: 2px solid #212121;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-  </style>
 </head>
-<body style="background-color:#212121;touch-action:none;margin:0;">
-  <div id="graph"></div>
+<body style="background-color:#23272f;touch-action:none;margin:0;">
+  <div id="graph" style="width:100vw;height:100vh;min-width:300px;"></div>
   
   <script>
     const ns = [
-      { id: "   ginjae   ", url: "https://ginjae.github.io", group: 0},
+      { id: "ginjae", url: "https://ginjae.github.io", group: 0},
       { id: "GitHub", url: "https://github.com/ginjae", group: 1},
       { id: "Solved.ac", url: "https://solved.ac/profile/jamk", group: 1},
       { id: "Baekjoon", url: "https://www.acmicpc.net/user/jamk", group: 1},
@@ -31,11 +20,11 @@
       { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 2},
     ];
     const ls = [
-      { source: "   ginjae   ", target: "GitHub", value: 80},
-      { source: "   ginjae   ", target: "Solved.ac", value: 80},
-      { source: "   ginjae   ", target: "Baekjoon", value: 80},
-      { source: "InfoVis", target: "GitHub", value: 40},
-      { source: "SpringBoot", target: "GitHub", value: 40},
+      { source: "ginjae", target: "GitHub", value: 100},
+      { source: "ginjae", target: "Solved.ac", value: 100},
+      { source: "ginjae", target: "Baekjoon", value: 100},
+      { source: "InfoVis", target: "GitHub", value: 50},
+      { source: "SpringBoot", target: "GitHub", value: 50},
     ]
     const data = {
       nodes : ns,
@@ -43,9 +32,8 @@
     }
 
     // Specify the dimensions of the chart.
-    var graph = document.getElementById('graph');
-    width = graph.clientWidth;
-    height = graph.clientHeight;
+    width = window.innerWidth;
+    height = window.innerHeight;
 
     // Specify the color scale.
     const color = d3.scaleOrdinal(["#4e79a7","#f28e2c","#e15759","#76b7b2","#59a14f","#edc949","#af7aa1","#ff9da7","#9c755f","#bab0ab"]);
@@ -55,7 +43,7 @@
     const links = data.links.map(d => ({...d}));
     const nodes = data.nodes.map(d => ({...d}));
     nodes.forEach(node => {
-      if (node.id == "   ginjae   ") {
+      if (node.id == "ginjae") {
         node.x = width / 2;
         node.y = height / 2;
       } else {
@@ -68,8 +56,8 @@
     function customForceCenter(targetNodes, x, y) {
       return function(alpha) {
         for (const node of targetNodes) {
-          node.vx += (x - node.x) * alpha;
-          node.vy += (y - node.y) * alpha;
+          node.vx += (x - node.x) * alpha / 2;
+          node.vy += (y - node.y) * alpha / 2;
         }
       };
     }
@@ -77,7 +65,7 @@
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).strength(0.3).distance(100))
         .force("charge", d3.forceManyBody().strength(-2000))
-        .force("center", customForceCenter(nodes.filter(node => node.id === "   ginjae   "), width / 2, height / 2))
+        .force("center", customForceCenter(nodes.filter(node => node.id === "ginjae"), width / 2, height / 2))
         .on("tick", ticked);
 
     // Create the SVG container.
@@ -89,12 +77,12 @@
         .style("user-select", "none");
 
     function resizeSVG() {
-      width = graph.clientWidth;
-      height = graph.clientHeight;
+      width = window.innerWidth;
+      height = window.innerHeight;
       svg.attr("width", "100%")
           .attr("height", "100%")
           .attr("viewBox", [0, 0, width, height]);
-      simulation.force("center", customForceCenter(nodes.filter(node => node.id === "   ginjae   "), width / 2, height / 2))
+      simulation.force("center", customForceCenter(nodes.filter(node => node.id === "ginjae"), width / 2, height / 2))
       simulation.alpha(1).restart();
     }
     window.addEventListener("resize", resizeSVG);
@@ -122,42 +110,43 @@
 
     link.transition()
         .duration(1000)
-        .ease(d3.easeCubicInOut)
+        .ease(d3.easeCubicIn)
         .attr("stroke-opacity", 0.3);
 
     node.transition()
         .duration(500)
         .ease(d3.easeCubicInOut)
-        .style("opacity", 0.9);
+        .style("opacity", 1);
+
+    svg.append("defs")
+        .append("filter")
+        .attr("id", "shadow")
+        .append("feDropShadow")
+        .attr("dx", 1)
+        .attr("dy", 1)
+        .attr("stdDeviation", 1);
 
     const circle = node.append("circle")
         .attr("fill", d => color(d.group))
         .attr("stroke", "#eeeeee")
         .attr("stroke-width", "3px")
+        .attr("filter", "url(#shadow)")
         .on("click", function(d) {
-          if (d.srcElement.__data__.id !== "   ginjae   ")
+          if (d.srcElement.__data__.id !== "ginjae")
             window.open(d.srcElement.__data__.url);
         })
         .on("mouseover", function(d) {
-          if (d.srcElement.__data__.id !== "   ginjae   ") {
+          if (d.srcElement.__data__.id !== "ginjae") {
             var color = d3.color(d3.select(this).attr("fill"));
             color = color.brighter(-1);
             d3.select(this).attr("fill", color).style("cursor", "pointer");
           }
         })
         .on("mouseout", function(d) {
-          if (d.srcElement.__data__.id !== "   ginjae   ") {
+          if (d.srcElement.__data__.id !== "ginjae") {
             d3.select(this).attr("fill", d => color(d.group));
           }
         });
-
-    svg.append("defs")
-        .append("filter")
-        .attr("id", "text-shadow")
-        .append("feDropShadow")
-        .attr("dx", 1)   // X축 방향 그림자 오프셋
-        .attr("dy", 1)   // Y축 방향 그림자 오프셋
-        .attr("stdDeviation", 1);  // 그림자의 흐림 정도
 
     const text = node.append("text")
         .text(d => d.id)
@@ -165,11 +154,11 @@
         .attr("text-anchor", "middle")
         .attr("dominant-baseline", "middle")
         .attr("pointer-events", "none")
-        .attr("filter", "url(#text-shadow)")
+        .attr("filter", "url(#shadow)")
         .attr("font-family", "sans-serif")
         .attr("font-weight", "bold")
         .attr("font-size", d => {
-          if (d.id === "   ginjae   ")
+          if (d.id === "ginjae")
             return "50px";
           else
             return "20px";
@@ -184,8 +173,8 @@
     function ticked() {
       node
           .attr("transform", d => {
-            d.x = Math.max(15, Math.min(width - 15, d.x));
-            d.y = Math.max(15, Math.min(height - 15, d.y));
+            d.x = Math.max(d.width / 2, Math.min(width - d.width / 2, d.x));
+            d.y = Math.max(d.width / 2, Math.min(height - d.width / 2, d.y));
             return `translate(${d.x},${d.y})`;
           });
 
