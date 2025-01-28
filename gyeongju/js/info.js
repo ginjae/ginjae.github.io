@@ -1,5 +1,5 @@
-const width_details = 250,
-  height_details = 160;
+// const width_details = 250,
+//   height_details = 160;
 
 // const info = d3.select("#maps")
 //   .append("div")
@@ -13,21 +13,23 @@ const width_details = 250,
   
 var selectedRestaurant = null;
 
-const drag = d3.drag()
+// const drag = d3.drag()
   
 const info = d3.select("#map")
-  .append("rect")
+  .append("div")
   .attr("id", "info")
+  .style("transform", `translate(-795px,8px)`)
   .html("<b>상세정보</b><br>[읍, 면, 동] 선택 후, 사업장을 선택해주세요.")
   .style("opacity", "0.7")
   .style("background-color", "black")
   .style("border-radius", "10px")
   .style("padding", "10px")
   .style("color", "white")
-  .style("display", "inline")
+  .style("display", "inline-block")
   .style("position", "absolute")
   .style("font-size", "15px")
-  .style("line-height", "150%");
+  .style("line-height", "150%")
+  .style("min-width", "300px");
 //   .call(d3.drag()
 //     .on("drag", function(event, d) {
 //       const l = Number(d3.select(this).style("left").slice(0, -2));
@@ -44,10 +46,10 @@ const info = d3.select("#map")
 // );
 
 function repositionInfo() {
-  const m = d3.select("#maps").node().getBoundingClientRect();
-  d3.select("#info")
-    .style("left", `${m.x + 5}px`)
-    .style("top", `${m.y + 5}px`);
+  // const m = d3.select("#maps").node().getBoundingClientRect();
+  // d3.select("#info")
+  //   .style("left", `${m.x + 5}px`)
+  //   .style("top", `${m.y + 5}px`);
   // const l = Number(d3.select("#info").style("left").slice(0, -2));
   // const t = Number(d3.select("#info").style("top").slice(0, -2));
   // const w = Number(d3.select("#info").style("width").slice(0, -2));
