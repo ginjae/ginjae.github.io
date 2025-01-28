@@ -1,23 +1,33 @@
 
 function changeDirection() {
     const width = window.innerWidth;
-    const height = window.innerHeight;
     const target = d3.select("#charts");
-    if (width > 1618) {
+    if (width > 1600) {
         target.style("flex-direction", "row")
             .style("justify-content", "center")
-            .style("height", "100vh");
+            .style("height", "100dvh");
     } else if (width > 1200) {
         target.style("flex-direction", "row")
             .style("justify-content", "start")
-            .style("height", "100vh");
-    } else {
+            .style("height", "100dvh");
+    } else if (width > 800) {
         target.style("flex-direction", "column")
             .style("justify-content", "center")
-            .style("height", "auto");
-    }
-    if (height > 1200) {
-        target.style("height", "100vh");
+            .style("height", "100dvh");
+        if (window.innerHeight < 1200) {
+            target.style("justify-content", "start");
+        } else {
+            target.style("justify-content", "center");
+        }
+    } else {
+        target.style("flex-direction", "column")
+            .style("justify-content", "start")
+            .style("height", "100dvh");
+        if (window.innerHeight < 1200) {
+            target.style("justify-content", "start");
+        } else {
+            target.style("justify-content", "center");
+        }
     }
     repositionInfo();
 }
