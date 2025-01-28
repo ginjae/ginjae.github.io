@@ -1,8 +1,9 @@
 
 function changeDirection() {
     const width = window.innerWidth;
+    const height = window.innerHeight;
     const target = d3.select("#charts");
-    if (width > 1600) {
+    if (width > 1618) {
         target.style("flex-direction", "row")
             .style("justify-content", "center")
             .style("height", "100vh");
@@ -14,6 +15,9 @@ function changeDirection() {
         target.style("flex-direction", "column")
             .style("justify-content", "center")
             .style("height", "auto");
+    }
+    if (height > 1200) {
+        target.style("height", "100vh");
     }
     repositionInfo();
 }
