@@ -1,13 +1,24 @@
-var filter = "win16|win32|win64|mac|macintel";
 
-if (navigator.platform) {
-    if (filter.indexOf(navigator.platform.toLowerCase()) >= 0) {
-        d3.select("#charts")
-            .style("display", "flex")
-            .style("flex_direction", "row");
+function changeDirection() {
+    const width = window.innerWidth;
+    const target = d3.select("#charts");
+    if (width > 1600) {
+        target.style("flex-direction", "row")
+            .style("justify-content", "center")
+            .style("height", "100vh");
+    } else if (width > 1200) {
+        target.style("flex-direction", "row")
+            .style("justify-content", "start")
+            .style("height", "100vh");
+    } else {
+        target.style("flex-direction", "column")
+            .style("justify-content", "center")
+            .style("height", "auto");
     }
+    repositionInfo();
 }
-
+changeDirection();
+window.addEventListener("resize", changeDirection)
 
 
 const bar = new barChart();

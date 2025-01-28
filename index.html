@@ -12,24 +12,19 @@
   
   <script>
     const ns = [
-      { id: "ginjae", url: "https://ginjae.github.io", group: 0},
-      { id: "GitHub", url: "https://github.com/ginjae", group: 1},
-      { id: "Solved.ac", url: "https://solved.ac/profile/jamk", group: 1},
-      { id: "Baekjoon", url: "https://www.acmicpc.net/user/jamk", group: 1},
-      { id: "SpringBoot", url: "http://springboot-blog-env.eba-amscp3sq.ap-northeast-2.elasticbeanstalk.com/articles", group: 2},
-      { id: "InfoVis", url: "https://ginjae.github.io/gyeongju", group: 2},
+      { id: "ginjae", group: 0, parent: null, url: "https://ginjae.github.io"},
+      { id: "GitHub", group: 1, parent: "ginjae", url: "https://github.com/ginjae"},
+      { id: "Solved.ac", group: 1, parent: "ginjae", url: "https://solved.ac/profile/jamk"},
+      { id: "Baekjoon", group: 1, parent: "ginjae", url: "https://www.acmicpc.net/user/jamk"},
+      { id: "SpringBoot", group: 2, parent: "GitHub", url: "http://springboot-blog-env.eba-amscp3sq.ap-northeast-2.elasticbeanstalk.com/articles"},
+      { id: "InfoVis", group: 2, parent: "GitHub", url: "https://ginjae.github.io/gyeongju"},
     ];
-    const ls = [
-      { source: "ginjae", target: "GitHub", value: 100},
-      { source: "ginjae", target: "Solved.ac", value: 100},
-      { source: "ginjae", target: "Baekjoon", value: 100},
-      { source: "InfoVis", target: "GitHub", value: 50},
-      { source: "SpringBoot", target: "GitHub", value: 50},
-    ]
-    const data = {
-      nodes : ns,
-      links : ls
-    }
+    const ls = ns.filter(d => d.parent != null)
+        .map(d => ({
+          source: d.parent,
+          target: d.id,
+          value: 100 / d.group
+        }));
 
     // Specify the dimensions of the chart.
     width = window.innerWidth;
@@ -40,8 +35,8 @@
 
     // The force simulation mutates links and nodes, so create a copy
     // so that re-evaluating this cell produces the same result.
-    const links = data.links.map(d => ({...d}));
-    const nodes = data.nodes.map(d => ({...d}));
+    const links = ls.map(d => ({...d}));
+    const nodes = ns.map(d => ({...d}));
     nodes.forEach(node => {
       if (node.id == "ginjae") {
         node.x = width / 2;
@@ -120,21 +115,21 @@
 
     const circle = node.append("circle")
         .attr("fill", d => color(d.group))
-        .attr("stroke", "#eeeeee")
+        .attr("stroke", "#dcd8d0")
         .attr("stroke-width", "3px")
-        .on("click", function(d) {
-          if (d.srcElement.__data__.id !== "ginjae")
-            window.open(d.srcElement.__data__.url);
+        .on("click", function(event, d) {
+          if (d.id !== "ginjae")
+            window.open(d.url);
         })
-        .on("mouseover", function(d) {
-          if (d.srcElement.__data__.id !== "ginjae") {
+        .on("mouseover", function(event, d) {
+          if (d.id !== "ginjae") {
             var color = d3.color(d3.select(this).attr("fill"));
             color = color.brighter(-1);
             d3.select(this).attr("fill", color).style("cursor", "pointer");
           }
         })
-        .on("mouseout", function(d) {
-          if (d.srcElement.__data__.id !== "ginjae") {
+        .on("mouseout", function(event, d) {
+          if (d.id !== "ginjae") {
             d3.select(this).attr("fill", d => color(d.group));
           }
         });

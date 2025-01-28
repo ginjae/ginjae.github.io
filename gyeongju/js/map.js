@@ -7,9 +7,9 @@ const svg = d3.select("#map")
   .attr("id", "maps")
   .attr("width", width)
   .attr("height", height)
-  .style("background-color", "#FAFAFA")
-  .style("border-radius", "10px")
-  .style("border", "2px solid black");
+  .style("background-color", "#dcd8d0")
+  .style("border", "1.5px solid black")
+  .style("border-radius", "10px");
 
 //const getColor = () => "#" + Math.round(Math.random() * 0xffffff).toString(16);
 

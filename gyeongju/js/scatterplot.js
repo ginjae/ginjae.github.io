@@ -63,7 +63,7 @@ class ScatterPlot {
       .attr("r", "1")
       .attr("fill", d => { return cScale(d["업태구분명"]); })
       // .attr("pointer-events", "none");
-      .on("click", function(d) {
+      .on("click", function(event, d) {
         d3.select("#maps")
           .selectAll("circle")
           .style("stroke", "none");
@@ -72,12 +72,12 @@ class ScatterPlot {
           .style("stroke-width", 0.6 * this.currentK + "px")
           .style("stroke", "blue");
         info.html("<b>상세정보</b>" +
-          "<br>사업장명: " + d.target.__data__["사업장명"] +
-          "<br>구분: " + d.target.__data__["업태구분명"] +
-          "<br>도로명주소: " + d.target.__data__["도로명전체주소"] +
-          "<br>지번주소: " + d.target.__data__["소재지전체주소"]);
+          "<br>사업장명: " + d["사업장명"] +
+          "<br>구분: " + d["업태구분명"] +
+          "<br>도로명주소: " + d["도로명전체주소"] +
+          "<br>지번주소: " + d["소재지전체주소"]);
         repositionInfo();
-        selectedRestaurant = d.target.__data__;
+        selectedRestaurant = d;
       })
       .on("mouseover", function(event, d) {
         if (d3.select(this).style("stroke") !== "blue") {
@@ -95,6 +95,7 @@ class ScatterPlot {
       });
       
       document.getElementById("load").style.display = "none";   // loading ends
+      changeDirection();
   }
 
   updateScatterPlot(event) {

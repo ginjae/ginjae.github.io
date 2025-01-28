@@ -48,6 +48,9 @@ class barChart {
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
+      .style("background-color", "#dcd8d0")
+      .style("border", "1.5px solid black")
+      .style("border-radius", "10px")
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
