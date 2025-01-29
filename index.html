@@ -37,14 +37,21 @@
     // so that re-evaluating this cell produces the same result.
     const links = ls.map(d => ({...d}));
     const nodes = ns.map(d => ({...d}));
+    const positions = [];
+    const minDistance = 100;
     nodes.forEach(node => {
       if (node.id == "ginjae") {
-        node.x = width / 2;
-        node.y = height / 2;
+        x = width / 2;
+        y = height / 2;
       } else {
-        node.x = Math.random() * width;
-        node.y = Math.random() * height;
+        do {
+          x = Math.random() * width;
+          y = Math.random() * height;
+        } while (positions.some(([px, py]) => Math.hypot(px - x, py - y) < minDistance));
       }
+      node.x = x;
+      node.y = y;
+      positions.push([x, y]);
     })
 
     // Create a simulation with several forces.
@@ -58,7 +65,7 @@
     }
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).strength(0.3).distance(100))
+        .force("link", d3.forceLink(links).id(d => d.id).strength(0.5).distance(100))
         .force("charge", d3.forceManyBody().strength(-2000))
         .force("center", customForceCenter(nodes.filter(node => node.id === "ginjae"), width / 2, height / 2))
         .on("tick", ticked);
@@ -97,7 +104,7 @@
         .join("g")
         .style("opacity", 0.1)
         .attr("class", "node")
-        .attr("transform", d => `translate(${d.x}, ${d.y})`)
+        .attr("transform", d => `translate(${d.x},${d.y})`)
         .call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)
@@ -118,8 +125,10 @@
         .attr("stroke", "#dcd8d0")
         .attr("stroke-width", "3px")
         .on("click", function(event, d) {
-          if (d.id !== "ginjae")
+          if (d.id !== "ginjae") {
             window.open(d.url);
+            d3.select(this).attr("fill", d => color(d.group));
+          }
         })
         .on("mouseover", function(event, d) {
           if (d.id !== "ginjae") {
