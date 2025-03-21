@@ -11,12 +11,13 @@
   <div id="graph" style="width:100dvw;height:100dvh;min-width:300px;"></div>
   
   <script>
+    root = "ginjae"
+
     const ns = [
-      { id: "ginjae", group: 0, parent: null, url: "https://ginjae.github.io/about"},
-      { id: "GitHub", group: 1, parent: "ginjae", url: "https://github.com/ginjae"},
-      { id: "Baekjoon", group: 1, parent: "ginjae", url: "https://www.acmicpc.net/user/jamk"},
-      { id: "UAI Lab", group: 1, parent: "ginjae", url: "https://sites.google.com/view/uailab"},
-      { id: "Instagram", group: 1, parent: "ginjae", url: "https://www.instagram.com/ginjae"},
+      { id: root, group: 0, parent: null, url: "https://ginjae.github.io/about"},
+      { id: "GitHub", group: 1, parent: root, url: "https://github.com/ginjae"},
+      { id: "Baekjoon", group: 1, parent: root, url: "https://www.acmicpc.net/user/jamk"},
+      { id: "Instagram", group: 1, parent: root, url: "https://www.instagram.com/ginjae"},
       { id: "SpringBoot", group: 2, parent: "GitHub", url: "http://springboot-blog-env.eba-amscp3sq.ap-northeast-2.elasticbeanstalk.com/articles"},
       { id: "InfoVis", group: 2, parent: "GitHub", url: "https://ginjae.github.io/gyeongju"},
     ];
@@ -38,22 +39,40 @@
     // so that re-evaluating this cell produces the same result.
     const links = ls.map(d => ({...d}));
     const nodes = ns.map(d => ({...d}));
-    const positions = [];
-    const minDistance = 100;
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const radiusStep = 100;
+    
+    const anglaMap = new Map();
+
     nodes.forEach(node => {
-      if (node.id == "ginjae") {
-        x = width / 2;
-        y = height / 2;
-      } else {
-        do {
-          x = Math.random() * width;
-          y = Math.random() * height;
-        } while (positions.some(([px, py]) => Math.hypot(px - x, py - y) < minDistance));
+      if (node.id === root) {
+        node.x = centerX;
+        node.y = centerY;
+      } else if (node.group === 1) {
+        const angle = (Math.random() - 0.5) * 2;
+        const radius = radiusStep * node.group;
+
+        node.x = centerX + Math.cos(angle) * radius;
+        node.y = centerY + Math.sin(angle) * radius;
       }
-      node.x = x;
-      node.y = y;
-      positions.push([x, y]);
-    })
+    });
+    // const positions = [];
+    // const minDistance = 100;
+    // nodes.forEach(node => {
+    //   if (node.id == root) {
+    //     x = width / 2;
+    //     y = height / 2;
+    //   } else {
+    //     do {
+    //       x = Math.random() * width;
+    //       y = Math.random() * height;
+    //     } while (positions.some(([px, py]) => Math.hypot(px - x, py - y) < minDistance));
+    //   }
+    //   node.x = x;
+    //   node.y = y;
+    //   positions.push([x, y]);
+    // })
 
     // Create a simulation with several forces.
     function customForceCenter(targetNodes, x, y) {
@@ -68,7 +87,7 @@
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).strength(0.5).distance(100))
         .force("charge", d3.forceManyBody().strength(-2000))
-        .force("center", customForceCenter(nodes.filter(node => node.id === "ginjae"), width / 2, height / 2))
+        .force("center", customForceCenter(nodes.filter(node => node.id === root), width / 2, height / 2))
         .on("tick", ticked);
 
     // Create the SVG container.
@@ -76,6 +95,7 @@
         .append("svg")
         .attr("width", "100%")
         .attr("height", "100%")
+        .style("opacity", 0)
         .attr("viewBox", [0, 0, width, height])
         .style("user-select", "none");
 
@@ -85,7 +105,7 @@
       svg.attr("width", "100%")
           .attr("height", "100%")
           .attr("viewBox", [0, 0, width, height]);
-      simulation.force("center", customForceCenter(nodes.filter(node => node.id === "ginjae"), width / 2, height / 2))
+      simulation.force("center", customForceCenter(nodes.filter(node => node.id === root), width / 2, height / 2))
       simulation.alpha(1).restart();
     }
     window.addEventListener("resize", resizeSVG);
@@ -96,14 +116,14 @@
         .data(links)
         .join("line")
         .attr("stroke", "white")
-        .attr("stroke-opacity", 0)
+        .attr("stroke-opacity", 0.3)
         .attr("stroke-width", d => Math.sqrt(d.value))
         .attr("stroke-linecap", "round");
 
     const node = svg.selectAll(".node")
         .data(nodes)
         .join("g")
-        .style("opacity", 0.1)
+        .style("opacity", 1)
         .attr("class", "node")
         .attr("transform", d => `translate(${d.x},${d.y})`)
         .call(d3.drag()
@@ -111,15 +131,6 @@
           .on("drag", dragged)
           .on("end", dragended));
 
-    link.transition()
-        .duration(1000)
-        .ease(d3.easeCubicIn)
-        .attr("stroke-opacity", 0.3);
-
-    node.transition()
-        .duration(500)
-        .ease(d3.easeCubicInOut)
-        .style("opacity", 1);
 
     const circle = node.append("circle")
         .attr("fill", d => color(d.group))
@@ -156,7 +167,7 @@
         .attr("font-family", "sans-serif")
         .attr("font-weight", "bold")
         .attr("font-size", d => {
-          if (d.id === "ginjae")
+          if (d.id === root)
             return "50px";
           else
             return "20px";
@@ -166,6 +177,11 @@
         });
         
         circle.attr("r", d => (d.width + 20) / 2);
+
+    svg.transition()
+        .duration(800)
+        .ease(d3.easeCubicInOut)
+        .style("opacity", 1);
 
     // Set the position attributes of links and nodes each time the simulation ticks.
     function ticked() {
