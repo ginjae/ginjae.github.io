@@ -5,17 +5,18 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <title>ginjae main</title>
+  <title>Jaemin Kim | ginjae</title>
 </head>
 <body style="background-color:#23272f;touch-action:none;margin:0;">
   <div id="graph" style="width:100dvw;height:100dvh;min-width:300px;"></div>
   
   <script>
     const ns = [
-      { id: "ginjae", group: 0, parent: null, url: "https://ginjae.github.io"},
+      { id: "ginjae", group: 0, parent: null, url: "https://ginjae.github.io/about"},
       { id: "GitHub", group: 1, parent: "ginjae", url: "https://github.com/ginjae"},
-      { id: "Solved.ac", group: 1, parent: "ginjae", url: "https://solved.ac/profile/jamk"},
       { id: "Baekjoon", group: 1, parent: "ginjae", url: "https://www.acmicpc.net/user/jamk"},
+      { id: "UAI Lab", group: 1, parent: "ginjae", url: "https://sites.google.com/view/uailab"},
+      { id: "Instagram", group: 1, parent: "ginjae", url: "https://www.instagram.com/ginjae"},
       { id: "SpringBoot", group: 2, parent: "GitHub", url: "http://springboot-blog-env.eba-amscp3sq.ap-northeast-2.elasticbeanstalk.com/articles"},
       { id: "InfoVis", group: 2, parent: "GitHub", url: "https://ginjae.github.io/gyeongju"},
     ];
@@ -125,22 +126,16 @@
         .attr("stroke", "#dcd8d0")
         .attr("stroke-width", "3px")
         .on("click", function(event, d) {
-          if (d.id !== "ginjae") {
-            window.open(d.url);
-            d3.select(this).attr("fill", d => color(d.group));
-          }
+          window.open(d.url);
+          d3.select(this).attr("fill", d => color(d.group));
         })
         .on("mouseover", function(event, d) {
-          if (d.id !== "ginjae") {
-            var color = d3.color(d3.select(this).attr("fill"));
-            color = color.brighter(-1);
-            d3.select(this).attr("fill", color).style("cursor", "pointer");
-          }
+          var color = d3.color(d3.select(this).attr("fill"));
+          color = color.brighter(-1);
+          d3.select(this).attr("fill", color).style("cursor", "pointer");
         })
         .on("mouseout", function(event, d) {
-          if (d.id !== "ginjae") {
-            d3.select(this).attr("fill", d => color(d.group));
-          }
+          d3.select(this).attr("fill", d => color(d.group));
         });
 
     svg.append("defs")
