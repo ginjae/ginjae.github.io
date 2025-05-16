@@ -1,4 +1,4 @@
-# ginjae.github.io
+# https://ginjae.github.io
 
 ## References
 ### /gyeongju
