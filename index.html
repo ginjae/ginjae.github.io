@@ -14,6 +14,9 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
   <link rel="manifest" href="/images/favicon/site.webmanifest">
 
+  <link rel="preload" as="image" href="images/profile.png">
+  <link rel="preload" as="image" href="images/profile2.png">
+
   <style>
     body {
       font-family: "DM Sans", sans-serif;
@@ -56,6 +59,20 @@
       #unist .short {
         display: inline;
       }
+    }
+    .profile-wrapper {
+      width: 150px;
+      height: 150px;
+      background-color: #fff;
+      border-radius: 50%;
+      padding: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .profile-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
     }
   </style>
 </head>
@@ -115,12 +132,18 @@
       </div>
     </div>
   </header>
-  
+
   <article class="mt-5 text-center" style="width:90%">
+
+    <div class="d-flex justify-content-center mt-4">
+      <div class="profile-wrapper">
+        <img src="images/profile.png" class="profile-img">
+      </div>
+    </div>
 
     <div class="text-dark fs-5">
 
-      <div class="m-5">
+      <div class="m-4">
         <h3>Undergraduate Student</h3>
 
         <div>
@@ -175,7 +198,7 @@
 
     </div>
     
-    <div class="mt-5">
+    <div class="m-5">
       <a class="link-primary icon-link icon-link-hover d-inline-flex align-items-baseline"
       href="https://jaemin-kim.com/sokoban">
         <i class="bi bi-arrow-right-circle-fill fs-3"></i>
@@ -185,6 +208,12 @@
 
   </article>
 
+  <script>
+    const img = document.getElementsByClassName("profile-img");
+    img[0].addEventListener("click", function () {
+      this.src = this.src.includes("profile2.png") ? "images/profile.png" : "images/profile2.png";
+    });
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
