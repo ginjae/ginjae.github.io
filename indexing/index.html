@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow:hidden;">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <title>RAG Indexing Structure</title>
+</head>
+<body style="background-color:#23272f;touch-action:none;margin:0;">
+  <div id="graph" style="width:100dvw;height:100dvh;min-width:300px;"></div>
+  
+  <script>
+    root = "Persona"
+
+    function generateHierarchy(rootId) {
+      const ns = [{ id: rootId, group: 0, parent: null }];
+      const prefCount = 5;
+      let topicCounter = 1;
+      let chunkCounter = 1;
+
+      for (let i = 1; i <= prefCount; i++) {
+        const prefId = `Pref. ${i}`;
+        ns.push({ id: prefId, group: 1, parent: rootId });
+
+        const topicCount = Math.floor(Math.random() * 3) + 1; // 1~3
+        for (let j = 0; j < topicCount; j++) {
+          const topicId = `Topic ${topicCounter++}`;
+          ns.push({ id: topicId, group: 2, parent: prefId });
+
+          const chunkCount = Math.floor(Math.random() * 3) + 1; // 1~3
+          for (let k = 0; k < chunkCount; k++) {
+            const chunkId = `Chunk ${chunkCounter++}`;
+            ns.push({ id: chunkId, group: 3, parent: topicId });
+          }
+        }
+      }
+
+      return ns;
+    }
+
+    const ns = generateHierarchy(root);
+
+    const ls = ns.filter(d => d.parent != null)
+        .map(d => ({
+          source: d.parent,
+          target: d.id,
+          value: 100
+        }));
+    
+    // topic과 chunk 노드만 추출
+    const topicNodes = ns.filter(n => n.id.startsWith("Topic"));
+    const chunkNodes = ns.filter(n => n.id.startsWith("Chunk"));
+
+    // 랜덤한 topic-chunk 간 링크 추가
+    const additionalLinksCount = 5; // 원하는 만큼의 추가 링크 수
+    const usedPairs = new Set();
+
+    for (let i = 0; i < additionalLinksCount; i++) {
+      let topic, chunk, key;
+      do {
+        topic = topicNodes[Math.floor(Math.random() * topicNodes.length)];
+        chunk = chunkNodes[Math.floor(Math.random() * chunkNodes.length)];
+        key = `${topic.id}->${chunk.id}`;
+      } while (
+        topic.id === chunk.parent || // 원래 부모-자식 관계는 제외
+        usedPairs.has(key)
+      );
+
+      usedPairs.add(key);
+      ls.push({
+        source: topic.id,
+        target: chunk.id,
+        value: 100
+      });
+    }
+
+    // Specify the dimensions of the chart.
+    width = window.innerWidth;
+    height = window.innerHeight;
+
+    // Specify the color scale.
+    const color = d3.scaleOrdinal(["#4e79a7","#f28e2c","#e15759","#76b7b2","#59a14f","#edc949","#af7aa1","#ff9da7","#9c755f","#bab0ab"]);
+
+    // The force simulation mutates links and nodes, so create a copy
+    // so that re-evaluating this cell produces the same result.
+    const links = ls.map(d => ({...d}));
+    const nodes = ns.map(d => ({...d}));
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const radiusStep = 100;
+    
+    const anglaMap = new Map();
+
+    nodes.forEach(node => {
+      if (node.id === root) {
+        node.x = centerX;
+        node.y = centerY;
+      } else if (node.group === 1) {
+        const angle = (Math.random() - 0.5) * 2;
+        const radius = radiusStep * node.group;
+
+        node.x = centerX + Math.cos(angle) * radius;
+        node.y = centerY + Math.sin(angle) * radius;
+      }
+    });
+    // const positions = [];
+    // const minDistance = 100;
+    // nodes.forEach(node => {
+    //   if (node.id == root) {
+    //     x = width / 2;
+    //     y = height / 2;
+    //   } else {
+    //     do {
+    //       x = Math.random() * width;
+    //       y = Math.random() * height;
+    //     } while (positions.some(([px, py]) => Math.hypot(px - x, py - y) < minDistance));
+    //   }
+    //   node.x = x;
+    //   node.y = y;
+    //   positions.push([x, y]);
+    // })
+
+    // Create a simulation with several forces.
+    function customForceCenter(targetNodes, x, y) {
+      return function(alpha) {
+        for (const node of targetNodes) {
+          node.vx += (x - node.x) * alpha / 2;
+          node.vy += (y - node.y) * alpha / 2;
+        }
+      };
+    }
+
+    const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.id).strength(1).distance(100))
+        .force("charge", d3.forceManyBody().strength(-500))
+        .force("center", customForceCenter(nodes.filter(node => node.id === root), width / 2, height / 2))
+        .on("tick", ticked);
+
+    // Create the SVG container.
+    const svg = d3.select("#graph")
+        .append("svg")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .style("opacity", 0)
+        .attr("viewBox", [0, 0, width, height])
+        .style("user-select", "none");
+
+    function resizeSVG() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      svg.attr("width", "100%")
+          .attr("height", "100%")
+          .attr("viewBox", [0, 0, width, height]);
+      simulation.force("center", customForceCenter(nodes.filter(node => node.id === root), width / 2, height / 2))
+      simulation.alpha(1).restart();
+    }
+    window.addEventListener("resize", resizeSVG);
+
+    // Add a line for each link, and a circle for each node.
+    const link = svg.append("g")
+        .selectAll()
+        .data(links)
+        .join("line")
+        .attr("stroke", "white")
+        .attr("stroke-opacity", 0.3)
+        .attr("stroke-width", d => Math.sqrt(d.value))
+        .attr("stroke-linecap", "round");
+
+    const node = svg.selectAll(".node")
+        .data(nodes)
+        .join("g")
+        .style("opacity", 1)
+        .attr("class", "node")
+        .attr("transform", d => `translate(${d.x},${d.y})`)
+        .call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
+
+
+    const circle = node.append("circle")
+        .attr("fill", d => color(d.group))
+        .attr("stroke", "#dcd8d0")
+        .attr("stroke-width", "3px")
+        // .on("click", function(event, d) {
+        //   window.open(d.url);
+        //   d3.select(this).attr("fill", d => color(d.group));
+        // })
+        .on("mouseover", function(event, d) {
+          var color = d3.color(d3.select(this).attr("fill"));
+          color = color.brighter(-1);
+          d3.select(this).attr("fill", color).style("cursor", "pointer");
+        })
+        .on("mouseout", function(event, d) {
+          d3.select(this).attr("fill", d => color(d.group));
+        });
+
+    svg.append("defs")
+        .append("filter")
+        .attr("id", "shadow")
+        .append("feDropShadow")
+        .attr("dx", 1)
+        .attr("dy", 1)
+        .attr("stdDeviation", 1);
+
+    const text = node.append("text")
+        .text(d => d.id)
+        .attr("fill", "#eeeeee")
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .attr("pointer-events", "none")
+        .attr("filter", "url(#shadow)")
+        .attr("font-family", "sans-serif")
+        .attr("font-weight", "bold")
+        .attr("font-size", d => {
+          if (d.id === root)
+            return "28px";
+          else
+            return "14px";
+        })
+        .each(function(d) {
+          d.width = this.getBBox().width;
+        });
+        
+    circle.attr("r", d => (d.width + 20) / 2);
+
+    svg.transition()
+        .duration(800)
+        .ease(d3.easeCubicInOut)
+        .style("opacity", 1);
+
+    // Set the position attributes of links and nodes each time the simulation ticks.
+    function ticked() {
+      node
+          .attr("transform", d => {
+            d.x = Math.max(d.width / 2, Math.min(width - d.width / 2, d.x));
+            d.y = Math.max(d.width / 2, Math.min(height - d.width / 2, d.y));
+            return `translate(${d.x},${d.y})`;
+          });
+
+      link
+          .attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+    }
+
+    // Reheat the simulation when drag starts, and fix the subject position.
+    function dragstarted(event) {
+      if (!event.active) simulation.alphaTarget(0.5).restart();
+      event.subject.fx = event.subject.x;
+      event.subject.fy = event.subject.y;
+    }
+
+    // Update the subject (dragged node) position during drag.
+    function dragged(event) {
+      event.subject.fx = event.x;
+      event.subject.fy = event.y;
+    }
+
+    // Restore the target alpha so the simulation cools after dragging ends.
+    // Unfix the subject position now that it’s no longer being dragged.
+    function dragended(event) {
+      if (!event.active) simulation.alphaTarget(0);
+      event.subject.fx = null;
+      event.subject.fy = null;
+    }
+
+  </script>
+</body>
+</html>
