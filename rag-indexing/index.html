@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow:hidden;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RAG Indexing Structure</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    :root { color-scheme: dark; }
+    html, body { height:100%; }
+    body { margin:0; background:#23272f; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    #graph { width:100dvw; height:100dvh; min-width:300px; touch-action:none; }
+    .legend { position:fixed; left:12px; top:12px; padding:10px 12px; background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.08); border-radius:12px; backdrop-filter: blur(6px); box-shadow:0 2px 14px rgba(0,0,0,.25); }
+    .legend h2 { margin:0 0 8px 0; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#cbd5e1; }
+    .legend ul { list-style:none; margin:0; padding:0; }
+    .legend li { display:flex; align-items:center; gap:8px; font-size:12px; color:#e5e7eb; opacity:.9; padding:2px 0; }
+    .chip { width:10px; height:10px; border-radius:999px; border:1.5px solid #dcd8d0; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,1px,1px); white-space:nowrap; border:0; }
+    .tooltip { position:fixed; pointer-events:none; padding:6px 8px; font-size:12px; color:#111827; background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; box-shadow:0 6px 24px rgba(0,0,0,.25); transform:translate(-50%, -140%); opacity:0; transition:opacity .12s ease; }
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to graph</a>
+  <div id="graph" role="application" aria-label="RAG indexing structure force-directed graph">
+    <div class="legend" aria-hidden="true">
+      <!-- <h2>Legend</h2> -->
+      <ul>
+        <li><span class="chip" style="background:#4e79a7"></span> Persona</li>
+        <li><span class="chip" style="background:#f28e2c"></span> Preference</li>
+        <li><span class="chip" style="background:#e15759"></span> Topic</li>
+        <li><span class="chip" style="background:#76b7b2"></span> Chunk</li>
+      </ul>
+    </div>
+    <div id="tip" class="tooltip" role="tooltip" aria-hidden="true"></div>
+  </div>
+
+  <script>
+  (function() {
+    // ===== Config =====
+    const ROOT_ID = "Persona 1"; // root label
+    const PREF_COUNT = 5;       // number of preferences under root
+    const ADDITIONAL_LINKS = 10; // number of random Topic→Chunk cross-links
+
+    // ===== Utilities: seeded RNG for reproducible layouts =====
+    function xmur3(str){
+      for(var i=0, h=1779033703 ^ str.length; i<str.length; i++)
+        h = Math.imul(h ^ str.charCodeAt(i), 3432918353), h = h << 13 | h >>> 19;
+      return function(){ h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); return (h ^= h >>> 16) >>> 0; };
+    }
+    function mulberry32(a){ return function(){ var t = a += 0x6D2B79F5; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; } }
+    const rand = mulberry32(xmur3(ROOT_ID)());
+    function randInt(min, max){ return Math.floor(rand() * (max - min + 1)) + min; }
+
+    // ===== Data generation =====
+    function generateHierarchy(rootId) {
+      const nodes = [{ id: rootId, group: 0, parent: null }];
+      const links = [];
+      let topicCounter = 1;
+      let chunkCounter = 1;
+
+      for (let i = 1; i <= PREF_COUNT; i++) {
+        const prefId = `Pref. ${i}`;
+        nodes.push({ id: prefId, group: 1, parent: rootId });
+        links.push({ source: rootId, target: prefId, value: 100, kind: "tree" });
+
+        const topicCount = randInt(1, 3); // 1–3 topics per preference
+        for (let j = 0; j < topicCount; j++) {
+          const topicId = `Topic ${topicCounter++}`;
+          nodes.push({ id: topicId, group: 2, parent: prefId });
+          links.push({ source: prefId, target: topicId, value: 100, kind: "tree" });
+
+          const chunkCount = randInt(1, 3); // 1–3 chunks per topic
+          for (let k = 0; k < chunkCount; k++) {
+            const chunkId = `Chunk ${chunkCounter++}`;
+            nodes.push({ id: chunkId, group: 3, parent: topicId });
+            links.push({ source: topicId, target: chunkId, value: 100, kind: "tree" });
+          }
+        }
+      }
+
+      // Build cross-links Topic→Chunk (excluding original parent-child)
+      const topicNodes = nodes.filter(n => n.group === 2);
+      const chunkNodes = nodes.filter(n => n.group === 3);
+      const used = new Set(links.map(l => `${l.source}->${l.target}`));
+
+      for (let i = 0; i < ADDITIONAL_LINKS; i++) {
+        let topic, chunk, key, guard = 0;
+        do {
+          topic = topicNodes[randInt(0, topicNodes.length - 1)];
+          chunk = chunkNodes[randInt(0, chunkNodes.length - 1)];
+          key = `${topic.id}->${chunk.id}`;
+        } while ((topic && chunk && (chunk.parent === topic.id || used.has(key))) && ++guard < 50);
+        if (guard < 50) {
+          used.add(key);
+          links.push({ source: topic.id, target: chunk.id, value: 100, kind: "xref" });
+        }
+      }
+
+      return { nodes, links };
+    }
+
+    const { nodes, links } = generateHierarchy(ROOT_ID);
+
+    // ===== Graph scaffolding =====
+    const colorScale = d3.scaleOrdinal(["#4e79a7","#f28e2c","#e15759","#76b7b2","#59a14f","#edc949","#af7aa1","#ff9da7","#9c755f","#bab0ab"]);
+    const graphEl = document.getElementById("graph");
+    let width = graphEl.clientWidth, height = graphEl.clientHeight;
+
+    const svg = d3.select(graphEl)
+      .append("svg")
+      .attr("id", "main")
+      .attr("role", "img")
+      .attr("aria-label", "Interactive force-directed graph of RAG indexing structure")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("viewBox", [0, 0, width, height])
+      .style("opacity", 0)
+      .style("cursor", "grab")
+      .style("user-select", "none");
+
+    const gZoom = svg.append("g");
+    const gLinks = gZoom.append("g").attr("stroke", "white").attr("stroke-opacity", 0.35);
+    const gNodes = gZoom.append("g");
+
+    const zoom = d3.zoom().scaleExtent([0.4, 2.5]).on("zoom", (event) => {
+      gZoom.attr("transform", event.transform);
+    });
+    svg.call(zoom);
+    svg.call(
+      zoom.transform,
+      d3.zoomIdentity
+        .translate(width / 2, height / 2)
+        .scale(0.5)
+        .translate(-width / 2, -height / 2)
+    );
+
+    // Precompute link distances by type and level
+    function linkDistance(l){
+      if (l.kind === "xref") return 120;
+      // tree links – space levels out
+      const level = (a) => a.group;
+      const s = typeof l.source === "object" ? l.source : nodes.find(n => n.id === l.source);
+      const t = typeof l.target === "object" ? l.target : nodes.find(n => n.id === l.target);
+      const maxLevel = Math.max(level(s), level(t));
+      return [200, 150, 130, 90][maxLevel] || 110;
+    }
+
+    // Build adjacency for hover highlighting
+    const neighbor = new Map();
+    function addNeighbor(a,b){
+      if(!neighbor.has(a)) neighbor.set(a,new Set());
+      if(!neighbor.has(b)) neighbor.set(b,new Set());
+      neighbor.get(a).add(b); neighbor.get(b).add(a);
+    }
+    links.forEach(l => addNeighbor(typeof l.source === "string" ? l.source : l.source.id, typeof l.target === "string" ? l.target : l.target.id));
+
+    // Define simulation
+    const simulation = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).id(d => d.id).distance(linkDistance).strength(l => l.kind === "xref" ? 0.3 : 1))
+      .force("charge", d3.forceManyBody().strength(d => d.id === ROOT_ID ? -1800 : (d.group === 1 ? -900 : -500)))
+      .force("center", customForceCenter(nodes.filter(n => n.id === ROOT_ID), width/2, height/2))
+      .on("tick", ticked);
+
+    function customForceCenter(targetNodes, x, y) {
+      return function(alpha) {
+        for (const node of targetNodes) {
+          node.vx += (x - node.x) * alpha / 1.8;
+          node.vy += (y - node.y) * alpha / 1.8;
+        }
+      };
+    }
+
+    // Link visuals
+    const link = gLinks
+      .selectAll("line")
+      .data(links)
+      .join("line")
+      .attr("stroke-width", 5)
+      .attr("stroke-linecap", "round");
+
+    // Node groups
+    const node = gNodes
+      .selectAll("g.node")
+      .data(nodes)
+      .join("g")
+      .attr("class", "node")
+      .attr("tabindex", 0)
+      .attr("role", "group")
+      .attr("aria-label", d => `${d.id}, level ${d.group}`)
+      .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended)
+      );
+
+    // Shadow filter for text legibility
+    const defs = svg.append("defs");
+    const filter = defs.append("filter").attr("id", "shadow");
+    filter.append("feDropShadow").attr("dx", 1).attr("dy", 1).attr("stdDeviation", 1);
+
+    // Text first to measure width, then circle radius based on label width
+    const label = node.append("text")
+      .text(d => d.id)
+      .attr("fill", "#eeeeee")
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .attr("pointer-events", "none")
+      .attr("filter", "url(#shadow)")
+      .attr("font-weight", d => d.id === ROOT_ID ? "800" : "700")
+      .attr("font-size", d => d.id === ROOT_ID ? 28 : 14)
+      .each(function(d){ d.width = this.getBBox().width; });
+
+    const circle = node.insert("circle", "text") // insert before text
+      .attr("fill", d => colorScale(d.group))
+      .attr("stroke", "#dcd8d0")
+      .attr("stroke-width", 2.5)
+      .attr("r", d => { d.r = (d.width + 20) / 2; return d.r; })
+      .on("mouseover", function(event, d){
+        showTooltip(event, d);
+        d3.select(this).attr("stroke-width", 3.5);
+        highlight(d);
+      })
+      .on("mouseout", function(){
+        hideTooltip();
+        d3.select(this).attr("stroke-width", 2.5);
+        resetHighlight();
+      })
+      .on("click", (event, d) => {
+        // Example: hook up to your router or open details
+        // window.open(d.url || '#', '_blank');
+      });
+
+    // ===== Instant settle on load =====
+    simulation.stop();
+    simulation.alpha(1.0);
+    for (let i = 0; i < 250; i++) simulation.tick();
+    ticked();
+    simulation.alpha(0.8).restart();
+
+    // Collision force after radius known
+    simulation.force("collide", d3.forceCollide(d => (d.r || 12) + 4));
+
+    // Smooth fade-in
+    svg.transition().duration(800).ease(d3.easeCubicInOut).style("opacity", 1);
+
+    // Resize handling
+    function resize(){
+      width = graphEl.clientWidth; height = graphEl.clientHeight;
+      svg.attr("viewBox", [0, 0, width, height]);
+      simulation.force("center", customForceCenter(nodes.filter(n => n.id === ROOT_ID), width/2, height/2));
+      simulation.alpha(0.6).restart();
+    }
+    window.addEventListener("resize", resize);
+
+    // Tooltip
+    const tip = document.getElementById("tip");
+    function showTooltip(event, d){
+      tip.textContent = `${d.id}`;
+      tip.style.left = event.clientX + "px";
+      tip.style.top = event.clientY + "px";
+      tip.style.opacity = 1;
+      tip.setAttribute("aria-hidden", "false");
+    }
+    function hideTooltip(){
+      tip.style.opacity = 0;
+      tip.setAttribute("aria-hidden", "true");
+    }
+
+    // Highlight neighbors
+    function highlight(d){
+      const adj = neighbor.get(d.id) || new Set();
+      node.classed("dim", n => n.id !== d.id && !adj.has(n.id));
+      link
+        .classed("emph", l => l.source.id === d.id || l.target.id === d.id)
+        .attr("stroke-opacity", l => (l.source.id === d.id || l.target.id === d.id) ? 0.9 : 0.1)
+        .attr("stroke-width", l => (l.source.id === d.id || l.target.id === d.id) ? 6 : 5);
+      node.selectAll("circle").attr("opacity", n => (n.id === d.id || adj.has(n.id)) ? 1 : 0.25);
+      node.selectAll("text").attr("opacity", n => (n.id === d.id || adj.has(n.id)) ? 1 : 0.25);
+    }
+    function resetHighlight(){
+      node.classed("dim", false);
+      link
+        .classed("emph", false)
+        .attr("stroke-opacity", 0.35)
+        .attr("stroke-width", 5);
+      node.selectAll("circle").attr("opacity", 1);
+      node.selectAll("text").attr("opacity", 1);
+    }
+
+    // Ticker
+    function ticked(){
+      // node.attr("transform", d => {
+      //   d.x = Math.max(d.r, Math.min(width - d.r, d.x || 0));
+      //   d.y = Math.max(d.r, Math.min(height - d.r, d.y || 0));
+      //   return `translate(${d.x},${d.y})`;
+      // });
+      node.attr("transform", d => `translate(${d.x},${d.y})`);
+      link
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
+    }
+
+    // Dragging
+    function dragstarted(event){
+      svg.style("cursor", "grabbing");
+      if (!event.active) simulation.alphaTarget(0.5).restart();
+      event.subject.fx = event.subject.x;
+      event.subject.fy = event.subject.y;
+    }
+    function dragged(event){
+      event.subject.fx = event.x;
+      event.subject.fy = event.y;
+    }
+    function dragended(event){
+      svg.style("cursor", "grab");
+      if (!event.active) simulation.alphaTarget(0);
+      event.subject.fx = null;
+      event.subject.fy = null;
+    }
+  })();
+  </script>
+</body>
+</html>
