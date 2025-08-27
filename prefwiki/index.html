@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RAG Indexing Structure</title>
+  <title>PrefWiki Structure</title>
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -24,77 +24,40 @@
 <body>
   <a class="sr-only" href="#main">Skip to graph</a>
   <div id="graph" role="application" aria-label="RAG indexing structure force-directed graph">
-    <div class="legend" aria-hidden="true">
-      <!-- <h2>Legend</h2> -->
+    <!-- <div class="legend" aria-hidden="true">
       <ul>
         <li><span class="chip" style="background:#4e79a7"></span> Persona</li>
         <li><span class="chip" style="background:#f28e2c"></span> Preference</li>
         <li><span class="chip" style="background:#e15759"></span> Topic</li>
         <li><span class="chip" style="background:#76b7b2"></span> Chunk</li>
       </ul>
-    </div>
+    </div> -->
     <div id="tip" class="tooltip" role="tooltip" aria-hidden="true"></div>
   </div>
 
   <script>
   (function() {
     // ===== Config =====
-    const ROOT_ID = "Persona 1"; // root label
-    const PREF_COUNT = 5;       // number of preferences under root
-    const ADDITIONAL_LINKS = 10; // number of random Topic→Chunk cross-links
-
-    // ===== Utilities: seeded RNG for reproducible layouts =====
-    function xmur3(str){
-      for(var i=0, h=1779033703 ^ str.length; i<str.length; i++)
-        h = Math.imul(h ^ str.charCodeAt(i), 3432918353), h = h << 13 | h >>> 19;
-      return function(){ h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); return (h ^= h >>> 16) >>> 0; };
-    }
-    function mulberry32(a){ return function(){ var t = a += 0x6D2B79F5; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; } }
-    const rand = mulberry32(xmur3(ROOT_ID)());
-    function randInt(min, max){ return Math.floor(rand() * (max - min + 1)) + min; }
+    const ROOT_ID = "Persona";   // root label
+    const PREF_COUNT = 10;     // number of preferences under root
 
     // ===== Data generation =====
     function generateHierarchy(rootId) {
-      const nodes = [{ id: rootId, group: 0, parent: null }];
+      const nodes = [{ id: rootId, group: -1, parent: null, type: "Persona" }];
       const links = [];
-      let topicCounter = 1;
-      let chunkCounter = 1;
+      let preferenceCounter = 1;
+      let questionCounter = 1;
 
       for (let i = 1; i <= PREF_COUNT; i++) {
-        const prefId = `Pref. ${i}`;
-        nodes.push({ id: prefId, group: 1, parent: rootId });
+        const prefId = `Pref. ${String(i).padStart(2, "0")}`;
+        nodes.push({ id: prefId, group: i, parent: rootId, type: "Preference" });
         links.push({ source: rootId, target: prefId, value: 100, kind: "tree" });
 
-        const topicCount = randInt(1, 3); // 1–3 topics per preference
-        for (let j = 0; j < topicCount; j++) {
-          const topicId = `Topic ${topicCounter++}`;
-          nodes.push({ id: topicId, group: 2, parent: prefId });
-          links.push({ source: prefId, target: topicId, value: 100, kind: "tree" });
-
-          const chunkCount = randInt(1, 3); // 1–3 chunks per topic
-          for (let k = 0; k < chunkCount; k++) {
-            const chunkId = `Chunk ${chunkCounter++}`;
-            nodes.push({ id: chunkId, group: 3, parent: topicId });
-            links.push({ source: topicId, target: chunkId, value: 100, kind: "tree" });
-          }
-        }
-      }
-
-      // Build cross-links Topic→Chunk (excluding original parent-child)
-      const topicNodes = nodes.filter(n => n.group === 2);
-      const chunkNodes = nodes.filter(n => n.group === 3);
-      const used = new Set(links.map(l => `${l.source}->${l.target}`));
-
-      for (let i = 0; i < ADDITIONAL_LINKS; i++) {
-        let topic, chunk, key, guard = 0;
-        do {
-          topic = topicNodes[randInt(0, topicNodes.length - 1)];
-          chunk = chunkNodes[randInt(0, chunkNodes.length - 1)];
-          key = `${topic.id}->${chunk.id}`;
-        } while ((topic && chunk && (chunk.parent === topic.id || used.has(key))) && ++guard < 50);
-        if (guard < 50) {
-          used.add(key);
-          links.push({ source: topic.id, target: chunk.id, value: 100, kind: "xref" });
+        const questionCount = 5; // 5 questions per preference
+        for (let k = 0; k < questionCount; k++) {
+          const questionId = `Q. ${String(questionCounter++).padStart(2, "0")}`;
+          nodes.push({ id: questionId, group: i, parent: prefId, type: "Question" });
+          links.push({ source: prefId, target: questionId, value: 100, kind: "tree" });
         }
       }
 
@@ -132,7 +95,7 @@
       zoom.transform,
       d3.zoomIdentity
         .translate(width / 2, height / 2)
-        .scale(0.5)
+        .scale(1)
         .translate(-width / 2, -height / 2)
     );
 
@@ -213,7 +176,16 @@
       .each(function(d){ d.width = this.getBBox().width; });
 
     const circle = node.insert("circle", "text") // insert before text
-      .attr("fill", d => colorScale(d.group))
+      .attr("fill", function(d) {
+        if (d.group === -1)
+          return "#23272f";
+        const base = d3.hsl(colorScale(d.group));
+        // if (d.type === "Preference")
+        //   return d3.hsl(base.h, base.s, Math.max(0.28, base.l * 0.85)).formatHex();
+        if (d.type === "Question")
+          return d3.hsl(base.h, base.s, Math.min(0.92, base.l + 0.10)).formatHex();
+        return colorScale(d.group);
+      })
       .attr("stroke", "#dcd8d0")
       .attr("stroke-width", 2.5)
       .attr("r", d => { d.r = (d.width + 20) / 2; return d.r; })
