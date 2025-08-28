@@ -106,8 +106,8 @@
       const t = typeof l.target === "object" ? l.target : nodes.find(n => n.id === l.target);
 
       const st = `${s.type}-${t.type}`;
-      if (st.includes("Persona") && st.includes("Preference")) return 130; // 모든 루트–선호 동일
-      if (st.includes("Preference") && st.includes("Question")) return 100; // 모든 선호–질문 동일
+      if (st.includes("Persona") && st.includes("Preference")) return 130; // Persona–Preference
+      if (st.includes("Preference") && st.includes("Question")) return 100; // Preference-Question
       return 110;
     }
 

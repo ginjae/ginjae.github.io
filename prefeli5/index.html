@@ -39,7 +39,7 @@
   (function() {
     // ===== Config =====
     const ROOT_ID = "Persona";   // root label
-    const PREF_COUNT = 10;     // number of preferences under root
+    const PREF_COUNT = 20;     // number of preferences under root
 
     // ===== Data generation =====
     function generateHierarchy(rootId) {
@@ -55,7 +55,7 @@
 
         const questionCount = 1; // 1 question per preference
         for (let k = 0; k < questionCount; k++) {
-          const questionId = `Query ${String(questionCounter++).padStart(2, "0")}`;
+          const questionId = `Q. ${String(questionCounter++).padStart(2, "0")}`;
           nodes.push({ id: questionId, group: i, parent: prefId, type: "Question" });
           links.push({ source: prefId, target: questionId, value: 100, kind: "tree" });
         }
@@ -67,7 +67,35 @@
     const { nodes, links } = generateHierarchy(ROOT_ID);
 
     // ===== Graph scaffolding =====
-    const colorScale = d3.scaleOrdinal(["#4e79a7","#f28e2c","#e15759","#76b7b2","#59a14f","#edc949","#af7aa1","#ff9da7","#9c755f","#bab0ab"]);
+    const base10 = ["#4e79a7","#f28e2c","#e15759","#76b7b2","#59a14f","#edc949","#af7aa1","#ff9da7","#9c755f","#bab0ab"];
+    function extendPaletteTone(n, base = base10) {
+      if (n <= base.length) return base.slice(0, n);
+
+      const extraN = n - base.length;
+      const extras = [];
+
+      const HUE_SHIFTS = [18, -18, 36, -36, 54, -54, 72, -72, 90, -90, 108, -108];
+      const L_SHIFT = 5;
+      const C_SCALE = 0.95;
+      const L_MIN = 35, L_MAX = 75;
+
+      const parents = base.map(c => d3.hcl(c));
+
+      for (let i = 0; i < extraN; i++) {
+        const p = parents[i % parents.length];
+        const hueShift = HUE_SHIFTS[i % HUE_SHIFTS.length];
+
+        let h = (p.h + hueShift + 360) % 360;
+
+        let l = Math.max(L_MIN, Math.min(L_MAX, p.l + (i % 2 ? -L_SHIFT : L_SHIFT)));
+        let c = Math.max(20, Math.min(80, p.c * C_SCALE));
+
+        extras.push(d3.hcl(h, c, l).formatHex());
+      }
+      return base.concat(extras);
+    }
+    colorScale = d3.scaleOrdinal(extendPaletteTone(30));
+
     const graphEl = document.getElementById("graph");
     let width = graphEl.clientWidth, height = graphEl.clientHeight;
 
@@ -106,8 +134,8 @@
       const t = typeof l.target === "object" ? l.target : nodes.find(n => n.id === l.target);
 
       const st = `${s.type}-${t.type}`;
-      if (st.includes("Persona") && st.includes("Preference")) return 130; // 모든 루트–선호 동일
-      if (st.includes("Preference") && st.includes("Question")) return 100; // 모든 선호–질문 동일
+      if (st.includes("Persona") && st.includes("Preference")) return 50; // Persona–Preference
+      if (st.includes("Preference") && st.includes("Question")) return 5; // Preference-Question
       return 110;
     }
 
