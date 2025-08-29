@@ -246,14 +246,14 @@
     // Smooth fade-in
     svg.transition().delay(300).duration(700).ease(d3.easeCubicInOut).style("opacity", 1);
 
-    // Resize handling
-    function resize(){
-      width = graphEl.clientWidth; height = graphEl.clientHeight;
-      svg.attr("viewBox", [0, 0, width, height]);
-      simulation.force("center", customForceCenter(nodes.filter(n => n.id === ROOT_ID), width/2, height/2));
-      simulation.alpha(0.6).restart();
-    }
-    window.addEventListener("resize", resize);
+    // // Resize handling
+    // function resize(){
+    //   width = graphEl.clientWidth; height = graphEl.clientHeight;
+    //   svg.attr("viewBox", [0, 0, width, height]);
+    //   simulation.force("center", customForceCenter(nodes.filter(n => n.id === ROOT_ID), width/2, height/2));
+    //   simulation.alpha(0.6).restart();
+    // }
+    // window.addEventListener("resize", resize);
 
     // Tooltip
     const tip = document.getElementById("tip");
