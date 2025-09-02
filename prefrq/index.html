@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PrefELI5 Structure</title>
+  <title>PrefRQ</title>
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -53,7 +53,7 @@
         nodes.push({ id: prefId, group: i, parent: rootId, type: "Preference" });
         links.push({ source: rootId, target: prefId, value: 100, kind: "tree" });
 
-        const questionCount = 3; // 3 questions per preference
+        const questionCount = 1; // 1 question per preference
         for (let k = 0; k < questionCount; k++) {
           const questionId = `Q. ${String(questionCounter++).padStart(2, "0")}`;
           nodes.push({ id: questionId, group: i, parent: prefId, type: "Question" });
@@ -134,8 +134,8 @@
       const t = typeof l.target === "object" ? l.target : nodes.find(n => n.id === l.target);
 
       const st = `${s.type}-${t.type}`;
-      if (st.includes("Persona") && st.includes("Preference")) return 100; // Persona–Preference
-      if (st.includes("Preference") && st.includes("Question")) return 50; // Preference-Question
+      if (st.includes("Persona") && st.includes("Preference")) return 50; // Persona–Preference
+      if (st.includes("Preference") && st.includes("Question")) return 5; // Preference-Question
       return 110;
     }
 
