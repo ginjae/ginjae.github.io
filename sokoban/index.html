@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sokoban</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap">
+
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg">
+  <link rel="shortcut icon" href="/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+
+  <style>
+    html, body {
+      touch-action: manipulation;
+    }
+    body {
+      padding-top: 100px;
+      font-family: "DM Sans", sans-serif;
+    }
+    #game {
+      display: grid;
+      grid-template-columns: repeat(8, 40px);
+      gap: 2px;
+    }
+    .cell {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+    }
+    .square-btn {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    .wall { background-color: #343a40 !important; }
+    .goal { color: #0d6efd !important; }
+    .container-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+    }
+    @media (orientation: landscape) {
+      .body {
+        padding-top: 100px;
+      }
+      .container-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      #controls {
+        margin-left: 1rem;
+      }
+    }
+  </style>
+</head>
+<body class="d-flex justify-content-center align-items-center bg-light">
+  <div class="container-wrapper">
+    <div id="game"></div>
+    <div class="w-100">
+      <div class="d-flex w-100 justify-content-between align-items-center">
+        <span id="moveCount" class="fs-4 fw-bold align-middle me-3">count: 0</span>
+        <button class="btn btn-primary" onclick="resetLevel()"><i class="bi bi-arrow-clockwise"></i></button>
+      </div>
+      <div id="controls" class="bg-light my-5">
+        <div class="d-flex justify-content-center mb-2">
+          <button class="btn btn-lg btn-primary me-2 square-btn" onclick="move(0, -1)"><i class="bi bi-arrow-up"></i></button>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-lg btn-primary me-2 square-btn" onclick="move(-1, 0)"><i class="bi bi-arrow-left"></i></button>
+          <button class="btn btn-lg me-2 square-btn" onclick=""></button>
+          <button class="btn btn-lg btn-primary me-2 square-btn" onclick="move(1, 0)"><i class="bi bi-arrow-right"></i></button>
+        </div>
+        <div class="d-flex justify-content-center mt-2">
+          <button class="btn btn-lg btn-primary me-2 square-btn" onclick="move(0, 1)"><i class="bi bi-arrow-down"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+
+    const TILE = {
+      EMPTY: 0,
+      WALL: 1,
+      PLAYER: 2,
+      GOAL: 3,
+      BOX: 4,
+      BOX_ON_GOAL: 5,
+      PLAYER_ON_GOAL: 6
+    };
+
+    let level = [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,1,0,0,0,1],
+      [1,0,4,4,0,4,0,1],
+      [1,0,0,1,2,1,0,1],
+      [1,0,0,1,4,1,0,1],
+      [1,0,0,3,3,3,3,1],
+      [1,0,0,1,0,0,1,1],
+      [1,1,1,1,1,1,1,1]
+    ];
+
+    const gameEl = document.getElementById("game");
+    let playerPos = { x: 4, y: 3 };
+    let moveCount = 0;  // BEST: 87
+
+    function draw() {
+      gameEl.innerHTML = "";
+      level.forEach((row, y) => {
+        row.forEach((cell, x) => {
+          const div = document.createElement("div");
+          div.classList.add("cell", "border");
+
+          const icon = document.createElement("i");
+          if (cell === TILE.WALL) {
+            div.classList.add("wall");
+          } else {
+            if ([TILE.GOAL, TILE.BOX_ON_GOAL, TILE.PLAYER_ON_GOAL].includes(cell)) div.classList.add("goal");
+            if ([TILE.PLAYER, TILE.PLAYER_ON_GOAL].includes(cell)) icon.className = "bi bi-person-fill player";
+            else if ([TILE.BOX, TILE.BOX_ON_GOAL].includes(cell)) icon.className = "bi bi-box-fill box";
+            else if (cell === TILE.GOAL) icon.className = "bi bi-circle goal";
+            if (icon.className) div.appendChild(icon);
+          }
+
+          gameEl.appendChild(div);
+        });
+      });
+    }
+
+    function checkClear() {
+      return level.every(row => row.every(cell => cell !== TILE.BOX));
+    }
+
+    function move(dx, dy) {
+      const x = playerPos.x;
+      const y = playerPos.y;
+      const nx = x + dx;
+      const ny = y + dy;
+      const nnx = x + dx * 2;
+      const nny = y + dy * 2;
+
+      const curr = level[y][x];
+      const next = level[ny][nx];
+      const nextNext = level[nny] ? level[nny][nnx] : TILE.WALL;
+
+      if (next === TILE.WALL) return;
+
+      if (next === TILE.EMPTY || next === TILE.GOAL) {
+        level[y][x] = curr === TILE.PLAYER_ON_GOAL ? TILE.GOAL : TILE.EMPTY;
+        level[ny][nx] = next === TILE.GOAL ? TILE.PLAYER_ON_GOAL : TILE.PLAYER;
+        playerPos = { x: nx, y: ny };
+        moveCount++;
+      } else if ((next === TILE.BOX || next === TILE.BOX_ON_GOAL) && (nextNext === TILE.EMPTY || nextNext === TILE.GOAL)) {
+        level[y][x] = curr === TILE.PLAYER_ON_GOAL ? TILE.GOAL : TILE.EMPTY;
+        level[ny][nx] = next === TILE.BOX_ON_GOAL ? TILE.PLAYER_ON_GOAL : TILE.PLAYER;
+        level[nny][nnx] = nextNext === TILE.GOAL ? TILE.BOX_ON_GOAL : TILE.BOX;
+        playerPos = { x: nx, y: ny };
+        moveCount++;
+      }
+    
+      draw();
+      document.getElementById("moveCount").innerText = `count: ${moveCount}`;
+      
+      if (checkClear()) {
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.7 }
+        });
+      }
+    }
+
+    window.addEventListener("keydown", e => {
+      if (e.key === "r" || e.key == "R") resetLevel();
+      else if (e.key === "ArrowUp") move(0, -1);
+      else if (e.key === "ArrowDown") move(0, 1);
+      else if (e.key === "ArrowLeft") move(-1, 0);
+      else if (e.key === "ArrowRight") move(1, 0);
+    });
+
+    draw();
+
+    function resetLevel() {
+      level = [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,1,0,0,0,1],
+      [1,0,4,4,0,4,0,1],
+      [1,0,0,1,2,1,0,1],
+      [1,0,0,1,4,1,0,1],
+      [1,0,0,3,3,3,3,1],
+      [1,0,0,1,0,0,1,1],
+      [1,1,1,1,1,1,1,1]
+      ];
+      playerPos = { x: 4, y: 3 };
+      moveCount = 0;
+      draw();
+      document.getElementById("moveCount").innerText = `count: ${moveCount}`;
+    }
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>
