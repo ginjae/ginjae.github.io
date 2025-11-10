@@ -149,6 +149,7 @@
         </a>
         
       </div>
+      <!-- <div id="sanity" class="mt-5"></div> -->
     </div>
     <div class="text-center mt-5">
       <h3>Undergraduate Student</h3>
@@ -300,6 +301,30 @@
         homeLink.classList.add('active');
       }
     });
+
+    (async () => {
+      const RAW_URL = "https://gist.githubusercontent.com/ginjae/777bcb4a32ab7dfe545f8f23e2680dde/raw/status.json";
+      const el = document.getElementById("sanity");
+
+      async function loadSanity() {
+        try {
+          const res = await fetch(`${RAW_URL}?t=${Date.now()}`, { cache: "no-store" });
+          if (!res.ok) throw new Error(res.status);
+          const text = (await res.text()).trim();
+          const data = JSON.parse(text);
+          const sanity = data.sanity;
+          
+          const filled = Math.floor(sanity / 10);
+          const empty = 10 - filled;
+          const bar = '█'.repeat(filled) + '░'.repeat(empty);
+          el.textContent = `SANITY\u00A0\u00A0${bar}\u00A0\u00A0${sanity}%`;
+        } catch (e) {
+          el.textContent = "ERROR";
+        }
+      }
+
+      loadSanity();
+    })();
   </script>
 </body>
 </html>
