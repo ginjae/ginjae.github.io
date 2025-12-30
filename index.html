@@ -42,6 +42,19 @@
     section {
       scroll-margin-top: 100px;
     }
+    .nav-link.active {
+      /* font-weight: bold; */
+      color: #000000 !important;
+      border-bottom: 3px solid #000000;
+    }
+    .responsive-width {
+      width: 75%;
+    }
+    @media (min-width: 768px) {
+      .responsive-width {
+        width: 50%;
+      }
+    }
   </style>
 </head>
 <body class="d-flex flex-column align-items-center bg-light" style="padding-top: 100px;">
@@ -51,17 +64,20 @@
 
     <ul class="navbar-nav mx-auto flex-row flex-nowrap overflow-auto">
       <li class="nav-item">
-        <a class="nav-link px-3" href="#">Home</a>
+        <a class="nav-link px-3" href="#" id="home-link">Home</a>
       </li>
       <!-- <li class="nav-item">
         <a class="nav-link px-3" href="#research">Research</a>
       </li> -->
       <li class="nav-item">
+        <a class="nav-link px-3" href="#publications">Publications</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link px-3" href="#projects">Projects</a>
       </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link px-3" href="#publications">Publications</a>
-      </li> -->
+      <li class="nav-item">
+        <a class="nav-link px-3" href="#honors">Honors</a>
+      </li>
       <!-- <li class="nav-item">
         <a class="nav-link px-3" href="#character-strengths">Character Strengths</a>
       </li> -->
@@ -94,7 +110,7 @@
   </header> -->
 
   <!--Start Home-->
-  <section class="w-75 mb-5">
+  <section id="home" class="responsive-width mb-5">
     <div class="text-center">
       <h1 class="fw-bold mb-4">JAEMIN KIM</h1>
     </div>
@@ -214,29 +230,42 @@
 
   <!-- <hr class="w-50 my-5"> -->
 
-  <!--Start Projects-->
-  <section id="projects" class="w-75 mb-5">
+  <!--Start Publications-->
+  <section id="publications" class="responsive-width mb-5">
     <div class="container text-center">
-      <h2 class="mb-4">Projects</h2>
+      <h2 class="mb-4">Publications</h2>
       <div class="text-secondary">Hanc marginis exiguitas non caperet.</div>
+      <!-- <h4>Preprints & Under Review</h4>
+      <h5>"Topic: Personalized & Memory-Efficient LLM"</h5>
+      <div>Changmin Lee, <strong>Jaemin Kim</strong>, Taesik Gong</div>
+      <div>Under review at a top-tier conference</div> -->
+    </div>
+  </section>
+  <!--End Publications-->
+
+  <hr class="w-50 my-5">
+
+  <!--Start Projects-->
+  <section id="projects" class="responsive-width mb-5">
+    <div class="container text-start">
+      <h2 class="mb-4 text-center">Projects</h2>
+      <div class="text-secondary text-center">Hanc marginis exiguitas non caperet.</div>
   </section>
   <!--End Projects-->
 
   <hr class="w-50 my-5">
 
-  <!--Start Publications-->
-  <!-- <section id="publications" class="w-75 mb-5">
-    <div class="container text-center">
-      <h2 class="mb-4">Publications</h2>
-      <h4>Preprints & Under Review</h4>
-      <h5>"Topic: Personalized & Memory-Efficient LLM"</h5>
-      <div>Changmin Lee, <strong>Jaemin Kim</strong>, Taesik Gong</div>
-      <div>Under review at a top-tier conference</div>
+  <!--Start Honors-->
+  <section id="honors" class="responsive-width mb-5">
+    <div class="container text-start">
+      <h2 class="mb-4 text-center">Honors</h2>
+      <h5 class="mb-0"><a href="https://ib.unist.ac.kr/2546-2/">Dean's List</a></h5>
+      <div>For the top-performing student in the department, UNIST, Spring 2024</div>
     </div>
-  </section> -->
-  <!--End Publications-->
+  </section>
+  <!--End Honors-->
 
-  <!-- <hr class="w-50 my-5"> -->
+  <hr class="w-50 my-5">
 
   <!--Start Character Strengths-->
   <!-- <section id="character-strengths" class="w-75 mb-5">
@@ -264,6 +293,22 @@
 
   <!-- <hr class="w-50 my-5"> -->
 
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+  <hr>
+
   <div class="m-5">
     <a class="link-secondary icon-link icon-link-hover d-inline-flex align-items-baseline"
     style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
@@ -277,6 +322,7 @@
     window.addEventListener('scroll', function() {
       const sections = document.querySelectorAll('section');
       const navLinks = document.querySelectorAll('.nav-link');
+      const homeLink = document.getElementById('home-link');
       
       let current = '';
       sections.forEach(section => {
@@ -293,12 +339,22 @@
           link.classList.add('active');
         }
       });
+
+      // Handle home link active state
+      if (current === 'home' && homeLink) {
+        homeLink.classList.add('active');
+      }
     });
 
     document.addEventListener('DOMContentLoaded', function() {
-      const homeLink = document.querySelector('a[href="#home"]');
+      const homeLink = document.getElementById('home-link');
       if (homeLink) {
         homeLink.classList.add('active');
+        homeLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          history.pushState("", document.title, window.location.pathname + window.location.search);
+        });
       }
     });
 
