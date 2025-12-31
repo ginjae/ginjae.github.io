@@ -43,9 +43,14 @@
       scroll-margin-top: 100px;
     }
     .nav-link.active {
-      /* font-weight: bold; */
       color: #000000 !important;
-      border-bottom: 3px solid #000000;
+      font-weight: bold;
+    }
+    @media (min-width: 992px) {
+      .nav-link.active {
+        border-bottom: 3px solid #000000;
+        font-weight: normal;
+      }
     }
     .responsive-width {
       width: 75%;
@@ -58,56 +63,54 @@
   </style>
 </head>
 <body class="d-flex flex-column align-items-center bg-light" style="padding-top: 100px;">
-  <header class="navbar navbar-expand bg-light shadow fixed-top">
+  <!-- <header class="navbar navbar-expand bg-light shadow fixed-top">
   <div class="container">
-    <!-- <a class="navbar-brand" href="#">Jaemin Kim</a> -->
-
     <ul class="navbar-nav mx-auto flex-row flex-nowrap overflow-auto">
       <li class="nav-item">
         <a class="nav-link px-3" href="#" id="home-link">Home</a>
       </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link px-3" href="#research">Research</a>
-      </li> -->
       <li class="nav-item">
-        <a class="nav-link px-3" href="#publications">Publications</a>
+        <a class="nav-link px-3" href="#about-me">About Me</a>
       </li>
       <li class="nav-item">
         <a class="nav-link px-3" href="#projects">Projects</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link px-3" href="#publications">Publications</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link px-3" href="#honors">Honors</a>
       </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link px-3" href="#character-strengths">Character Strengths</a>
-      </li> -->
     </ul>
   </div>
-</header>
-  <!-- <header class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
+</header> -->
+  <header class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
     <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item ms-auto">
+            <a class="nav-link" href="#" id="home-link">Home</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item ms-auto">
+            <a class="nav-link" href="#about-me">About Me</a>
+          </li>
+          <li class="nav-item ms-auto">
             <a class="nav-link" href="#projects">Projects</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item ms-auto">
             <a class="nav-link" href="#publications">Publications</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#character-strengths">Character Strengths</a>
+          <li class="nav-item ms-auto">
+            <a class="nav-link" href="#honors">Honors</a>
           </li>
         </ul>
       </div>
     </div>
-  </header> -->
+  </header>
 
   <!--Start Home-->
   <section id="home" class="responsive-width mb-5">
@@ -139,6 +142,8 @@
           <i class="bi bi-geo-alt h-100"></i>
           Location
         </a>
+
+        <br>
 
         <!-- <div class="vr"></div> -->
 
@@ -203,45 +208,21 @@
 
   <hr class="w-50 my-5">
 
-  <!-- Start Research -->
-  <!-- <section id="research" class="mb-5 mx-5" style="width: 90%; max-width:700px;">
-    <h2 class="mb-4 fw-bold text-center">Research</h2>
-    <div style="text-align: justify; text-justify: inter-word; hyphens: auto; word-break: normal; overflow-wrap: break-word;">
-      <div>My research interests center on:</div>
-      <h4 class="mt-3 text-center"><i class="bi bi-star-fill mx-2"></i>On-Device AI</h4>
-      <div>
-        I aim to develop AI systems that achieve both high performance and memory-efficiency directly on devices while maintaining adaptability and scalability across distributed environments.
+  <!-- Start About Me -->
+  <section id="about-me" class="responsive-width mb-5">
+    <div class="container text-start">
+      <h2 class="mb-4 text-center">About Me</h2>
+      <div class="fs-5 text-secondary" style="text-align: justify; text-justify: inter-word; hyphens: auto; word-break: normal; overflow-wrap: break-word;">
+        I'm a senior computer science student at UNIST, exploring the intersection of systems, and artificial intelligence.
+        My passion lies in building efficient and scalable AI systems that can operate seamlessly on edge devices.
+        <br>
+        Currently, I'm doing an undergraduate research internship at UNIST's Ubiquitous AI Lab with professor Taesik Gong.
+        <br>
+        Please feel free to reach out if you'd like to connect or collaborate!
       </div>
-      <h4 class="mt-3 text-center"><i class="bi bi-gpu-card mx-2"></i>AI Accelerators</h4>
-      <div>
-        I focus on designing hardware-software co-optimization techniques that enable real-time inference and learning on edge devices through AI accelerator architectures and efficient model deployment strategies.
-      </div>
-      <h4 class="mt-3 text-center"><i class="bi bi-diagram-3 mx-2"></i>Edge-Cloud Collaboration</h4>
-      <div>
-        I am interested in exploring collaborative systems between edge and cloud platforms, optimizing communication, computation, and data flow for latency-sensitive applications.
-      </div>
-      <h4 class="mt-3 text-center"><i class="bi bi-person-lines-fill mx-2"></i>Personalized AI</h4>
-      <div>
-        I seek to advance adaptive AI systems that learn continuously from user behavior and contextual data, enabling privacy-preserving personalization directly on-device.
-      </div>
-    </div>
-  </section> -->
-  <!-- End Research -->
-
-  <!-- <hr class="w-50 my-5"> -->
-
-  <!--Start Publications-->
-  <section id="publications" class="responsive-width mb-5">
-    <div class="container text-center">
-      <h2 class="mb-4">Publications</h2>
-      <div class="text-secondary">Hanc marginis exiguitas non caperet.</div>
-      <!-- <h4>Preprints & Under Review</h4>
-      <h5>"Topic: Personalized & Memory-Efficient LLM"</h5>
-      <div>Changmin Lee, <strong>Jaemin Kim</strong>, Taesik Gong</div>
-      <div>Under review at a top-tier conference</div> -->
     </div>
   </section>
-  <!--End Publications-->
+  <!-- End About Me -->
 
   <hr class="w-50 my-5">
 
@@ -252,6 +233,21 @@
       <div class="text-secondary text-center">Hanc marginis exiguitas non caperet.</div>
   </section>
   <!--End Projects-->
+
+  <hr class="w-50 my-5">
+
+  <!--Start Publications-->
+  <section id="publications" class="responsive-width mb-5">
+    <div class="container text-start">
+      <h2 class="mb-4 text-center">Publications</h2>
+      <!-- <div class="text-secondary">Hanc marginis exiguitas non caperet.</div> -->
+      <h4>Preprints & Under Review</h4>
+      <h5>"Topic: Personalized & Memory-Efficient LLM"</h5>
+      <div>Changmin Lee, <strong>Jaemin Kim</strong>, Taesik Gong</div>
+      <div>Under review at a top-tier conference</div>
+    </div>
+  </section>
+  <!--End Publications-->
 
   <hr class="w-50 my-5">
 
@@ -267,37 +263,39 @@
 
   <hr class="w-50 my-5">
 
-  <!--Start Character Strengths-->
-  <!-- <section id="character-strengths" class="w-75 mb-5">
-    <div class="container text-center">
-      <h2 class="mb-5">Character Strengths</h2>
-
-      <div class="text-center">
-        <embed src="documents/StrengthsProfile-Jaemin-Kim.pdf" 
-               type="application/pdf" 
-               width="100%" 
-               height="600px" 
-               class="border rounded">
-        <div class="mt-3">
-          <a href="documents/StrengthsProfile-Jaemin-Kim.pdf" 
-             target="_blank" 
-             class="btn btn-outline-primary">
-            <i class="bi bi-file-earmark-pdf"></i> View Full Report
-          </a>
-        </div>
-      </div></div>
-
+  <div id="photoSlideshow" class="carousel slide responsive-width" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#photoSlideshow" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#photoSlideshow" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#photoSlideshow" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
-  </section> -->
-  <!--End Character Strengths-->
 
-  <!-- <hr class="w-50 my-5"> -->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="images/91.jpg" class="d-block w-100">
+      </div>
+      
+      <div class="carousel-item">
+        <img src="images/90.jpg" class="d-block w-100">
+      </div>
 
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
+      <div class="carousel-item">
+        <img src="images/89.jpg" class="d-block w-100">
+      </div>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#photoSlideshow" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#photoSlideshow" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <hr class="w-50 my-5">
+
   <hr>
   <hr>
   <hr>
@@ -347,14 +345,36 @@
     });
 
     document.addEventListener('DOMContentLoaded', function() {
+      const navLinks = document.querySelectorAll('.nav-link');
       const homeLink = document.getElementById('home-link');
-      if (homeLink) {
-        homeLink.classList.add('active');
-        homeLink.addEventListener('click', function(e) {
+      
+      // Add click event to all nav links
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
           e.preventDefault();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          
+          const href = this.getAttribute('href');
+          
+          if (href === '#') {
+            // Home link - scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            // Other section links - scroll to section
+            const targetId = href.substring(1);
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+              targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+          
+          // Keep URL clean without hash
           history.pushState("", document.title, window.location.pathname + window.location.search);
         });
+      });
+      
+      // Set home link as active initially
+      if (homeLink) {
+        homeLink.classList.add('active');
       }
     });
 
