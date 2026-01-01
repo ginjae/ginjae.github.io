@@ -53,12 +53,40 @@
       }
     }
     .responsive-width {
-      width: 75%;
+      width: 90%;
     }
-    @media (min-width: 768px) {
+    @media (min-width: 992px) {
       .responsive-width {
         width: 50%;
       }
+    }
+    .project-card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: filter 0.2s ease-in-out;
+    }
+    .project-card-link:hover {
+      text-decoration: none;
+      color: inherit;
+      filter: brightness(0.95);
+    }
+    .project-card-link .card {
+      cursor: pointer;
+    }
+    .card-header {
+      border-bottom: none !important;
+    }
+    .project-card-link .card-header,
+    .project-card-link .card-body {
+      padding: 1rem 1rem;
+    }
+    .card-text {
+      text-align: justify;
+      text-justify: inter-word;
+      hyphens: auto;
+      word-break: normal;
+      overflow-wrap: break-word;
     }
   </style>
 </head>
@@ -230,7 +258,195 @@
   <section id="projects" class="responsive-width mb-5">
     <div class="container text-start">
       <h2 class="mb-4 text-center">Projects</h2>
-      <div class="text-secondary text-center">Hanc marginis exiguitas non caperet.</div>
+      <div class="row g-3">
+        <!-- Fused QAttn -->
+        <div class="col-12">
+          <a href="https://github.com/ginjae/fused-qattn" class="project-card-link">
+            <div class="card shadow-sm">
+              <div class="card-header bg-white">
+                <div>
+                  <h5 class="mb-0">Fused Quantized Attention Kernel</h5>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">2024.10 - 2024.12</small>
+                    <span class="badge bg-success">Parallel Computing</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row g-0">
+                <div class="col-md-4 order-1 order-md-0 pb-3">
+                  <img src="images/projects/fused-qattn.png" class="img-fluid rounded-start" alt="Fused Quantized Attention Performance" style="height: 100%; object-fit: cover;">
+                </div>
+                <div class="col-md-8 order-2 order-md-1">
+                  <div class="card-body">
+                    <p class="card-text">
+                      CUDA implementation of optimized attention mechanisms with block-wise quantization support (MXFP4, NF4, and NVFP4). 
+                      Incrementally fused the naive dequantization-projection-attention sequence into custom kernels to minimize memory overhead.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- SKiP -->
+        <div class="col-12">
+          <a href="https://github.com/ginjae/SKiP" class="project-card-link">
+            <div class="card shadow-sm">
+              <div class="card-header bg-white">
+                <div>
+                  <h5 class="mb-0">SKiP: SVM with K-nearest neighbor and Probabilistic weighting</h5>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">2024.11 - 2024.12</small>
+                    <span class="badge bg-primary">Machine Learning</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row g-0">
+                <div class="col-md-4 order-1 order-md-0 pb-3">
+                  <img src="images/projects/skip.png" class="img-fluid rounded-start" alt="SKiP Classification Results" style="height: 100%; object-fit: cover;">
+                </div>
+                <div class="col-md-8 order-2 order-md-1">
+                  <div class="card-body">
+                    <p class="card-text">
+                      Novel SVM variant that assigns adaptive sample weights based on K-Nearest-Neighbors and class probability distributions. 
+                      Designed to reduce the impact of outliers and boundary noise in classification tasks across multiple datasets.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Pintos -->
+        <div class="col-12">
+          <a href="https://github.com/ginjae/pintos" class="project-card-link">
+            <div class="card shadow-sm">
+              <div class="card-header bg-white">
+                <div>
+                  <h5 class="mb-0">Pintos</h5>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">2024.03 - 2024.06</small>
+                    <span class="badge bg-secondary">Operating System</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row g-0">
+                <div class="col-md-4 order-1 order-md-0 pb-3">
+                  <img src="images/projects/pintos.png" class="img-fluid rounded-start" alt="Pintos Operating System from Stanford University" style="height: 100%; object-fit: cover;">
+                </div>
+                <div class="col-md-8 order-2 order-md-1">
+                  <div class="card-body">
+                    <p class="card-text">
+                      Implementation of core operating system features including thread scheduling, synchronization primitives, alarm clock, 
+                      priority scheduling, and advanced scheduler. Built on the Pintos framework for x86 architecture.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Traveling Salesman -->
+        <div class="col-12">
+          <a href="https://github.com/ginjae/traveling-salesman" class="project-card-link">
+            <div class="card shadow-sm">
+              <div class="card-header bg-white">
+                <div>
+                  <h5 class="mb-0">Traveling Salesman Problem Solver</h5>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">2024.06</small>
+                    <span class="badge bg-warning text-dark">Algorithm</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row g-0">
+                <div class="col-md-4 order-1 order-md-0 pb-3">
+                  <img src="images/projects/tsp.png" class="img-fluid rounded-start" alt="TSP Optimal Tour Visualization" style="height: 100%; object-fit: cover;">
+                </div>
+                <div class="col-md-8 order-2 order-md-1">
+                  <div class="card-body">
+                    <p class="card-text">
+                      Comprehensive implementation of TSP algorithms including MST-based 2-approximation, Held-Karp dynamic programming, 
+                      greedy heuristics (node-based, edge-based), and a custom hybrid algorithm combining edge and node greedy approaches.
+                      Benchmarked across five datasets: the custom-made jam20 dataset, a280 from TSPLIB, and three instances sourced from TSP Test Data (TTD), including XQL662, Kazakhstan, and the Mona Lisa TSP Challenge.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Efficient Similarity Search -->
+        <div class="col-12">
+          <a href="https://github.com/ginjae/efficient-similarity-search" class="project-card-link">
+            <div class="card shadow-sm">
+              <div class="card-header bg-white">
+                <div>
+                  <h5 class="mb-0">Efficient Similarity Search via Adaptive Product Quantization</h5>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">2024.04 - 2024.05</small>
+                    <span class="badge bg-info text-dark">Data Mining</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row g-0">
+                <div class="col-md-4 order-1 order-md-0 pb-3">
+                  <img src="images/projects/ess.png" class="img-fluid rounded-start" alt="Efficient Similarity Search Poster" style="height: 100%; object-fit: cover;">
+                </div>
+                <div class="col-md-8 order-2 order-md-1">
+                  <div class="card-body">
+                    <p class="card-text">
+                      Comparative evaluation of Product Quantization (PQ) frameworks including k-means variants (standard, k-means++, mini-batch, bisecting) , Optimized PQ (OPQ).
+                      Proposed a custom "Adaptive Product Quantization (APQ)" algorithm utilizing Pearson correlation-based dimension partitioning for efficient similarity search in resource-constrained environments.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Sorting Algorithms -->
+        <div class="col-12">
+          <a href="https://github.com/ginjae/sorting-algorithms-cpp" class="project-card-link">
+            <div class="card shadow-sm">
+              <div class="card-header bg-white">
+                <div>
+                  <h5 class="mb-0">Sorting Algorithms Analysis</h5>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">2024.04</small>
+                    <span class="badge bg-warning text-dark">Algorithm</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row g-0">
+                <div class="col-md-4 order-1 order-md-0 pb-3">
+                  <img src="images/projects/sort.png" class="img-fluid rounded-start" alt="Sorting Algorithms" style="height: 100%; object-fit: cover;">
+                </div>
+                <div class="col-md-8 order-2 order-md-1">
+                  <div class="card-body">
+                    <p class="card-text">
+                      Comprehensive C++ implementation and performance analysis of 12 sorting algorithms: Merge Sort, Heap Sort, Quick Sort, 
+                      Intro Sort, Tim Sort, Bubble Sort, Insertion Sort, Selection Sort, Cocktail Shaker Sort, Comb Sort, Library Sort, and Tournament Sort.
+                      Evaluated using datasets of sizes n (1K to 1M) across five distributions: Random, Dense Random (high-frequency duplicates), Ascending, Descending, and Partially Sorted.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="text-center mt-5">
+        <a href="https://github.com/ginjae?tab=repositories" class="btn btn-dark">
+          <i class="bi bi-github"></i> View All Projects
+        </a>
+      </div>
+    </div>
   </section>
   <!--End Projects-->
 
