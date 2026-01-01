@@ -281,36 +281,6 @@
     <div class="container text-start">
       <h2 class="mb-4 text-center">Projects</h2>
       <div class="row g-3">
-        <!-- Fused QAttn -->
-        <div class="col-12">
-          <a href="https://github.com/ginjae/fused-qattn" class="project-card-link">
-            <div class="card shadow-sm">
-              <div class="card-header bg-white">
-                <div>
-                  <h5 class="mb-0">Fused Quantized Attention Kernel</h5>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2024.10 - 2024.12</small>
-                    <span class="badge bg-success">Parallel Computing</span>
-                  </div>
-                </div>
-              </div>
-              <div class="row g-0">
-                <div class="col-md-4 order-1 order-md-0 pb-3">
-                  <img src="images/projects/fused-qattn.png" class="img-fluid rounded-start" alt="Fused Quantized Attention Performance" style="height: 100%; object-fit: cover;">
-                </div>
-                <div class="col-md-8 order-2 order-md-1">
-                  <div class="card-body">
-                    <p class="card-text">
-                      CUDA implementation of optimized attention mechanisms with block-wise quantization support (MXFP4, NF4, and NVFP4). 
-                      Incrementally fused the naive dequantization-projection-attention sequence into custom kernels to minimize memory overhead.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-
         <!-- SKiP -->
         <div class="col-12">
           <a href="https://github.com/ginjae/SKiP" class="project-card-link">
@@ -319,7 +289,7 @@
                 <div>
                   <h5 class="mb-0">SKiP: SVM with K-nearest neighbor and Probabilistic weighting</h5>
                   <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2024.11 - 2024.12</small>
+                    <small class="text-muted">2025.11 - 2025.12</small>
                     <span class="badge bg-primary">Machine Learning</span>
                   </div>
                 </div>
@@ -341,28 +311,28 @@
           </a>
         </div>
 
-        <!-- Pintos -->
+        <!-- Fused QAttn -->
         <div class="col-12">
-          <a href="https://github.com/ginjae/pintos" class="project-card-link">
+          <a href="https://github.com/ginjae/fused-qattn" class="project-card-link">
             <div class="card shadow-sm">
               <div class="card-header bg-white">
                 <div>
-                  <h5 class="mb-0">Pintos</h5>
+                  <h5 class="mb-0">Fused Quantized Attention Kernel</h5>
                   <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2024.03 - 2024.06</small>
-                    <span class="badge bg-secondary">Operating System</span>
+                    <small class="text-muted">2025.10 - 2025.12</small>
+                    <span class="badge bg-success">Parallel Computing</span>
                   </div>
                 </div>
               </div>
               <div class="row g-0">
                 <div class="col-md-4 order-1 order-md-0 pb-3">
-                  <img src="images/projects/pintos.png" class="img-fluid rounded-start" alt="Pintos Operating System from Stanford University" style="height: 100%; object-fit: cover;">
+                  <img src="images/projects/fused-qattn.png" class="img-fluid rounded-start" alt="Fused Quantized Attention Performance" style="height: 100%; object-fit: cover;">
                 </div>
                 <div class="col-md-8 order-2 order-md-1">
                   <div class="card-body">
                     <p class="card-text">
-                      Implementation of core operating system features including alarm clocks, priority scheduling, arguments passing, system calls, basic file I/O, virtual memory features (supplemental page tables, demand paging, stack growth, and swapping).
-                      Built on the Pintos framework for x86 architecture.
+                      CUDA implementation of optimized attention mechanisms with block-wise quantization support (MXFP4, NF4, and NVFP4). 
+                      Incrementally fused the naive dequantization-projection-attention sequence into custom kernels to minimize memory overhead.
                     </p>
                   </div>
                 </div>
@@ -379,7 +349,7 @@
                 <div>
                   <h5 class="mb-0">Traveling Salesman Problem Solver</h5>
                   <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2024.06</small>
+                    <small class="text-muted">2025.06</small>
                     <span class="badge bg-warning text-dark">Algorithm</span>
                   </div>
                 </div>
@@ -402,6 +372,36 @@
           </a>
         </div>
 
+        <!-- Pintos -->
+        <div class="col-12">
+          <a href="https://github.com/ginjae/pintos" class="project-card-link">
+            <div class="card shadow-sm">
+              <div class="card-header bg-white">
+                <div>
+                  <h5 class="mb-0">Pintos</h5>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">2025.03 - 2025.06</small>
+                    <span class="badge bg-secondary">Operating System</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row g-0">
+                <div class="col-md-4 order-1 order-md-0 pb-3">
+                  <img src="images/projects/pintos.png" class="img-fluid rounded-start" alt="Pintos Operating System from Stanford University" style="height: 100%; object-fit: cover;">
+                </div>
+                <div class="col-md-8 order-2 order-md-1">
+                  <div class="card-body">
+                    <p class="card-text">
+                      Implementation of core operating system features including alarm clocks, priority scheduling, arguments passing, system calls, basic file I/O, virtual memory features (supplemental page tables, demand paging, stack growth, and swapping).
+                      Built on the Pintos framework for x86 architecture.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
         <!-- Efficient Similarity Search -->
         <div class="col-12">
           <a href="https://github.com/ginjae/efficient-similarity-search" class="project-card-link">
@@ -410,7 +410,7 @@
                 <div>
                   <h5 class="mb-0">Efficient Similarity Search via Adaptive Product Quantization</h5>
                   <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2024.04 - 2024.05</small>
+                    <small class="text-muted">2025.04 - 2025.05</small>
                     <span class="badge bg-info text-dark">Data Mining</span>
                   </div>
                 </div>
@@ -440,7 +440,7 @@
                 <div>
                   <h5 class="mb-0">Sorting Algorithms Analysis</h5>
                   <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2024.04</small>
+                    <small class="text-muted">2025.04</small>
                     <span class="badge bg-warning text-dark">Algorithm</span>
                   </div>
                 </div>
