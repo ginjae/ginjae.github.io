@@ -58,6 +58,7 @@
     @media (min-width: 992px) {
       .responsive-width {
         width: 50%;
+        max-width: 700px;
       }
     }
     .project-card-link {
@@ -93,7 +94,6 @@
       bottom: 30px;
       right: 30px;
       z-index: 1000;
-      display: none;
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -102,8 +102,15 @@
       border: none;
       cursor: pointer;
       font-size: 24px;
-      transition: all 0.3s ease;
+      transition: all 0.3s ease, opacity 0.3s ease;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      pointer-events: none;
+    }
+    #scrollToTop.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
     #scrollToTop:hover {
       background-color: #333333;
@@ -264,9 +271,9 @@
   <section id="about" class="responsive-width mb-5">
     <div class="container text-start">
       <h2 class="mb-4 text-center">ABOUT</h2>
-      <div class="fs-5 text-secondary" style="text-align: justify; text-justify: inter-word; hyphens: auto; word-break: normal; overflow-wrap: break-word;">
+      <div class="text-secondary" style="text-align: justify; text-justify: inter-word; hyphens: auto; word-break: normal; overflow-wrap: break-word;">
         I'm an Undergraduate Student in the department of Computer Science and Engineering at UNIST, exploring the intersection of computer systems and artificial intelligence.
-        My passion lies in building efficient and scalable AI systems that can operate seamlessly on edge devices.
+        My primary research interest lies in On-Device AI, specifically in building efficient and scalable systems for edge environments.
         <br>
         Currently, I'm doing an undergraduate research internship at UNIST's Ubiquitous AI Lab, advised by Professor Taesik Gong.
         <br>
@@ -318,24 +325,24 @@
               <div class="card-header bg-white">
                 <div>
                   <h5 class="mb-0">SKiP: SVM with K-nearest neighbor and Probabilistic weighting</h5>
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div class="mt-1 d-flex justify-content-between align-items-center">
                     <small class="text-muted">2025.11 - 2025.12</small>
                     <span class="badge bg-primary">Machine Learning</span>
                   </div>
                 </div>
               </div>
               <div class="row g-0">
-                <div class="col-md-12 pb-3">
-                  <img src="images/projects/skip.png" class="img-fluid rounded-start" alt="SKiP Classification Results" style="height: 100%; object-fit: cover;">
+                <div class="col-md-12 pb-3 text-center">
+                  <img src="images/projects/skip.png" class="img-fluid rounded" alt="SKiP Classification Results" style="max-height: 300px; object-fit: contain;">
                 </div>
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                   <div class="card-body">
                     <p class="card-text">
                       Novel SVM variant that assigns adaptive sample weights based on K-Nearest-Neighbors and class probability distributions. 
                       Designed to reduce the impact of outliers and boundary noise in classification tasks across multiple datasets.
                     </p>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </a>
@@ -348,24 +355,24 @@
               <div class="card-header bg-white">
                 <div>
                   <h5 class="mb-0">Fused Quantized Attention Kernel</h5>
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div class="mt-1 d-flex justify-content-between align-items-center">
                     <small class="text-muted">2025.10 - 2025.12</small>
                     <span class="badge bg-success">Parallel Computing</span>
                   </div>
                 </div>
               </div>
               <div class="row g-0">
-                <div class="col-md-12 pb-3">
-                  <img src="images/projects/fused-qattn.png" class="img-fluid rounded-start" alt="Fused Quantized Attention Performance" style="height: 100%; object-fit: cover;">
+                <div class="col-md-12 pb-3 text-center">
+                  <img src="images/projects/fused-qattn.png" class="img-fluid rounded" alt="Fused Quantized Attention Performance" style="max-height: 300px; object-fit: contain;">
                 </div>
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                   <div class="card-body">
                     <p class="card-text">
                       CUDA implementation of optimized attention mechanisms with block-wise quantization support (MXFP4, NF4, and NVFP4). 
                       Incrementally fused the naive dequantization-projection-attention sequence into custom kernels to minimize memory overhead.
                     </p>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </a>
@@ -378,17 +385,17 @@
               <div class="card-header bg-white">
                 <div>
                   <h5 class="mb-0">Traveling Salesman Problem Solver</h5>
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div class="mt-1 d-flex justify-content-between align-items-center">
                     <small class="text-muted">2025.06</small>
                     <span class="badge bg-warning text-dark">Algorithm</span>
                   </div>
                 </div>
               </div>
               <div class="row g-0">
-                <div class="col-md-12 pb-3">
-                  <img src="images/projects/tsp.png" class="img-fluid rounded-start" alt="TSP Optimal Tour Visualization" style="height: 100%; object-fit: cover;">
+                <div class="col-md-12 pb-3 text-center">
+                  <img src="images/projects/tsp.png" class="img-fluid rounded" alt="TSP Optimal Tour Visualization" style="max-height: 300px; object-fit: contain;">
                 </div>
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                   <div class="card-body">
                     <p class="card-text">
                       Comprehensive implementation of TSP algorithms including MST-based 2-approximation, Held-Karp dynamic programming, 
@@ -396,7 +403,7 @@
                       Benchmarked across five datasets: the custom-made jam20 dataset, a280 from TSPLIB, and three instances sourced from TSP Test Data (TTD), including XQL662, Kazakhstan, and the Mona Lisa TSP Challenge.
                     </p>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </a>
@@ -409,24 +416,24 @@
               <div class="card-header bg-white">
                 <div>
                   <h5 class="mb-0">Pintos</h5>
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div class="mt-1 d-flex justify-content-between align-items-center">
                     <small class="text-muted">2025.03 - 2025.06</small>
                     <span class="badge bg-secondary">Operating System</span>
                   </div>
                 </div>
               </div>
               <div class="row g-0">
-                <div class="col-md-12 pb-3">
-                  <img src="images/projects/pintos.png" class="img-fluid rounded-start" alt="Pintos Operating System from Stanford University" style="height: 100%; object-fit: cover;">
+                <div class="col-md-12 pb-3 text-center">
+                  <img src="images/projects/pintos.png" class="img-fluid rounded" alt="Pintos Operating System from Stanford University" style="max-height: 300px; object-fit: contain;">
                 </div>
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                   <div class="card-body">
                     <p class="card-text">
                       Implementation of core operating system features including alarm clocks, priority scheduling, arguments passing, system calls, basic file I/O, virtual memory features (supplemental page tables, demand paging, stack growth, and swapping).
                       Built on the Pintos framework for x86 architecture.
                     </p>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </a>
@@ -439,24 +446,24 @@
               <div class="card-header bg-white">
                 <div>
                   <h5 class="mb-0">Efficient Similarity Search via Adaptive Product Quantization</h5>
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div class="mt-1 d-flex justify-content-between align-items-center">
                     <small class="text-muted">2025.04 - 2025.05</small>
                     <span class="badge bg-info text-dark">Data Mining</span>
                   </div>
                 </div>
               </div>
               <div class="row g-0">
-                <div class="col-md-12 pb-3">
-                  <img src="images/projects/ess.png" class="img-fluid rounded-start" alt="Efficient Similarity Search Poster" style="height: 100%; object-fit: cover;">
+                <div class="col-md-12 pb-3 text-center">
+                  <img src="images/projects/ess.png" class="img-fluid rounded" alt="Efficient Similarity Search Poster" style="max-height: 300px; object-fit: contain;">
                 </div>
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                   <div class="card-body">
                     <p class="card-text">
                       Comparative evaluation of Product Quantization (PQ) frameworks including k-means variants (standard, k-means++, mini-batch, bisecting), Optimized PQ (OPQ).
                       Proposed a custom "Adaptive Product Quantization (APQ)" algorithm utilizing Pearson correlation-based dimension partitioning for efficient similarity search in resource-constrained environments.
                     </p>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </a>
@@ -469,17 +476,17 @@
               <div class="card-header bg-white">
                 <div>
                   <h5 class="mb-0">Sorting Algorithms Analysis</h5>
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div class="mt-1 d-flex justify-content-between align-items-center">
                     <small class="text-muted">2025.04</small>
                     <span class="badge bg-warning text-dark">Algorithm</span>
                   </div>
                 </div>
               </div>
               <div class="row g-0">
-                <div class="col-md-12 pb-3">
-                  <img src="images/projects/sort.png" class="img-fluid rounded-start" alt="Sorting Algorithms" style="height: 100%; object-fit: cover;">
+                <div class="col-md-12 pb-3 text-center">
+                  <img src="images/projects/sort.png" class="img-fluid rounded" alt="Sorting Algorithms" style="max-height: 300px; object-fit: contain;">
                 </div>
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                   <div class="card-body">
                     <p class="card-text">
                       Comprehensive C++ implementation and performance analysis of 12 sorting algorithms: Merge Sort, Heap Sort, Quick Sort, 
@@ -487,7 +494,7 @@
                       Evaluated using datasets of sizes n (1K to 1M) across five distributions: Random, Dense Random (high-frequency duplicates), Ascending, Descending, and Partially Sorted.
                     </p>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </a>
@@ -500,24 +507,24 @@
               <div class="card-header bg-white">
                 <div>
                   <h5 class="mb-0">Spring Boot Blog</h5>
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div class="mt-1 d-flex justify-content-between align-items-center">
                     <small class="text-muted">2025.01 - 2025.02</small>
                     <span class="badge bg-danger">Web Development</span>
                   </div>
                 </div>
               </div>
               <div class="row g-0">
-                <div class="col-md-12 pb-3">
-                  <img src="images/projects/springboot-blog.png" class="img-fluid rounded-start" alt="Spring Boot Blog Application" style="height: 100%; object-fit: cover;">
+                <div class="col-md-12 pb-3 text-center">
+                  <img src="images/projects/springboot-blog.png" class="img-fluid rounded" alt="Spring Boot Blog Application" style="max-height: 300px; object-fit: contain;">
                 </div>
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                   <div class="card-body">
                     <p class="card-text">
                       Full-stack blog system built with Spring Boot, featuring CRUD operations, comment system, category management, and role-based access control.
                       Implements Spring Security for authentication, JPA for database operations, and Thymeleaf for server-side rendering with Markdown support.
                     </p>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </a>
@@ -716,10 +723,10 @@
     const scrollToTopBtn = document.getElementById('scrollToTop');
     
     window.addEventListener('scroll', function() {
-      if (window.pageYOffset > 0) {
-        scrollToTopBtn.style.display = 'block';
+      if (window.pageYOffset > 150) {
+        scrollToTopBtn.classList.add('show');
       } else {
-        scrollToTopBtn.style.display = 'none';
+        scrollToTopBtn.classList.remove('show');
       }
     });
     
