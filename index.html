@@ -117,30 +117,14 @@
       transform: translateY(-3px);
       box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
     }
+    .navbar.bg-light {
+      background-color: rgba(248, 249, 250, 0.85) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
   </style>
 </head>
 <body class="d-flex flex-column align-items-center bg-light" style="padding-top: 100px;">
-  <!-- <header class="navbar navbar-expand bg-light shadow fixed-top">
-  <div class="container">
-    <ul class="navbar-nav mx-auto flex-row flex-nowrap overflow-auto">
-      <li class="nav-item">
-        <a class="nav-link px-3" href="#" id="home-link">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-3" href="#about">About Me</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-3" href="#projects">Projects</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-3" href="#publications">Publications</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-3" href="#honors">Honors</a>
-      </li>
-    </ul>
-  </div>
-</header> -->
   <header class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
     <div class="container">
       <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -154,12 +138,6 @@
           </li>
           <li class="nav-item ms-auto">
             <a class="nav-link" href="#about">ABOUT</a>
-          </li>
-          <li class="nav-item ms-auto">
-            <a class="nav-link" href="#projects">PROJECTS</a>
-          </li>
-          <li class="nav-item ms-auto">
-            <a class="nav-link" href="#publications">PUBLICATIONS</a>
           </li>
           <li class="nav-item ms-auto">
             <a class="nav-link" href="#honors">HONORS</a>
@@ -308,258 +286,11 @@
     </div>
   </section>
   <!-- End About Me -->
-
+  
   <hr>
   <hr>
   <hr>
-
-  <!--Start Projects-->
-  <section id="projects" class="responsive-width mb-5">
-    <div class="container text-start">
-      <h2 class="mb-4 text-center">PROJECTS</h2>
-      <div class="row g-3">
-        <!-- SKiP -->
-        <div class="col-12">
-          <a href="https://github.com/ginjae/SKiP" class="project-card-link">
-            <div class="card shadow-sm">
-              <div class="card-header bg-white">
-                <div>
-                  <h5 class="mb-0">SKiP: SVM with K-nearest neighbor and Probabilistic weighting</h5>
-                  <div class="mt-1 d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2025.11 - 2025.12</small>
-                    <span class="badge bg-primary">Machine Learning</span>
-                  </div>
-                </div>
-              </div>
-              <div class="row g-0">
-                <div class="col-md-12 pb-3 text-center">
-                  <img src="images/projects/skip.png" class="img-fluid rounded" alt="SKiP Classification Results" style="max-height: 300px; object-fit: contain;">
-                </div>
-                <!-- <div class="col-md-12">
-                  <div class="card-body">
-                    <p class="card-text">
-                      Novel SVM variant that assigns adaptive sample weights based on K-Nearest-Neighbors and class probability distributions. 
-                      Designed to reduce the impact of outliers and boundary noise in classification tasks across multiple datasets.
-                    </p>
-                  </div>
-                </div> -->
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <!-- Fused QAttn -->
-        <div class="col-12">
-          <a href="https://github.com/ginjae/fused-qattn" class="project-card-link">
-            <div class="card shadow-sm">
-              <div class="card-header bg-white">
-                <div>
-                  <h5 class="mb-0">Fused Quantized Attention Kernel</h5>
-                  <div class="mt-1 d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2025.10 - 2025.12</small>
-                    <span class="badge bg-success">Parallel Computing</span>
-                  </div>
-                </div>
-              </div>
-              <div class="row g-0">
-                <div class="col-md-12 pb-3 text-center">
-                  <img src="images/projects/fused-qattn.png" class="img-fluid rounded" alt="Fused Quantized Attention Performance" style="max-height: 300px; object-fit: contain;">
-                </div>
-                <!-- <div class="col-md-12">
-                  <div class="card-body">
-                    <p class="card-text">
-                      CUDA implementation of optimized attention mechanisms with block-wise quantization support (MXFP4, NF4, and NVFP4). 
-                      Incrementally fused the naive dequantization-projection-attention sequence into custom kernels to minimize memory overhead.
-                    </p>
-                  </div>
-                </div> -->
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <!-- Traveling Salesman -->
-        <div class="col-12">
-          <a href="https://github.com/ginjae/traveling-salesman" class="project-card-link">
-            <div class="card shadow-sm">
-              <div class="card-header bg-white">
-                <div>
-                  <h5 class="mb-0">Traveling Salesman Problem Solver</h5>
-                  <div class="mt-1 d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2025.06</small>
-                    <span class="badge bg-warning text-dark">Algorithm</span>
-                  </div>
-                </div>
-              </div>
-              <div class="row g-0">
-                <div class="col-md-12 pb-3 text-center">
-                  <img src="images/projects/tsp.png" class="img-fluid rounded" alt="TSP Optimal Tour Visualization" style="max-height: 300px; object-fit: contain;">
-                </div>
-                <!-- <div class="col-md-12">
-                  <div class="card-body">
-                    <p class="card-text">
-                      Comprehensive implementation of TSP algorithms including MST-based 2-approximation, Held-Karp dynamic programming, 
-                      greedy heuristics (node-based, edge-based), and a custom hybrid algorithm combining edge and node greedy approaches.
-                      Benchmarked across five datasets: the custom-made jam20 dataset, a280 from TSPLIB, and three instances sourced from TSP Test Data (TTD), including XQL662, Kazakhstan, and the Mona Lisa TSP Challenge.
-                    </p>
-                  </div>
-                </div> -->
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <!-- Pintos -->
-        <div class="col-12">
-          <a href="https://github.com/ginjae/pintos" class="project-card-link">
-            <div class="card shadow-sm">
-              <div class="card-header bg-white">
-                <div>
-                  <h5 class="mb-0">Pintos</h5>
-                  <div class="mt-1 d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2025.03 - 2025.06</small>
-                    <span class="badge bg-secondary">Operating System</span>
-                  </div>
-                </div>
-              </div>
-              <div class="row g-0">
-                <div class="col-md-12 pb-3 text-center">
-                  <img src="images/projects/pintos.png" class="img-fluid rounded" alt="Pintos Operating System from Stanford University" style="max-height: 300px; object-fit: contain;">
-                </div>
-                <!-- <div class="col-md-12">
-                  <div class="card-body">
-                    <p class="card-text">
-                      Implementation of core operating system features including alarm clocks, priority scheduling, arguments passing, system calls, basic file I/O, virtual memory features (supplemental page tables, demand paging, stack growth, and swapping).
-                      Built on the Pintos framework for x86 architecture.
-                    </p>
-                  </div>
-                </div> -->
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <!-- Efficient Similarity Search -->
-        <div class="col-12">
-          <a href="https://github.com/ginjae/efficient-similarity-search" class="project-card-link">
-            <div class="card shadow-sm">
-              <div class="card-header bg-white">
-                <div>
-                  <h5 class="mb-0">Efficient Similarity Search via Adaptive Product Quantization</h5>
-                  <div class="mt-1 d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2025.04 - 2025.05</small>
-                    <span class="badge bg-info text-dark">Data Mining</span>
-                  </div>
-                </div>
-              </div>
-              <div class="row g-0">
-                <div class="col-md-12 pb-3 text-center">
-                  <img src="images/projects/ess.png" class="img-fluid rounded" alt="Efficient Similarity Search Poster" style="max-height: 300px; object-fit: contain;">
-                </div>
-                <!-- <div class="col-md-12">
-                  <div class="card-body">
-                    <p class="card-text">
-                      Comparative evaluation of Product Quantization (PQ) frameworks including k-means variants (standard, k-means++, mini-batch, bisecting), Optimized PQ (OPQ).
-                      Proposed a custom "Adaptive Product Quantization (APQ)" algorithm utilizing Pearson correlation-based dimension partitioning for efficient similarity search in resource-constrained environments.
-                    </p>
-                  </div>
-                </div> -->
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <!-- Sorting Algorithms -->
-        <div class="col-12">
-          <a href="https://github.com/ginjae/sorting-algorithms-cpp" class="project-card-link">
-            <div class="card shadow-sm">
-              <div class="card-header bg-white">
-                <div>
-                  <h5 class="mb-0">Sorting Algorithms Analysis</h5>
-                  <div class="mt-1 d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2025.04</small>
-                    <span class="badge bg-warning text-dark">Algorithm</span>
-                  </div>
-                </div>
-              </div>
-              <div class="row g-0">
-                <div class="col-md-12 pb-3 text-center">
-                  <img src="images/projects/sort.png" class="img-fluid rounded" alt="Sorting Algorithms" style="max-height: 300px; object-fit: contain;">
-                </div>
-                <!-- <div class="col-md-12">
-                  <div class="card-body">
-                    <p class="card-text">
-                      Comprehensive C++ implementation and performance analysis of 12 sorting algorithms: Merge Sort, Heap Sort, Quick Sort, 
-                      Intro Sort, Tim Sort, Bubble Sort, Insertion Sort, Selection Sort, Cocktail Shaker Sort, Comb Sort, Library Sort, and Tournament Sort.
-                      Evaluated using datasets of sizes n (1K to 1M) across five distributions: Random, Dense Random (high-frequency duplicates), Ascending, Descending, and Partially Sorted.
-                    </p>
-                  </div>
-                </div> -->
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <!-- Spring Boot Blog -->
-        <div class="col-12">
-          <a href="https://github.com/ginjae/springboot-blog" class="project-card-link">
-            <div class="card shadow-sm">
-              <div class="card-header bg-white">
-                <div>
-                  <h5 class="mb-0">Spring Boot Blog</h5>
-                  <div class="mt-1 d-flex justify-content-between align-items-center">
-                    <small class="text-muted">2025.01 - 2025.02</small>
-                    <span class="badge bg-danger">Web Development</span>
-                  </div>
-                </div>
-              </div>
-              <div class="row g-0">
-                <div class="col-md-12 pb-3 text-center">
-                  <img src="images/projects/springboot-blog.png" class="img-fluid rounded" alt="Spring Boot Blog Application" style="max-height: 300px; object-fit: contain;">
-                </div>
-                <!-- <div class="col-md-12">
-                  <div class="card-body">
-                    <p class="card-text">
-                      Full-stack blog system built with Spring Boot, featuring CRUD operations, comment system, category management, and role-based access control.
-                      Implements Spring Security for authentication, JPA for database operations, and Thymeleaf for server-side rendering with Markdown support.
-                    </p>
-                  </div>
-                </div> -->
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="text-center mt-5">
-        <a href="https://github.com/ginjae?tab=repositories" class="btn btn-dark">
-          <i class="bi bi-github"></i> View All Projects
-        </a>
-      </div>
-    </div>
-  </section>
-  <!--End Projects-->
-
-  <hr>
-  <hr>
-  <hr>
-
-  <!--Start Publications-->
-  <section id="publications" class="responsive-width mb-5">
-    <div class="container text-start">
-      <h2 class="mb-4 text-center">PUBLICATIONS</h2>
-      <!-- <div class="text-secondary">Hanc marginis exiguitas non caperet.</div> -->
-      <h4>Preprints & Under Review</h4>
-      <h5>"Topic: Personalized & Memory-Efficient LLM"</h5>
-      <div>Changmin Lee, <strong>Jaemin Kim</strong>, Taesik Gong</div>
-      <div>Under review at a top-tier conference</div>
-    </div>
-  </section>
-  <!--End Publications-->
-
-  <hr>
-  <hr>
-  <hr>
-
+  
   <!--Start Honors-->
   <section id="honors" class="responsive-width mb-5">
     <div class="container text-start">
@@ -573,42 +304,8 @@
   <hr>
   <hr>
   <hr>
-
-  <div id="photoSlideshow" class="carousel slide responsive-width" style="max-width: 500px;" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#photoSlideshow" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#photoSlideshow" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#photoSlideshow" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="images/91.jpg" class="d-block w-100">
-      </div>
-      
-      <div class="carousel-item">
-        <img src="images/90.jpg" class="d-block w-100">
-      </div>
-
-      <div class="carousel-item">
-        <img src="images/89.jpg" class="d-block w-100">
-      </div>
-    </div>
-
-    <button class="carousel-control-prev" type="button" data-bs-target="#photoSlideshow" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#photoSlideshow" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-
   <hr>
   <hr>
-  <hr>
-
   <hr>
   <hr>
   <hr>
