@@ -68,9 +68,14 @@
       }
     }
     .navbar.bg-light {
-      background-color: rgba(248, 249, 250, 0.50) !important;
+      background-color: rgba(248, 249, 250, 0.30) !important;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-3deg); }
+      75% { transform: rotate(3deg); }
     }
   </style>
 </head>
@@ -89,13 +94,15 @@
           <li class="nav-item ms-auto">
             <a class="nav-link" href="#about">ABOUT</a>
           </li>
-          <li class="nav-item ms-auto">
+          <!-- <li class="nav-item ms-auto">
             <a class="nav-link" href="#honors">HONORS</a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
   </header>
+
+  <hr>
 
   <!--Start Home-->
   <section id="home" class="responsive-width mb-5">
@@ -200,6 +207,7 @@
       <h2 class="mb-4 text-center">ABOUT</h2>
       <div class="text-secondary" style="text-align: justify; text-justify: inter-word; hyphens: auto; word-break: normal; overflow-wrap: break-word;">
         I'm an Undergraduate Student in the department of Computer Science and Engineering at UNIST, exploring the intersection of computer systems and artificial intelligence.
+        <br>
         My primary research interest lies in On-Device AI, specifically in building efficient and scalable systems for edge environments.
         <br>
         Currently, I'm doing an undergraduate research internship at UNIST's Ubiquitous AI Lab, advised by Professor Taesik Gong.
@@ -241,30 +249,49 @@
   <hr>
   
   <!--Start Honors-->
-  <section id="honors" class="responsive-width mb-5">
+  <!-- <section id="honors" class="responsive-width mb-5">
     <div class="container text-start">
       <h2 class="mb-4 text-center">HONORS</h2>
-      <h5 class="mb-0"><a href="https://ib.unist.ac.kr/2546-2/">Dean's List</a></h5>
-      <div>For the top-performing student in the department, UNIST, Spring 2024</div>
-    </div>
-  </section>
-  <!--End Honors-->
+      
+      <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-baseline">
+          <h5 class="mb-0">The 13th Woonhae Scholarship</h5>
+          <div class="text-secondary">2026</div>
+        </div>
+        <div>Awarded to Science & Engineering specialist students</div>
+        <div class="text-secondary">Woon Hae Foundation</div>
+      </div>
 
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
-  <hr>
+      <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-baseline">
+          <h5 class="mb-0">National Scholarship (Science and Engineering)</h5>
+          <div class="text-secondary">2025 - 2026</div>
+        </div>
+        <div>Fully funded by the Government of the Republic of Korea for four semesters</div>
+        <div class="text-secondary">Ministry of Science and ICT (MSIT), Korea Student Aid Foundation (KOSAF)</div>
+      </div>
+
+      <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-baseline">
+          <h5 class="mb-0"><a href="https://ib.unist.ac.kr/2546-2/">Dean's List</a></h5>
+          <div class="text-secondary">Spring 2024</div>
+        </div>
+        <div>Awarded to the top-performing student in the department</div>
+        <div class="text-secondary">UNIST</div>
+      </div>
+
+      <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-baseline">
+          <h5 class="mb-0">Academic Performance Scholarship</h5>
+          <div class="text-secondary">2021, 2024</div>
+        </div>
+        <div>Full tuition scholarship awarded</div>
+        <div class="text-secondary">UNIST</div>
+      </div>
+
+    </div>
+  </section> -->
+  <!--End Honors-->
 
   <div class="m-5">
     <a class="link-secondary icon-link icon-link-hover d-inline-flex align-items-baseline"
@@ -307,6 +334,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       const navLinks = document.querySelectorAll('.nav-link');
       const homeLink = document.getElementById('home-link');
+      const navbarCollapse = document.getElementById('navbarNav');
       
       // Add click event to all nav links
       navLinks.forEach(link => {
@@ -329,6 +357,14 @@
           
           // Keep URL clean without hash
           history.pushState("", document.title, window.location.pathname + window.location.search);
+          
+          // Collapse the navbar after clicking
+          if (navbarCollapse.classList.contains('show')) {
+            const bsCollapse = new bootstrap.Collapse(navbarCollapse, {
+              toggle: false
+            });
+            bsCollapse.hide();
+          }
         });
       });
       
