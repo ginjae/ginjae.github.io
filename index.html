@@ -17,6 +17,12 @@
     body {
       font-family: "DM Sans", sans-serif;
     }
+    ::selection {
+      background-color: rgba(135, 206, 250, 0.5);
+    }
+    ::-moz-selection {
+      background-color: rgba(135, 206, 250, 0.5);
+    }
     a {
       overflow-wrap: break-word;
       text-decoration: none;
@@ -61,64 +67,8 @@
         max-width: 700px;
       }
     }
-    .project-card-link {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      transition: filter 0.2s ease-in-out;
-    }
-    .project-card-link:hover {
-      text-decoration: none;
-      color: inherit;
-      filter: brightness(0.95);
-    }
-    .project-card-link .card {
-      cursor: pointer;
-    }
-    .card-header {
-      border-bottom: none !important;
-    }
-    .project-card-link .card-header,
-    .project-card-link .card-body {
-      padding: 1rem 1rem;
-    }
-    .card-text {
-      text-align: justify;
-      text-justify: inter-word;
-      hyphens: auto;
-      word-break: normal;
-      overflow-wrap: break-word;
-    }
-    #scrollToTop {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      z-index: 1000;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-color: #000000;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 24px;
-      transition: all 0.3s ease, opacity 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-      opacity: 0;
-      pointer-events: none;
-    }
-    #scrollToTop.show {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    #scrollToTop:hover {
-      background-color: #333333;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
-    }
     .navbar.bg-light {
-      background-color: rgba(248, 249, 250, 0.85) !important;
+      background-color: rgba(248, 249, 250, 0.50) !important;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
@@ -205,7 +155,6 @@
         </a>
         
       </div>
-      <!-- <div id="sanity" class="mt-5"></div> -->
     </div>
     <div class="text-center mt-5">
       <h3>Undergraduate Student</h3>
@@ -325,12 +274,9 @@
     </a>
   </div>
 
-  <button id="scrollToTop" title="Scroll to Top">
-    <i class="bi bi-chevron-up"></i>
-  </button>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+
     window.addEventListener('scroll', function() {
       const sections = document.querySelectorAll('section');
       const navLinks = document.querySelectorAll('.nav-link');
@@ -392,44 +338,6 @@
       }
     });
 
-    (async () => {
-      const RAW_URL = "https://gist.githubusercontent.com/ginjae/777bcb4a32ab7dfe545f8f23e2680dde/raw/status.json";
-      const el = document.getElementById("sanity");
-
-      async function loadSanity() {
-        try {
-          const res = await fetch(`${RAW_URL}?t=${Date.now()}`, { cache: "no-store" });
-          if (!res.ok) throw new Error(res.status);
-          const text = (await res.text()).trim();
-          const data = JSON.parse(text);
-          const sanity = data.sanity;
-          
-          const filled = Math.floor(sanity / 10);
-          const empty = 10 - filled;
-          const bar = '█'.repeat(filled) + '░'.repeat(empty);
-          el.textContent = `SANITY\u00A0\u00A0${bar}\u00A0\u00A0${sanity}%`;
-        } catch (e) {
-          el.textContent = "ERROR";
-        }
-      }
-
-      loadSanity();
-    })();
-
-    // Scroll to top button functionality
-    const scrollToTopBtn = document.getElementById('scrollToTop');
-    
-    window.addEventListener('scroll', function() {
-      if (window.pageYOffset > 150) {
-        scrollToTopBtn.classList.add('show');
-      } else {
-        scrollToTopBtn.classList.remove('show');
-      }
-    });
-    
-    scrollToTopBtn.addEventListener('click', function() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
   </script>
 </body>
 </html>
