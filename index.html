@@ -4,356 +4,782 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jaemin Kim</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
+
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
   <link rel="manifest" href="/images/favicon/site.webmanifest">
 
   <style>
-    html {
-      scroll-behavior: smooth;
+    /* ── Kanagawa Wave (dark, default) ── */
+    :root {
+      --accent: #7E9CD8;         /* crystalBlue */
+      --accent-light: #252535;   /* sumiInk hover */
+      --accent-mid: #9CABCA;     /* springViolet2 */
+      --text: #DCD7BA;           /* fujiWhite */
+      --text-secondary: #C8C093; /* oldWhite */
+      --bg: #1F1F28;             /* sumiInk1 */
+      --bg-secondary: #16161D;   /* sumiInk0 */
+      --border: #363646;         /* sumiInk3 */
+      --nav-blur-bg: rgba(31, 31, 40, 0.92);
+      --sidebar-width: 280px;
     }
+
+    /* ── Kanagawa Lotus (light) ── */
+    [data-theme="light"] {
+      --accent: #2D6D8F;         /* lotus blue */
+      --accent-light: #d5e6f0;   /* lotus hover */
+      --accent-mid: #7FB4CA;     /* springBlue */
+      --text: #545464;           /* lotusInk1 */
+      --text-secondary: #8a8980; /* lotusGray */
+      --bg: #fefefe;             /* near white */
+      --bg-secondary: #f5f3ed;   /* lotusWhite secondary */
+      --border: #e0dbd0;         /* lotus border */
+      --nav-blur-bg: rgba(254, 254, 254, 0.92);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 17px; }
+
+    .theme-ready *, .theme-ready *::before, .theme-ready *::after {
+      transition: background-color 1s ease, color 1s ease, border-color 1s ease !important;
+    }
+
     body {
-      font-family: "DM Sans", sans-serif;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
     }
-    section {
-      scroll-margin-top: 100px;
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── Sidebar ─────────────────────────────────── */
+    .sidebar {
+      position: fixed;
+      left: 0; top: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 2.5rem 1.75rem;
+      overflow-y: auto;
+      z-index: 100;
     }
-    .responsive-width {
-      width: 90%;
+
+    .sidebar-profile {
+      text-align: center;
+      margin-bottom: 1.75rem;
     }
-    @media (min-width: 992px) {
-      .responsive-width {
-        width: 50%;
-        max-width: 992px;
-      }
+
+    .profile-photo {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
     }
-    a {
-      overflow-wrap: break-word;
+
+    .sidebar-name {
+      /* font-family: 'Space Grotesk', sans-serif; */
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      line-height: 1.3;
+    }
+
+    .sidebar-affil {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      margin-top: 0.15rem;
+    }
+
+.sidebar-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      padding: 0.45rem 0.625rem;
+      border-radius: 7px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sidebar-link:hover {
+      background: var(--accent-light);
+      color: var(--accent);
       text-decoration: none;
     }
-    a:hover {
-      text-decoration: underline;
+    .sidebar-link i {
+      font-size: 0.9rem;
+      width: 15px;
+      text-align: center;
+      flex-shrink: 0;
     }
-    .link-dark {
+
+    .sidebar-social {
+      display: flex;
+      gap: 0.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      transition: background 0.15s, color 0.15s;
+    }
+    .social-link:hover {
+      background: var(--accent-light);
+      color: var(--accent);
       text-decoration: none;
     }
-    .link-dark:hover {
-      text-decoration: underline;
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      color: var(--text-secondary);
+      padding: 0.35rem 0.875rem;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: inherit;
+      font-size: 0.78rem;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      width: fit-content;
+      margin: 0.75rem 0 0;
     }
-    .nav-link.active {
-      color: #000000 !important;
-      font-weight: bold;
+    .theme-toggle:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+      border-color: var(--accent);
     }
-    @media (min-width: 992px) {
-      .nav-link.active {
-        border-bottom: 3px solid #000000;
-        font-weight: normal;
-      }
+
+    .sidebar-nav {
+      margin-top: auto;
+      padding-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
     }
-    .navbar.bg-light {
-      background-color: rgba(248, 249, 250, 0.30) !important;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+
+    .nav-item {
+      display: block;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      border-radius: 7px;
+      transition: background 0.15s, color 0.15s;
     }
-    .vr {
+    .nav-item:hover, .nav-item.active {
+      background: var(--accent-light);
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ─── Mobile Nav ──────────────────────────────── */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: var(--nav-blur-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.875rem 1.25rem;
+      z-index: 200;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mobile-nav-name {
+      /* font-family: 'Space Grotesk', sans-serif; */
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+    }
+    .mobile-menu-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.3rem;
+      color: var(--text);
+      line-height: 1;
+    }
+    #mobileThemeToggle {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.25rem 0.625rem;
+      margin: 0 0.5rem;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    #mobileThemeToggle:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 50px; left: 0; right: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.25rem;
+      z-index: 199;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-nav-link {
+      display: block;
+      padding: 0.65rem 0.75rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      border-radius: 7px;
+    }
+    .mobile-nav-link:hover {
+      color: var(--accent);
+      background: var(--accent-light);
+      text-decoration: none;
+    }
+
+    /* ─── Main ────────────────────────────────────── */
+    .main {
+      margin-left: var(--sidebar-width);
+      padding: 4.5rem 4rem 5rem 4.5rem;
+      max-width: calc(var(--sidebar-width) + 760px);
+    }
+
+    section { scroll-margin-top: 2rem; margin-bottom: 5.5rem; }
+
+    .section-label {
+      /* font-family: 'Space Grotesk', sans-serif; */
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      /* font-family: 'Space Grotesk', sans-serif; */
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 2rem;
+    }
+
+    /* ─── Hero ────────────────────────────────────── */
+    .hero-name {
+      /* font-family: 'Space Grotesk', sans-serif; */
+      font-size: 2.75rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-bio {
+      /* color: var(--text-secondary); */
+      font-size: 0.975rem;
+      line-height: 1.85;
+    }
+
+    /* ─── News Timeline ───────────────────────────── */
+    .news-list {
       position: relative;
-      top: 2px;
-      margin-left: 5px;
-      margin-right: 5px;
+      padding-left: 1.5rem; /* 24px */
+    }
+    .news-list::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 0.6rem;
+      bottom: 0.25rem;
+      width: 2px;
+      background: var(--border);
+    }
+    .news-item {
+      position: relative;
+      margin-bottom: 1.375rem;
+    }
+    .news-item::before {
+      content: '';
+      position: absolute;
+      left: -20px; /* dot center = 24-20+4 = 8px = line center (7+1) ✓ */
+      top: 0.55rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 1.5px var(--accent);
+    }
+    .news-date {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.15rem;
+    }
+    .news-text {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* ─── Cards ───────────────────────────────────── */
+    .card {
+      background: var(--bg);
+      padding: 1.5rem 0;
+      margin-bottom: 0.5rem;
+    }
+    .card-inner {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+    .card-logo-wrap {
+      flex-shrink: 0;
+      width: 100px;
+      min-height: 100px;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+    }
+    .card-logo {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #ffffff;
+      object-position: left center;
+    }
+    .card-body { flex: 1; min-width: 0; }
+    .card-period {
+      font-size: 0.73rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.3rem;
+    }
+    .card-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .subsection-label {
+      /* font-family: 'Space Grotesk', sans-serif; */
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ─── Publications ────────────────────────────── */
+    .pub-item {
+      padding: 1.375rem 1.5rem;
+      border-left: 3px solid var(--accent);
+      background: var(--bg-secondary);
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .pub-item:hover {
+      background: var(--accent-light);
+    }
+    .pub-venue {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.15rem 0.55rem;
+      border-radius: 100px;
+      margin-bottom: 0.55rem;
+      letter-spacing: 0.06em;
+    }
+    .pub-title {
+      font-weight: 600;
+      font-size: 0.925rem;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      line-height: 1.45;
+    }
+    .pub-authors {
+      font-size: 0.83rem;
+      color: var(--text-secondary);
+    }
+    .pub-detail {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+      font-style: italic;
+    }
+
+    /* ─── Footer ──────────────────────────────────── */
+    .footer {
+      margin-top: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .footer a {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      transition: color 0.15s;
+    }
+    .footer a:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ─── Fade in ─────────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Responsive ──────────────────────────────── */
+    @media (max-width: 900px) {
+      .main {
+        padding: 4.5rem 2rem 3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .mobile-nav { display: flex; }
+      .main {
+        margin-left: 0;
+        padding: 4.25rem 1.25rem 3rem;
+        max-width: 100%;
+      }
+      .hero-name { font-size: 2.6rem; }
+      .section-title { font-size: 1.6rem; }
     }
   </style>
 </head>
-<body class="d-flex flex-column align-items-center bg-light" style="padding-top: 100px;">
-  <header class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
-    <div class="container">
-      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+<body>
+
+  <!-- Mobile Nav -->
+  <nav class="mobile-nav">
+    <a href="https://jaemin-kim.com" class="mobile-nav-name">jaemin-kim.com</a>
+    <div style="display:flex;gap:0.25rem;align-items:center;">
+      <button class="mobile-menu-btn" id="mobileThemeToggle" aria-label="Toggle theme">
+        <i class="bi bi-sun"></i>
       </button>
-      
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item ms-auto">
-            <a class="nav-link" href="#home" id="home-link">HOME</a>
-          </li>
-          <li class="nav-item ms-auto">
-            <a class="nav-link" href="#about">ABOUT</a>
-          </li>
-          <!-- <li class="nav-item ms-auto">
-            <a class="nav-link" href="#honors">HONORS</a>
-          </li> -->
-        </ul>
-      </div>
+      <button class="mobile-menu-btn" id="menuBtn" aria-label="Toggle menu">
+        <i class="bi bi-list"></i>
+      </button>
     </div>
-  </header>
-
-  <!--Start Home-->
-  <section id="home" class="responsive-width mb-5">
-    <div class="text-center">
-      <h1 class="fw-bold my-4">JAEMIN KIM</h1>
-    </div>
-    <div class="text-center">
-      <img src="images/profile.jpg" alt="Profile Picture" width="100%" style="max-width: 200px;" class="img-fluid rounded-circle shadow">
-      <div class="mt-4">
-
-        <a class="link-dark icon-link icon-link-hover mx-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-          href="https://drive.google.com/file/d/1SfoyuMM9Y7Qg9fupQOAjshgG9ImITDDC/view?usp=drive_link">
-          <i class="bi bi-file-earmark-text h-100"></i>
-          CV
-        </a>
-
-        <!-- <div class="vr"></div> -->
-
-        <a class="link-dark icon-link icon-link-hover mx-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-          href="mailto:jm611@unist.ac.kr">
-          <i class="bi bi-envelope h-100"></i>
-          E-mail
-        </a>
-
-        <!-- <div class="vr"></div> -->
-
-        <a class="link-dark icon-link icon-link-hover mx-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-          href="https://maps.app.goo.gl/fSTjTtfrEtmCFgpn6">
-          <i class="bi bi-geo-alt h-100"></i>
-          Location
-        </a>
-
-        <br>
-
-        <!-- <div class="vr"></div> -->
-
-        <a class="link-dark icon-link icon-link-hover mx-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-          href="https://github.com/ginjae">
-          <i class="bi bi-github h-100"></i>
-          GitHub
-        </a>
-
-        <!-- <div class="vr"></div> -->
-
-        <a class="link-dark icon-link icon-link-hover mx-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-          href="https://www.instagram.com/ginjae">
-          <i class="bi bi-instagram h-100"></i>
-          Instagram
-        </a>
-
-        <!-- <div class="vr"></div> -->
-
-        <a class="link-dark icon-link icon-link-hover mx-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-        href="https://www.linkedin.com/in/ginjae/">
-          <i class="bi bi-linkedin h-100"></i>
-          LinkedIn
-        </a>
-        
-      </div>
-    </div>
-    <div class="text-center mt-5">
-      <h3>Undergraduate Student</h3>
-      <div>
-        <span>in the Department of Computer Science and Engineering </span><a
-          class="link-primary icon-link icon-link-hover d-inline-flex align-items-baseline"
-          style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-          href="https://cse.unist.ac.kr/eng/">
-            <i class="bi bi-laptop"></i>CSE</a>
-      </div>
-      <div>
-        <span>at Ulsan National Institute of Science and Technology </span><a
-          class="link-primary icon-link icon-link-hover d-inline-flex align-items-baseline"
-          style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-          href="https://www.unist.ac.kr/">
-            <i class="bi bi-mortarboard"></i>UNIST</a>
-      </div>
-      <h3 class="mt-5">Undergraduate Research Intern</h3>
-      <div>
-        <span>at Ubiquitous AI Lab </span><a
-          class="link-primary icon-link icon-link-hover d-inline-flex align-items-baseline"
-          style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-          href="https://sites.google.com/view/uailab">
-            <i class="bi bi-flask"></i>UAI Lab</a>
-      </div>
-      <div>
-        <span>under Professor </span><a class="link-primary icon-link icon-link-hover d-inline-flex align-items-baseline"
-          style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-          href="https://taesikgong.com/">
-            <i class="bi bi-person-circle"></i>Taesik Gong</a>
-      </div>
-    </div>
-  </section>
-  <!--End Home-->
-
-  <hr>
-  <hr>
-  <hr>
-
-  <!-- Start About -->
-  <section id="about" class="responsive-width mb-5">
-    <div class="container text-start">
-      <h2 class="mb-4 text-center">ABOUT</h2>
-      <div class="text-secondary" style="text-align: justify; text-justify: inter-word; hyphens: auto; word-break: normal; overflow-wrap: break-word;">
-        I'm an Undergraduate Student in the department of Computer Science and Engineering at UNIST, exploring the intersection of computer systems and artificial intelligence.
-        <br>
-        My primary research interest lies in On-Device AI, specifically in building efficient and scalable systems for edge environments.
-        <br>
-        Currently, I'm doing an undergraduate research internship at UNIST's Ubiquitous AI Lab, advised by Professor Taesik Gong.
-        <br>
-        Please feel free to reach out if you'd like to connect or collaborate!
-      </div>
-
-      <!-- Experience Section -->
-      <h3 class="mt-5 mb-4 text-center">Experience</h3>
-      <div class="mb-4 text-center">
-        <a href="https://sites.google.com/view/uailab" target="_blank">
-          <img src="images/logo/uai.png" alt="UAI Lab Logo" width="150" class="mb-3">
-        </a>
-        <div class="text-secondary">2025.03 - Present</div>
-        Undergraduate Research Intern, <a href="https://sites.google.com/view/uailab" class="link-primary">Ubiquitous AI Lab</a>, <a href="https://www.unist.ac.kr/" class="link-primary">UNIST</a>, Republic of Korea<br>
-        Advisor: <a href="https://taesikgong.com/" class="link-primary">Prof. Taesik Gong</a><br>
-        Research on On-Device AI, Human-Centered AI, Adaptive & Personalized AI
-      </div>
-
-      <!-- Education Section -->
-      <h3 class="mt-5 mb-4 text-center">Education</h3>
-      <div class="mb-4 text-center">
-        <a href="https://www.unist.ac.kr/" target="_blank">
-          <img src="images/logo/unist.png" alt="UNIST Logo" width="150" class="mb-3">
-        </a>
-        <div>
-          <div class="text-secondary">2021.03 - Present</div>
-          B.S in <a href="https://cse.unist.ac.kr/eng/" class="link-primary">Computer Science and Engineering</a>, <a href="https://www.unist.ac.kr/" class="link-primary">UNIST</a>, Republic of Korea<br>
-          GPA: 4.12/4.3 (Major: 4.23/4.3)<br>
-          Expected Graduation: February 2027
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- End About Me -->
-  
-  <hr>
-  <hr>
-  <hr>
-  
-  <!--Start Honors-->
-  <!-- <section id="honors" class="responsive-width mb-5">
-    <div class="container text-start">
-      <h2 class="mb-4 text-center">HONORS</h2>
-      
-      <div class="mb-4">
-        <div class="d-flex justify-content-between align-items-baseline">
-          <h5 class="mb-0">The 13th Woonhae Scholarship</h5>
-          <div class="text-secondary">2026</div>
-        </div>
-        <div>Awarded to Science & Engineering specialist students</div>
-        <div class="text-secondary">Woon Hae Foundation</div>
-      </div>
-
-      <div class="mb-4">
-        <div class="d-flex justify-content-between align-items-baseline">
-          <h5 class="mb-0">National Scholarship (Science and Engineering)</h5>
-          <div class="text-secondary">2025 - 2026</div>
-        </div>
-        <div>Fully funded by the Government of the Republic of Korea for four semesters</div>
-        <div class="text-secondary">Ministry of Science and ICT (MSIT), Korea Student Aid Foundation (KOSAF)</div>
-      </div>
-
-      <div class="mb-4">
-        <div class="d-flex justify-content-between align-items-baseline">
-          <h5 class="mb-0"><a href="https://ib.unist.ac.kr/2546-2/">Dean's List</a></h5>
-          <div class="text-secondary">Spring 2024</div>
-        </div>
-        <div>Awarded to the top-performing student in the department</div>
-        <div class="text-secondary">UNIST</div>
-      </div>
-
-      <div class="mb-4">
-        <div class="d-flex justify-content-between align-items-baseline">
-          <h5 class="mb-0">Academic Performance Scholarship</h5>
-          <div class="text-secondary">2021, 2024</div>
-        </div>
-        <div>Full tuition scholarship awarded</div>
-        <div class="text-secondary">UNIST</div>
-      </div>
-
-    </div>
-  </section> -->
-  <!--End Honors-->
-
-  <div class="m-5">
-    <a class="link-secondary icon-link icon-link-hover d-inline-flex align-items-baseline"
-    style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-    href="https://jaemin-kim.com/sokoban/">
-      <i class="bi bi-box-fill"></i>
-    </a>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home" class="mobile-nav-link">Home</a>
+    <a href="#news" class="mobile-nav-link">News</a>
+    <a href="#about" class="mobile-nav-link">About</a>
+    <a href="#publications" class="mobile-nav-link">Publications</a>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-profile">
+      <a href="https://jaemin-kim.com" class="sidebar-name">jaemin-kim.com</a>
+    </div>
+
+    <div class="sidebar-links">
+      <a href="https://drive.google.com/file/d/1SfoyuMM9Y7Qg9fupQOAjshgG9ImITDDC/view?usp=drive_link" class="sidebar-link">
+        <i class="bi bi-file-earmark-text"></i> CV
+      </a>
+      <a href="mailto:jm611@unist.ac.kr" class="sidebar-link">
+        <i class="bi bi-envelope"></i> jm611@unist.ac.kr
+      </a>
+    </div>
+
+    <div class="sidebar-social">
+      <a href="https://github.com/ginjae" class="social-link" title="GitHub">
+        <i class="bi bi-github"></i>
+      </a>
+      <a href="https://www.instagram.com/ginjae" class="social-link" title="Instagram">
+        <i class="bi bi-instagram"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/ginjae/" class="social-link" title="LinkedIn">
+        <i class="bi bi-linkedin"></i>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#home"         class="nav-item" data-section="home">Home</a>
+      <a href="#news"         class="nav-item" data-section="news">News</a>
+      <a href="#about"        class="nav-item" data-section="about">About</a>
+      <a href="#publications" class="nav-item" data-section="publications">Publications</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i class="bi bi-sun"></i> Light
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- Hero -->
+    <section id="home">
+      <div class="section-label">Portfolio</div>
+      <h1 class="hero-name">Jaemin Kim</h1>
+      <div class="hero-badge">
+        <i class="bi bi-cpu"></i> On-Device AI Researcher
+      </div>
+      <p class="hero-bio">
+        Undergraduate Student in Computer Science &amp; Engineering at
+        <a href="https://www.unist.ac.kr/"><strong>UNIST</strong></a>,<br>
+        exploring the intersection of Computer Systems and Artificial Intelligence.
+        <br><br>
+        My primary research interest lies in <strong>On-Device AI</strong>,<br>
+        specifically in building efficient systems for edge environments.<br>
+        Currently a Research Intern at
+        <a href="https://sites.google.com/view/uailab"><strong>UAI Lab</strong></a>,
+        advised by <a href="https://taesikgong.com/"><strong>Prof. Taesik Gong</strong></a>.
+        <br><br>
+        Feel free to reach out if you'd like to connect or collaborate!
+      </p>
+    </section>
+
+    <!-- News -->
+    <section id="news" class="fade-in">
+      <div class="section-label">Latest</div>
+      <h2 class="section-title">News</h2>
+      <div class="news-list">
+        <div class="news-item">
+          <div class="news-date">May 2026</div>
+          <div class="news-text">📝 Paper accepted to <strong>ICML 2026</strong></div>
+        </div>
+        <div class="news-item">
+          <div class="news-date">Mar 2026</div>
+          <div class="news-text">🏆 <a href="https://ib.unist.ac.kr/2025%ED%95%99%EB%85%84%EB%8F%84-2%ED%95%99%EA%B8%B0-deans-list-%EC%8B%9C%EC%83%81%EC%8B%9D-%EA%B0%9C%EC%B5%9C/">Dean's List</a> for Fall 2025 at UNIST</div>
+        </div>
+        <div class="news-item">
+          <div class="news-date">Feb 2026</div>
+          <div class="news-text">🏆 <a href="https://woonhaefoundation.org/kor/information/news.html?code=share_notice&p=&page=1&bbsData=bm89MjA0MA==%7C%7C&search=&searchstring=&mode=view">Woonhae Scholarship</a> (2026)</div>
+        </div>
+        <div class="news-item">
+          <div class="news-date">Sep 2025</div>
+          <div class="news-text">👔 Teaching Assistant for Project-Based Learning at Ulsan AI Novatus Academia (8th)</div>
+        </div>
+        <div class="news-item">
+          <div class="news-date">Apr 2025</div>
+          <div class="news-text">🏆 National Scholarship for Science and Engineering (2025–2026)</div>
+        </div>
+        <div class="news-item">
+          <div class="news-date">Mar 2025</div>
+          <div class="news-text">👔 Research Internship at <a href="https://sites.google.com/view/uailab">UAI Lab</a></div>
+        </div>
+        <div class="news-item">
+          <div class="news-date">Oct 2024</div>
+          <div class="news-text">🏆 <a href="https://ib.unist.ac.kr/2546-2/">Dean's List</a> for Spring 2024 at UNIST</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="fade-in">
+      <div class="section-label">Background</div>
+      <h2 class="section-title">About</h2>
+
+      <div class="subsection-label">Experience</div>
+      <div class="card">
+        <div class="card-inner">
+          <a href="https://sites.google.com/view/uailab" target="_blank" class="card-logo-wrap">
+            <img src="images/logo/uai.png" alt="UAI Lab" class="card-logo">
+          </a>
+          <div class="card-body">
+            <div class="card-period">2025.03 — Present</div>
+            <div class="card-title">Undergraduate Research Intern</div>
+            <div class="card-subtitle">
+              <a href="https://sites.google.com/view/uailab">Ubiquitous AI Lab</a>,
+              <a href="https://www.unist.ac.kr/">UNIST</a>, Republic of Korea<br>
+              Advisor: <a href="https://taesikgong.com/">Prof. Taesik Gong</a><br>
+              On-Device AI · Human-Centered AI · Adaptive &amp; Personalized AI
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection-label">Education</div>
+      <div class="card">
+        <div class="card-inner">
+          <a href="https://www.unist.ac.kr/" target="_blank" class="card-logo-wrap">
+            <img src="images/logo/unist.png" alt="UNIST" class="card-logo">
+          </a>
+          <div class="card-body">
+            <div class="card-period">2021.03 — Present</div>
+            <div class="card-title">B.S. in Computer Science and Engineering</div>
+            <div class="card-subtitle">
+              <a href="https://www.unist.ac.kr/">UNIST</a>, Republic of Korea<br>
+              GPA: 4.12 / 4.3 &nbsp;(Major: 4.23 / 4.3)<br>
+              Expected Graduation: February 2027
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Publications -->
+    <section id="publications" class="fade-in">
+      <div class="section-label">Research</div>
+      <h2 class="section-title">Publications</h2>
+
+      <div class="subsection-label">Conferences &amp; Journals</div>
+      <div class="pub-item">
+        <span class="pub-venue">ICML 2026</span>
+        <div class="pub-title">"From Volume to Value: Preference-Aligned Memory Construction for On-Device RAG"</div>
+        <div class="pub-authors">Changmin Lee, <strong>Jaemin Kim</strong>, Taesik Gong</div>
+        <div class="pub-detail">International Conference on Machine Learning (<strong>ICML</strong>) 2026, Seoul, Korea.</div>
+      </div>
+    </section>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="footer">
+      <a href="https://jaemin-kim.com/sokoban/" title="Sokoban">
+        <i class="bi bi-box-fill"></i>
+      </a>
+    </div>
+  </main>
+
   <script>
-    function activate() {
-      const sections = document.querySelectorAll('section');
-      const navLinks = document.querySelectorAll('.nav-link');
-      const homeLink = document.getElementById('home-link');
+    // Theme toggle
+    const THEME_KEY = 'kanagawa-theme';
+    const toggleBtns = [document.getElementById('themeToggle'), document.getElementById('mobileThemeToggle')];
 
-      let current = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= sectionTop - 150) {
-          current = section.getAttribute('id');
-        }
+    function applyTheme(theme) {
+      document.documentElement.dataset.theme = theme;
+      const isLight = theme === 'light';
+      toggleBtns.forEach(btn => {
+        if (!btn) return;
+        btn.querySelector('i').className = isLight ? 'bi bi-moon' : 'bi bi-sun';
+        const label = btn.querySelector('i').nextSibling;
+        if (label) label.textContent = isLight ? ' Dark' : ' Light';
       });
-
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + current) {
-          link.classList.add('active');
-        }
-      });
-
-      // Handle home link active state
-      if (current === 'home' && homeLink) {
-        homeLink.classList.add('active');
-      }
+      localStorage.setItem(THEME_KEY, theme);
     }
-    activate();
-    window.addEventListener('scroll', activate);
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const navLinks = document.querySelectorAll('.nav-link');
-      const homeLink = document.getElementById('home-link');
-      const navbarCollapse = document.getElementById('navbarNav');
+    function toggleTheme() {
+      const current = document.documentElement.dataset.theme;
+      applyTheme(current === 'light' ? 'dark' : 'light');
+    }
 
-      // Add click event to all nav links
-      navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
+    toggleBtns.forEach(btn => btn?.addEventListener('click', toggleTheme));
 
-          const href = this.getAttribute('href');
+    // Apply saved or system preference on load (no transition on initial load)
+    const saved = localStorage.getItem(THEME_KEY);
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(saved ?? (prefersDark ? 'dark' : 'light'));
+    requestAnimationFrame(() => {
+      document.documentElement.classList.add('theme-ready');
+    });
 
-          if (href === '#') {
-            // Home link - scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          } else {
-            // Other section links - scroll to section
-            const targetId = href.substring(1);
-            const targetSection = document.getElementById(targetId);
-            if (targetSection) {
-              targetSection.scrollIntoView({ behavior: 'smooth' });
-            }
-          }
-          
-          // Collapse the navbar after clicking
-          if (navbarCollapse.classList.contains('show')) {
-            const bsCollapse = new bootstrap.Collapse(navbarCollapse, {
-              toggle: false
-            });
-            bsCollapse.hide();
-          }
-        });
+    // Mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+      menuBtn.querySelector('i').className = mobileMenu.classList.contains('open')
+        ? 'bi bi-x-lg' : 'bi bi-list';
+    });
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        menuBtn.querySelector('i').className = 'bi bi-list';
       });
     });
 
+    // Active nav highlight
+    function updateActive() {
+      const sections = document.querySelectorAll('section');
+      let current = 'home';
+      sections.forEach(section => {
+        if (section.getBoundingClientRect().top <= 120) {
+          current = section.id;
+        }
+      });
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.section === current);
+      });
+    }
+    updateActive();
+    window.addEventListener('scroll', updateActive, { passive: true });
+
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
