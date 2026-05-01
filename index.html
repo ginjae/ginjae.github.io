@@ -13,22 +13,8 @@
   <link rel="manifest" href="/images/favicon/site.webmanifest">
 
   <style>
-    /* ── Kanagawa Wave (dark, default) ── */
+    /* ── Kanagawa Lotus (light, default) ── */
     :root {
-      --accent: #7E9CD8;         /* crystalBlue */
-      --accent-light: #252535;   /* sumiInk hover */
-      --accent-mid: #9CABCA;     /* springViolet2 */
-      --text: #DCD7BA;           /* fujiWhite */
-      --text-secondary: #C8C093; /* oldWhite */
-      --bg: #1F1F28;             /* sumiInk1 */
-      --bg-secondary: #16161D;   /* sumiInk0 */
-      --border: #363646;         /* sumiInk3 */
-      --nav-blur-bg: rgba(31, 31, 40, 0.92);
-      --sidebar-width: 280px;
-    }
-
-    /* ── Kanagawa Lotus (light) ── */
-    [data-theme="light"] {
       --accent: #2D6D8F;         /* lotus blue */
       --accent-light: #d5e6f0;   /* lotus hover */
       --accent-mid: #7FB4CA;     /* springBlue */
@@ -38,14 +24,24 @@
       --bg-secondary: #f5f3ed;   /* lotusWhite secondary */
       --border: #e0dbd0;         /* lotus border */
       --nav-blur-bg: rgba(254, 254, 254, 0.92);
+      --sidebar-width: 280px;
+    }
+
+    /* ── Kanagawa Wave (dark) ── */
+    [data-theme="dark"] {
+      --accent: #7E9CD8;         /* crystalBlue */
+      --accent-light: #252535;   /* sumiInk hover */
+      --accent-mid: #9CABCA;     /* springViolet2 */
+      --text: #DCD7BA;           /* fujiWhite */
+      --text-secondary: #C8C093; /* oldWhite */
+      --bg: #1F1F28;             /* sumiInk1 */
+      --bg-secondary: #16161D;   /* sumiInk0 */
+      --border: #363646;         /* sumiInk3 */
+      --nav-blur-bg: rgba(31, 31, 40, 0.92);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 17px; }
-
-    .theme-ready *, .theme-ready *::before, .theme-ready *::after {
-      transition: background-color 1s ease, color 1s ease, border-color 1s ease !important;
-    }
 
     body {
       font-family: 'DM Sans', sans-serif;
@@ -328,14 +324,14 @@
     /* ─── News Timeline ───────────────────────────── */
     .news-list {
       position: relative;
-      padding-left: 1.5rem; /* 24px */
+      padding-left: 24px;
     }
     .news-list::before {
       content: '';
       position: absolute;
-      left: 7px;
-      top: 0.6rem;
-      bottom: 0.25rem;
+      left: 7px;  /* center = 8px */
+      top: 10px;
+      bottom: 4px;
       width: 2px;
       background: var(--border);
     }
@@ -346,8 +342,8 @@
     .news-item::before {
       content: '';
       position: absolute;
-      left: -20px; /* dot center = 24-20+4 = 8px = line center (7+1) ✓ */
-      top: 0.55rem;
+      left: -20px; /* center = 24-20+4 = 8px ✓ */
+      top: 9px;
       width: 8px;
       height: 8px;
       border-radius: 50%;
@@ -713,31 +709,32 @@
     const toggleBtns = [document.getElementById('themeToggle'), document.getElementById('mobileThemeToggle')];
 
     function applyTheme(theme) {
-      document.documentElement.dataset.theme = theme;
-      const isLight = theme === 'light';
+      if (theme === 'dark') {
+        document.documentElement.dataset.theme = 'dark';
+      } else {
+        delete document.documentElement.dataset.theme;
+      }
+      const isDark = theme === 'dark';
       toggleBtns.forEach(btn => {
         if (!btn) return;
-        btn.querySelector('i').className = isLight ? 'bi bi-moon' : 'bi bi-sun';
+        btn.querySelector('i').className = isDark ? 'bi bi-sun' : 'bi bi-moon';
         const label = btn.querySelector('i').nextSibling;
-        if (label) label.textContent = isLight ? ' Dark' : ' Light';
+        if (label) label.textContent = isDark ? ' Light' : ' Dark';
       });
       localStorage.setItem(THEME_KEY, theme);
     }
 
-    function toggleTheme() {
-      const current = document.documentElement.dataset.theme;
-      applyTheme(current === 'light' ? 'dark' : 'light');
+    function toggleTheme(e) {
+      const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+      e.currentTarget.blur();
     }
 
     toggleBtns.forEach(btn => btn?.addEventListener('click', toggleTheme));
 
-    // Apply saved or system preference on load (no transition on initial load)
+    // Apply saved or system preference on load
     const saved = localStorage.getItem(THEME_KEY);
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(saved ?? (prefersDark ? 'dark' : 'light'));
-    requestAnimationFrame(() => {
-      document.documentElement.classList.add('theme-ready');
-    });
+    applyTheme(saved ?? 'light');
 
     // Mobile menu
     const menuBtn = document.getElementById('menuBtn');
