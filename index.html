@@ -316,6 +316,33 @@
     }
 
     /* ─── Hero ────────────────────────────────────── */
+    .hero-layout {
+      display: flex;
+      gap: 2.5rem;
+      align-items: flex-start;
+    }
+    .hero-photo {
+      width: 148px;
+      height: 148px;
+      border-radius: 12px;
+      object-fit: cover;
+      object-position: center top;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+    .hero-content { flex: 1; min-width: 0; }
+    @media (max-width: 900px) {
+      .hero-layout {
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+      .hero-photo {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+
     .hero-name {
       /* font-family: 'Space Grotesk', sans-serif; */
       font-size: 2.75rem;
@@ -534,6 +561,38 @@
       text-decoration: none;
     }
 
+    /* ─── Mobile Hero Links ──────────────────────── */
+    .mobile-hero-links {
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .mobile-hero-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1.25rem;
+      }
+      .mobile-hero-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 0.35rem 0.875rem;
+        transition: background 0.15s, color 0.15s, border-color 0.15s;
+        text-decoration: none;
+      }
+      .mobile-hero-link:hover {
+        background: var(--accent-light);
+        color: var(--accent);
+        border-color: var(--accent);
+        text-decoration: none;
+      }
+    }
+
     /* ─── Fade in ─────────────────────────────────── */
     .fade-in {
       opacity: 0;
@@ -613,9 +672,10 @@
     </div>
   </nav>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#home" class="mobile-nav-link">Home</a>
+    <a href="#home" class="mobile-nav-link">About</a>
     <a href="#news" class="mobile-nav-link">News</a>
-    <a href="#about" class="mobile-nav-link">About</a>
+    <a href="#experience" class="mobile-nav-link">Experience</a>
+    <a href="#education" class="mobile-nav-link">Education</a>
     <a href="#publications" class="mobile-nav-link">Publications</a>
   </div>
 
@@ -638,18 +698,16 @@
       <a href="https://github.com/ginjae" class="social-link" title="GitHub">
         <i class="bi bi-github"></i>
       </a>
-      <a href="https://www.instagram.com/ginjae" class="social-link" title="Instagram">
-        <i class="bi bi-instagram"></i>
-      </a>
       <a href="https://www.linkedin.com/in/ginjae/" class="social-link" title="LinkedIn">
         <i class="bi bi-linkedin"></i>
       </a>
     </div>
 
     <nav class="sidebar-nav">
-      <a href="#home"         class="nav-item" data-section="home">Home</a>
+      <a href="#home"         class="nav-item" data-section="home">About</a>
       <a href="#news"         class="nav-item" data-section="news">News</a>
-      <a href="#about"        class="nav-item" data-section="about">About</a>
+      <a href="#experience"   class="nav-item" data-section="experience">Experience</a>
+      <a href="#education"    class="nav-item" data-section="education">Education</a>
       <a href="#publications" class="nav-item" data-section="publications">Publications</a>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <i class="bi bi-sun"></i> Light
@@ -662,24 +720,30 @@
 
     <!-- Hero -->
     <section id="home">
-      <div class="section-label">Portfolio</div>
+      <div class="section-label">About</div>
       <h1 class="hero-name">Jaemin Kim</h1>
       <div class="hero-badge">
         <i class="bi bi-cpu"></i> On-Device AI Researcher
       </div>
       <p class="hero-bio">
-        Undergraduate Student in Computer Science &amp; Engineering at
-        <a href="https://www.unist.ac.kr/"><strong>UNIST</strong></a>,<br>
-        exploring the intersection of Computer Systems and Artificial Intelligence.
-        <br><br>
-        My primary research interest lies in <strong>On-Device AI</strong>,<br>
-        specifically in building efficient systems for edge environments.<br>
-        Currently a Research Intern at
-        <a href="https://sites.google.com/view/uailab"><strong>UAI Lab</strong></a>,
-        advised by <a href="https://taesikgong.com/"><strong>Prof. Taesik Gong</strong></a>.
-        <br><br>
-        Feel free to reach out if you'd like to connect or collaborate!
+        Hello, I'm an Undergraduate Student in the <a href="https://cse.unist.ac.kr/eng/">Department of Computer Science and Engineering</a> at <a href="https://www.unist.ac.kr/">UNIST</a>,
+        <br>
+        exploring the intersection of computer systems and artificial intelligence.
+        <!-- My primary research interest lies in <strong>On-Device AI</strong>, specifically in building efficient systems for edge environments. -->
+        <br>
+        I'm currently a Research Intern at <a href="https://sites.google.com/view/uailab">Ubiquitous AI Lab</a>, advised by <a href="https://taesikgong.com/">Prof. Taesik Gong</a>,
+        and will be joining as a Graduate Student next year.
+        <br>
+        Please feel free to reach out if you'd like to connect or collaborate!
       </p>
+      <div class="mobile-hero-links">
+        <a href="https://drive.google.com/file/d/1SfoyuMM9Y7Qg9fupQOAjshgG9ImITDDC/view?usp=drive_link" class="mobile-hero-link"><i class="bi bi-file-earmark-text"></i> CV</a>
+        <a href="mailto:jm611@unist.ac.kr" class="mobile-hero-link"><i class="bi bi-envelope"></i> Email</a>
+        <div style="display:flex;gap:0.5rem;">
+          <a href="https://github.com/ginjae" class="mobile-hero-link"><i class="bi bi-github"></i> GitHub</a>
+          <a href="https://www.linkedin.com/in/ginjae/" class="mobile-hero-link"><i class="bi bi-linkedin"></i> LinkedIn</a>
+        </div>
+      </div>
     </section>
 
     <!-- News -->
@@ -718,12 +782,9 @@
       </div>
     </section>
 
-    <!-- About -->
-    <section id="about" class="fade-in">
-      <div class="section-label">Background</div>
-      <h2 class="section-title">About</h2>
-
-      <div class="subsection-label">Experience</div>
+    <!-- Experience -->
+    <section id="experience" class="fade-in">
+      <h2 class="section-title">Experience</h2>
       <div class="card">
         <div class="card-inner">
           <a href="https://sites.google.com/view/uailab" target="_blank" class="card-logo-wrap">
@@ -745,8 +806,11 @@
           Research on On-Device AI · Adaptive & Personalized AI
         </div>
       </div>
+    </section>
 
-      <div class="subsection-label">Education</div>
+    <!-- Education -->
+    <section id="education" class="fade-in">
+      <h2 class="section-title">Education</h2>
       <div class="card">
         <div class="card-inner">
           <a href="https://www.unist.ac.kr/" target="_blank" class="card-logo-wrap">
@@ -772,7 +836,7 @@
 
     <!-- Publications -->
     <section id="publications" class="fade-in">
-      <div class="section-label">Research</div>
+      <!-- <div class="section-label">Research</div> -->
       <h2 class="section-title">Publications</h2>
 
       <div class="subsection-label">Conferences &amp; Journals</div>
