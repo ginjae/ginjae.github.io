@@ -269,6 +269,8 @@
       margin-left: var(--sidebar-width);
       padding: 4.5rem 4rem 5rem 4.5rem;
       max-width: calc(var(--sidebar-width) + 760px);
+      position: relative;
+      z-index: 1;
     }
 
     section { scroll-margin-top: 2rem; margin-bottom: 5.5rem; }
@@ -366,10 +368,16 @@
 
     /* ─── Cards ───────────────────────────────────── */
     .card {
-      background: var(--bg);
-      padding: 1.5rem 0;
-      margin-bottom: 0.5rem;
+      padding: 1.375rem 1.5rem;
+      border-left: 3px solid var(--accent);
+      background: var(--bg-secondary);
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s, background 0.2s;
     }
+    /* .card:hover {
+      background: var(--accent-light);
+    } */
     .card-inner {
       display: flex;
       gap: 1.25rem;
@@ -429,9 +437,9 @@
       margin-bottom: 1rem;
       transition: border-color 0.2s, background 0.2s;
     }
-    .pub-item:hover {
+    /* .pub-item:hover {
       background: var(--accent-light);
-    }
+    } */
     .pub-venue {
       display: inline-block;
       background: var(--accent);
@@ -488,11 +496,28 @@
       transform: translateY(0);
     }
 
+    /* ─── Dot Grid Decoration ────────────────────── */
+    .dot-grid-right {
+      position: fixed;
+      left: calc(var(--sidebar-width));
+      right: 0;
+      top: 0;
+      height: 100vh;
+      z-index: 0;
+      display: none;
+      pointer-events: none;
+      /* opacity: 0.35; */
+    }
+
     /* ─── Responsive ──────────────────────────────── */
     @media (max-width: 900px) {
       .main {
         padding: 4.5rem 2rem 3rem;
       }
+    }
+
+    @media (min-width: 1280px) {
+      .dot-grid-right { display: block; }
     }
 
     @media (max-width: 768px) {
@@ -509,6 +534,23 @@
   </style>
 </head>
 <body>
+
+  <!-- Grid Decoration (desktop only) -->
+  <svg class="dot-grid-right" width="100%" height="100%" fill="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="grid-fade" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="white" stop-opacity="0"/>
+        <stop offset="100%" stop-color="white" stop-opacity="1"/>
+      </linearGradient>
+      <mask id="grid-mask">
+        <rect width="100%" height="100%" fill="url(#grid-fade)"/>
+      </mask>
+      <pattern id="grid-pattern-right" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="var(--border)" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#grid-pattern-right)" mask="url(#grid-mask)"></rect>
+  </svg>
 
   <!-- Mobile Nav -->
   <nav class="mobile-nav">
