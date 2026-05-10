@@ -38,7 +38,7 @@
       --nav-blur-bg: rgba(31, 31, 40, 0.50);
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 17px; touch-action: manipulation; }
 
     body {
@@ -53,7 +53,6 @@
     @media (hover: hover) {
       a:hover { text-decoration: underline; }
     }
-    a:active { text-decoration: underline; }
 
     /* ─── Sidebar ─────────────────────────────────── */
     .sidebar {
@@ -231,10 +230,6 @@
         color: var(--accent);
       }
     }
-    .mobile-menu-btn:active {
-      background: var(--accent-light);
-      color: var(--accent);
-    }
     #mobileThemeToggle {
       font-size: 0.78rem;
       color: var(--text-secondary);
@@ -250,11 +245,6 @@
         color: var(--accent);
         border-color: var(--accent);
       }
-    }
-    #mobileThemeToggle:active {
-      background: var(--accent-light);
-      color: var(--accent);
-      border-color: var(--accent);
     }
     .mobile-menu {
       position: fixed;
@@ -290,17 +280,17 @@
       transition: background 0.15s, color 0.15s;
     }
     .mobile-nav-link:first-child { margin-top: 0.75rem; }
+    .mobile-nav-link.active {
+      color: var(--accent);
+      background: rgba(45, 109, 143, 0.18);
+      text-decoration: none;
+    }
     @media (hover: hover) {
       .mobile-nav-link:hover {
         color: var(--accent);
         background: rgba(45, 109, 143, 0.12);
         text-decoration: none;
       }
-    }
-    .mobile-nav-link:active {
-      color: var(--accent);
-      background: rgba(45, 109, 143, 0.12);
-      text-decoration: none;
     }
 
     /* ─── Main ────────────────────────────────────── */
@@ -582,12 +572,6 @@
           text-decoration: none;
         }
       }
-      .mobile-hero-link:active {
-        background: var(--accent-light);
-        color: var(--accent);
-        border-color: var(--accent);
-        text-decoration: none;
-      }
     }
 
     /* ─── Fade in ─────────────────────────────────── */
@@ -634,10 +618,6 @@
         background: var(--accent-light);
         border-color: var(--accent);
       }
-    }
-    .back-to-top:active {
-      background: var(--accent-light);
-      border-color: var(--accent);
     }
 
     /* ─── Dot Grid Decoration ────────────────────── */
@@ -706,11 +686,11 @@
     </div>
   </nav>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#home" class="mobile-nav-link">About</a>
-    <a href="#news" class="mobile-nav-link">News</a>
-    <a href="#experience" class="mobile-nav-link">Experience</a>
-    <a href="#education" class="mobile-nav-link">Education</a>
-    <a href="#publications" class="mobile-nav-link">Publications</a>
+    <a href="#home" class="mobile-nav-link" data-section="home">About</a>
+    <a href="#news" class="mobile-nav-link" data-section="news">News</a>
+    <a href="#experience" class="mobile-nav-link" data-section="experience">Experience</a>
+    <a href="#education" class="mobile-nav-link" data-section="education">Education</a>
+    <a href="#publications" class="mobile-nav-link" data-section="publications">Publications</a>
   </div>
 
   <!-- Sidebar -->
@@ -947,7 +927,7 @@
           current = section.id;
         }
       });
-      document.querySelectorAll('.nav-item').forEach(item => {
+      document.querySelectorAll('.nav-item, .mobile-nav-link').forEach(item => {
         item.classList.toggle('active', item.dataset.section === current);
       });
     }
