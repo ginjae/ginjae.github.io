@@ -38,8 +38,8 @@
       --nav-blur-bg: rgba(31, 31, 40, 0.50);
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 17px; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; font-size: 17px; touch-action: manipulation; }
 
     body {
       font-family: 'DM Sans', sans-serif;
@@ -53,6 +53,7 @@
     @media (hover: hover) {
       a:hover { text-decoration: underline; }
     }
+    a:active { text-decoration: underline; }
 
     /* ─── Sidebar ─────────────────────────────────── */
     .sidebar {
@@ -230,6 +231,10 @@
         color: var(--accent);
       }
     }
+    .mobile-menu-btn:active {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
     #mobileThemeToggle {
       font-size: 0.78rem;
       color: var(--text-secondary);
@@ -245,6 +250,11 @@
         color: var(--accent);
         border-color: var(--accent);
       }
+    }
+    #mobileThemeToggle:active {
+      background: var(--accent-light);
+      color: var(--accent);
+      border-color: var(--accent);
     }
     .mobile-menu {
       position: fixed;
@@ -286,6 +296,11 @@
         background: rgba(45, 109, 143, 0.12);
         text-decoration: none;
       }
+    }
+    .mobile-nav-link:active {
+      color: var(--accent);
+      background: rgba(45, 109, 143, 0.12);
+      text-decoration: none;
     }
 
     /* ─── Main ────────────────────────────────────── */
@@ -567,6 +582,12 @@
           text-decoration: none;
         }
       }
+      .mobile-hero-link:active {
+        background: var(--accent-light);
+        color: var(--accent);
+        border-color: var(--accent);
+        text-decoration: none;
+      }
     }
 
     /* ─── Fade in ─────────────────────────────────── */
@@ -613,6 +634,10 @@
         background: var(--accent-light);
         border-color: var(--accent);
       }
+    }
+    .back-to-top:active {
+      background: var(--accent-light);
+      border-color: var(--accent);
     }
 
     /* ─── Dot Grid Decoration ────────────────────── */
@@ -855,7 +880,7 @@
       </div>
     </section>
 
-    <a href="https://jaemin-kim.com/sokoban/" title="Sokoban" style="display: inline-block; margin-top: 24rem;">
+    <a href="https://jaemin-kim.com/sokoban/" title="Sokoban" style="display: block; text-align: center; margin-top: 24rem; color: var(--text-secondary);">
       <i class="bi bi-box-fill"></i>
     </a>
   </main>
