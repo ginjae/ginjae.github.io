@@ -447,6 +447,24 @@
       color: var(--bs-secondary-color);
       font-style: italic;
     }
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 575.98px) {
+      .hero-buttons {
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: center;
+        gap: 0.75rem;
+      }
+      .hero-buttons>a {
+        text-align: center;
+        justify-self: stretch;
+      }
+    }
     .fade-in {
       opacity: 0;
       transform: translateY(16px);
@@ -569,6 +587,11 @@
           <li class="nav-item">
             <a class="nav-link" href="#publications">Publications</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)" onclick="alert('Coming soon!')">
+              Blog <i class="bi bi-box-arrow-up-right"></i>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -597,13 +620,17 @@
         <br>
         Please feel free to reach out if you'd like to connect or collaborate!
       </p>
-      <div class="d-flex justify-content-center gap-3 flex-wrap">
-        <a href="https://drive.google.com/file/d/1SfoyuMM9Y7Qg9fupQOAjshgG9ImITDDC/view?usp=drive_link" target="_blank" class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i class="bi bi-file-earmark-text me-2"></i>CV</a>
-        <a href="mailto:jm611@unist.ac.kr" class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i class="bi bi-envelope me-2"></i>Email</a>
-        <div class="d-flex justify-content-center gap-3 flex-wrap">
-          <a href="https://www.linkedin.com/in/ginjae/" target="_blank" class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i class="bi bi-linkedin me-2"></i>LinkedIn</a>
-          <a href="https://github.com/ginjae" target="_blank" class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i class="bi bi-github me-2"></i>GitHub</a>
-        </div>
+      <div class="hero-buttons">
+        <a href="https://drive.google.com/file/d/1SfoyuMM9Y7Qg9fupQOAjshgG9ImITDDC/view?usp=drive_link" target="_blank"
+          class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i
+            class="bi bi-file-earmark-text me-2"></i>View CV</a>
+        <a href="mailto:jm611@unist.ac.kr" class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i
+            class="bi bi-envelope me-2"></i>E-mail</a>
+        <a href="https://www.linkedin.com/in/ginjae/" target="_blank"
+          class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i
+            class="bi bi-linkedin me-2"></i>LinkedIn</a>
+        <a href="https://github.com/ginjae" target="_blank"
+          class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i class="bi bi-github me-2"></i>GitHub</a>
       </div>
     </div>
   </header>
