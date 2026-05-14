@@ -87,12 +87,12 @@
     .nav-indicator.visible {
       opacity: 1;
     }
-    @media (max-width: 991.98px) {
+    @media (max-width: 767.98px) {
       .menu-scroll-container {
         flex-basis: 100%;
       }
     }
-    @media (min-width: 992px) {
+    @media (min-width: 768px) {
       .menu-scroll-container {
         flex-grow: 0;
       }
@@ -196,7 +196,7 @@
       padding-block: 4rem;
     }
     .content-section + .content-section {
-      border-top: 1px solid var(--outline-stroke);
+      border-top: none;
     }
     .section-label {
       font-size: 0.78rem;
@@ -516,18 +516,19 @@
          1px -1px 0 var(--outline-stroke),
         -1px  1px 0 var(--outline-stroke),
          1px  1px 0 var(--outline-stroke);
-      transition: text-shadow 0.35s ease;
+      transition: text-shadow 0.35s ease, color 0.35s ease;
       outline: none;
     }
     .outline-logo span:not(:empty) {
       cursor: pointer;
     }
     .outline-logo span.is-active {
-      text-shadow:
+      color: var(--bs-warning);
+      /* text-shadow:
         -1px -1px 0 var(--bs-warning),
          1px -1px 0 var(--bs-warning),
         -1px  1px 0 var(--bs-warning),
-         1px  1px 0 var(--bs-warning);
+         1px  1px 0 var(--bs-warning); */
     }
   </style>
 </head>
@@ -539,7 +540,7 @@
       <span class="nav-indicator" aria-hidden="true"></span>
       <a class="navbar-brand fw-bold" href="#home" style="letter-spacing: 3px;">jaemin-kim.com</a>
       
-      <div class="d-flex align-items-center ms-auto order-1 order-lg-3">
+      <div class="d-flex align-items-center ms-auto order-1 order-md-3">
         <button id="theme-toggle" type="button" aria-label="Toggle theme">
           <i class="bi bi-sun-fill theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true"></i>
           <i class="bi bi-moon-fill theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true"></i>
@@ -550,7 +551,7 @@
         </button>
       </div>
 
-      <div class="menu-scroll-container d-flex justify-content-lg-start mt-2 mt-lg-0 ms-lg-4 order-2 order-lg-2" style="overflow-x: auto; white-space: nowrap; scrollbar-width: none;">
+      <div class="menu-scroll-container d-flex justify-content-md-start mt-2 mt-md-0 ms-md-4 order-2 order-md-2" style="overflow-x: auto; white-space: nowrap; scrollbar-width: none;">
         <ul class="navbar-nav flex-row gap-2 fw-semibold">
           <li class="nav-item">
             <a class="nav-link" href="#news">News</a>
@@ -569,12 +570,17 @@
   <!-- Hero Section -->
   <header class="py-5 text-center d-flex align-items-center" style="min-height: 100vh; padding-top: calc(var(--nav-height, 110px)) !important;" id="home">
     <div class="container">
-      <div class="section-label">
-        ON-DEVICE AI RESEARCHER
+      <div class="d-flex flex-row justify-content-center align-items-center gap-3 gap-md-4 mb-4">
+        <img src="images/profile.jpg" alt="Jaemin Kim" class="rounded-3 shadow-sm" style="width: 120px; height: 120px; object-fit: cover; border: 1px solid var(--outline-stroke);">
+        <div class="text-start">
+          <div class="section-label mb-1" style="font-size: 0.65rem;">
+            ON-DEVICE AI RESEARCHER
+          </div>
+          <h1 class="display-3 fw-bolder mb-0 tracking-tight" style="letter-spacing: -2px;">
+            Jaemin Kim
+          </h1>
+        </div>
       </div>
-      <h1 class="display-1 fw-bolder mb-4 tracking-tight" style="letter-spacing: -2px;">
-        Jaemin Kim
-      </h1>
       <p class="lead mb-5 mx-auto text-secondary" style="max-width: 700px; font-size: 1.1rem;">
         Hello, I'm an Undergraduate Student in the <a href="https://cse.unist.ac.kr/eng/">Department of Computer Science and Engineering</a> at <a href="https://www.unist.ac.kr/">UNIST</a>,
         exploring the intersection of computer systems and artificial intelligence.
@@ -804,6 +810,17 @@
         const span = e.target.closest('span');
         if (!span || !span.textContent.trim()) return;
         span.classList.toggle('is-active');
+        
+        const activeSpans = Array.from(outlineLogo.querySelectorAll('span.is-active'))
+                                 .map(s => s.textContent.trim().toUpperCase());
+        
+        const hasJ = activeSpans.includes('J');
+        const hasA = activeSpans.includes('A');
+        const hasM = activeSpans.includes('M');
+        
+        if (hasJ && hasA && hasM && activeSpans.length === 3) {
+          window.location.href = 'https://itsooh.github.io/';
+        }
       });
 
       const fadeEls = document.querySelectorAll('.fade-in');
