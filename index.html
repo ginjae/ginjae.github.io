@@ -1,766 +1,603 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jaemin Kim</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
-  <link rel="manifest" href="/images/favicon/site.webmanifest">
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
-    /* ── Kanagawa Lotus (light, default) ── */
-    :root {
-      --accent: #2D6D8F;         /* lotus blue */
-      --accent-light: #d5e6f0;   /* lotus hover */
-      --text: #545464;           /* lotusInk1 */
-      --text-secondary: #8a8980; /* lotusGray */
-      --bg: #fefefe;             /* near white */
-      --bg-secondary: #f5f3ed;   /* lotusWhite secondary */
-      --border: #e0dbd0;         /* lotus border */
-      --nav-blur-bg: rgba(254, 254, 254, 0.50);
-      --sidebar-width: 280px;
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--nav-height, 110px);
     }
-
-    /* ── Kanagawa Wave (dark) ── */
-    [data-theme="dark"] {
-      --accent: #7E9CD8;         /* crystalBlue */
-      --accent-light: #252535;   /* sumiInk hover */
-      --text: #DCD7BA;           /* fujiWhite */
-      --text-secondary: #C8C093; /* oldWhite */
-      --bg: #1F1F28;             /* sumiInk1 */
-      --bg-secondary: #16161D;   /* sumiInk0 */
-      --border: #363646;         /* sumiInk3 */
-      --nav-blur-bg: rgba(31, 31, 40, 0.50);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 17px; touch-action: manipulation; }
-
     body {
       font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      touch-action: manipulation;
     }
-
-    a { color: var(--accent); text-decoration: none; }
-    @media (hover: hover) {
-      a:hover { text-decoration: underline; }
+    :root[data-bs-theme="light"] {
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --outline-stroke: rgba(0, 0, 0, 0.1);
+      --indicator-bg: rgba(0, 0, 0, 0.06);
+      --indicator-stroke: rgba(0, 0, 0, 0.08);
     }
-
-    /* ─── Sidebar ─────────────────────────────────── */
-    .sidebar {
-      position: fixed;
-      left: 0; top: 0;
-      width: var(--sidebar-width);
-      height: 100vh;
-      background: var(--bg-secondary);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      padding: 2.5rem 1.75rem;
-      overflow-y: auto;
-      z-index: 100;
+    :root[data-bs-theme="dark"] {
+      --glass-bg: rgba(33, 37, 41, 0.7);
+      --outline-stroke: rgba(255, 255, 255, 0.15);
+      --indicator-bg: rgba(255, 255, 255, 0.1);
+      --indicator-stroke: rgba(255, 255, 255, 0.15);
     }
-
-    .sidebar-profile {
-      text-align: center;
-      margin-bottom: 1.75rem;
+    .navbar-glass {
+      background-color: var(--glass-bg) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
-
-    .sidebar-name {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-      line-height: 1.3;
+    .navbar-toggler {
+      border: none;
+      box-shadow: none !important;
     }
-
-    .sidebar-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
+    #mainNav .navbar-brand {
+      color: var(--bs-navbar-color);
+      transition: color 0.15s ease-in-out;
     }
-
-    .sidebar-link {
-      display: flex;
-      align-items: center;
-      gap: 0.625rem;
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      padding: 0.45rem 0.625rem;
-      border-radius: 7px;
-      transition: background 0.15s, color 0.15s;
+    #mainNav .navbar-brand:hover,
+    #mainNav .navbar-brand:focus,
+    #mainNav .navbar-brand.active {
+      color: var(--bs-navbar-active-color);
     }
-    @media (hover: hover) {
-      .sidebar-link:hover {
-        background: var(--accent-light);
-        color: var(--accent);
-        text-decoration: none;
+    #mainNav .nav-container {
+      position: relative;
+    }
+    #mainNav .nav-link,
+    #mainNav .navbar-brand {
+      position: relative;
+      z-index: 1;
+      border-radius: 999px;
+    }
+    #mainNav .nav-link {
+      padding-left: 0.85rem;
+      padding-right: 0.85rem;
+    }
+    #mainNav .navbar-brand {
+      padding-left: calc(0.75rem + 3px);
+      padding-right: 0.75rem;
+    }
+    .nav-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      background-color: var(--indicator-bg);
+      border: 1px solid var(--indicator-stroke);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 0;
+      transition:
+        transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1),
+        width 0.5s cubic-bezier(0.34, 1.4, 0.64, 1),
+        height 0.5s cubic-bezier(0.34, 1.4, 0.64, 1),
+        opacity 0.3s ease;
+    }
+    .nav-indicator.visible {
+      opacity: 1;
+    }
+    @media (max-width: 991.98px) {
+      .menu-scroll-container {
+        flex-basis: 100%;
       }
     }
-    .sidebar-link i {
-      font-size: 0.9rem;
-      width: 15px;
-      text-align: center;
-      flex-shrink: 0;
+    @media (min-width: 992px) {
+      .menu-scroll-container {
+        flex-grow: 0;
+      }
     }
-
-    .sidebar-social {
-      display: flex;
-      gap: 0.25rem;
-      margin-top: 0.5rem;
+    p a {
+      color: inherit;
+      text-decoration: underline;
+      /* text-decoration-thickness: 1px; */
+      text-underline-offset: 3px;
+      transition: color 0.2s ease, text-decoration-thickness 0.2s ease, text-decoration-color 0.2s ease;
     }
-
-    .social-link {
+    p a:hover,
+    p a:focus {
+      color: var(--bs-warning);
+      /* text-decoration-thickness: 2px; */
+      text-decoration-color: var(--bs-warning);
+    }
+    #theme-toggle {
+      position: relative;
+      width: 56px;
+      height: 30px;
+      padding: 0;
+      border-radius: 999px;
+      border: 1px solid var(--outline-stroke);
+      background-color: var(--indicator-bg);
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 7px;
-      color: var(--text-secondary);
-      font-size: 1rem;
-      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
     }
-    @media (hover: hover) {
-      .social-link:hover {
-        background: var(--accent-light);
-        color: var(--accent);
-        text-decoration: none;
-      }
+    #theme-toggle:hover {
+      border-color: var(--bs-body-color);
     }
-
-    .theme-toggle {
-      background: none;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      color: var(--text-secondary);
-      padding: 0.35rem 0.875rem;
-      border-radius: 999px;
+    #theme-toggle .theme-toggle-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color: var(--bs-secondary-color);
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    #theme-toggle .theme-toggle-icon-sun {
+      left: 8px;
+    }
+    #theme-toggle .theme-toggle-icon-moon {
+      right: 8px;
+    }
+    #theme-toggle .theme-toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: var(--bs-body-bg);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      font-family: inherit;
+      justify-content: center;
+      transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+    #theme-toggle .theme-toggle-thumb i {
+      font-size: 12px;
+      color: var(--bs-body-color);
+    }
+    #theme-toggle .theme-toggle-thumb .bi-moon-fill {
+      display: none;
+    }
+    :root[data-bs-theme="dark"] #theme-toggle .theme-toggle-thumb {
+      transform: translateX(26px);
+    }
+    :root[data-bs-theme="dark"] #theme-toggle .theme-toggle-thumb .bi-sun-fill {
+      display: none;
+    }
+    :root[data-bs-theme="dark"] #theme-toggle .theme-toggle-thumb .bi-moon-fill {
+      display: inline-block;
+    }
+    .btn-glass {
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--outline-stroke);
+      color: var(--bs-body-color);
+      transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-glass:hover,
+    .btn-glass:focus {
+      background-color: var(--glass-bg);
+      border-color: var(--bs-body-color);
+      color: var(--bs-body-color);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    .btn-glass:active {
+      background-color: var(--glass-bg) !important;
+      border-color: var(--bs-body-color) !important;
+      color: var(--bs-body-color) !important;
+    }
+    .content-section {
+      padding-block: 4rem;
+    }
+    .content-section + .content-section {
+      border-top: 1px solid var(--outline-stroke);
+    }
+    .section-label {
       font-size: 0.78rem;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-      width: fit-content;
-      margin: 0.75rem 0 0;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--bs-warning);
+      margin-bottom: 0.6rem;
     }
-    @media (hover: hover) {
-      .theme-toggle:hover {
-        background: var(--accent-light);
-        color: var(--accent);
-        border-color: var(--accent);
-      }
+    .section-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 2rem;
     }
-
-    .sidebar-nav {
-      margin-top: auto;
-      padding-top: 1.5rem;
+    .subsection-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--bs-secondary-color);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .subsection-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-top: 2.25rem;
+      margin-bottom: 1rem;
+    }
+    .subsection-title:first-of-type {
+      margin-top: 0;
+    }
+    .news-list {
       display: flex;
       flex-direction: column;
-      gap: 0.15rem;
+      gap: 1rem;
     }
-
-    .nav-item {
-      display: block;
-      padding: 0.45rem 0.75rem;
-      font-size: 0.75rem;
+    .news-item {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 1.25rem;
+      align-items: baseline;
+    }
+    .news-date {
+      font-size: 0.88rem;
       font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      border-radius: 7px;
-      transition: background 0.15s, color 0.15s;
+      color: var(--bs-secondary-color);
+      letter-spacing: 0.02em;
     }
-    .nav-item.active {
-      background: var(--accent-light);
-      color: var(--accent);
-      text-decoration: none;
+    .news-text {
+      font-size: 1rem;
+      line-height: 1.6;
     }
-    @media (hover: hover) {
-      .nav-item:hover {
-        background: var(--accent-light);
-        color: var(--accent);
-        text-decoration: none;
+    .news-text a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    }
+    .news-text a:hover,
+    .news-text a:focus {
+      color: var(--bs-warning);
+      text-decoration-color: var(--bs-warning);
+    }
+    @media (max-width: 575.98px) {
+      .news-list {
+        gap: 1.5rem;
+      }
+      .news-item {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
       }
     }
-
-    /* ─── Mobile Nav ──────────────────────────────── */
-    .mobile-nav {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      background: var(--nav-blur-bg);
+    .entry {
+      background-color: var(--glass-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0.875rem 1.25rem;
-      z-index: 200;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .mobile-nav-name {
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-    }
-    .mobile-menu-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 1.3rem;
-      color: var(--text);
-      line-height: 1;
-      padding: 0.3rem;
-      border-radius: 7px;
-      transition: background 0.15s, color 0.15s;
-    }
-    @media (hover: hover) {
-      .mobile-menu-btn:hover {
-        background: var(--accent-light);
-        color: var(--accent);
-      }
-    }
-    #mobileThemeToggle {
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 0.25rem 0.625rem;
-      margin: 0 0.5rem;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-    }
-    @media (hover: hover) {
-      #mobileThemeToggle:hover {
-        background: var(--accent-light);
-        color: var(--accent);
-        border-color: var(--accent);
-      }
-    }
-    .mobile-menu {
-      position: fixed;
-      top: 50px; left: 0; right: 0;
-      background: var(--nav-blur-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0.75rem 1.25rem;
-      z-index: 199;
+      border: 1px solid var(--outline-stroke);
+      border-radius: 16px;
       overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      transform: translateY(-6px);
-      pointer-events: none;
-      transition: max-height 0.28s ease, opacity 0.22s ease, transform 0.22s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    .mobile-menu.open {
-      max-height: 300px;
+    .entry:hover {
+      border-color: var(--bs-body-color);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    }
+    .entry-inner {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 1.25rem;
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+    }
+    .entry-logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      background-color: var(--bs-body-bg);
+      border: 1px solid var(--outline-stroke);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .entry-logo {
+      max-width: 80%;
+      max-height: 80%;
+      object-fit: contain;
+    }
+    .entry-body {
+      min-width: 0;
+    }
+    .entry-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .entry-org {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--bs-body-color);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .entry-org:hover,
+    .entry-org:focus {
+      color: var(--bs-warning);
+    }
+    .entry-period {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--bs-secondary-color);
+      white-space: nowrap;
+    }
+    .entry-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--bs-body-color);
+      margin-top: 0.15rem;
+    }
+    .entry-subtitle {
+      font-size: 0.88rem;
+      color: var(--bs-secondary-color);
+      margin-top: 0.1rem;
+    }
+    .entry-period-mobile {
+      display: none;
+      font-size: 0.82rem;
+      color: var(--bs-secondary-color);
+      margin-top: 0.35rem;
+    }
+    .entry-footer {
+      padding: 0.9rem 1.5rem;
+      font-size: 0.88rem;
+      color: var(--bs-secondary-color);
+      border-top: 1px solid var(--outline-stroke);
+      line-height: 1.6;
+    }
+    .entry-footer a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    }
+    .entry-footer a:hover,
+    .entry-footer a:focus {
+      color: var(--bs-warning);
+      text-decoration-color: var(--bs-warning);
+    }
+    @media (max-width: 575.98px) {
+      .entry-inner {
+        grid-template-columns: 48px 1fr;
+        gap: 1rem;
+        padding: 1rem 1.1rem;
+      }
+      .entry-logo-wrap {
+        width: 48px;
+        height: 48px;
+      }
+      .entry-period {
+        display: none;
+      }
+      .entry-period-mobile {
+        display: block;
+      }
+      .entry-footer {
+        padding: 0.8rem 1.1rem;
+      }
+    }
+    .pub-item {
+      padding-block: 1rem;
+    }
+    .pub-item + .pub-item {
+      border-top: 1px solid var(--outline-stroke);
+    }
+    .pub-venue {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background-color: var(--bs-warning);
+      color: #000;
+      margin-bottom: 0.55rem;
+    }
+    .pub-title {
+      font-size: 1.02rem;
+      font-weight: 600;
+      line-height: 1.45;
+      margin-bottom: 0.35rem;
+    }
+    .pub-authors {
+      font-size: 0.92rem;
+      color: var(--bs-secondary-color);
+      margin-bottom: 0.2rem;
+    }
+    .pub-authors strong {
+      color: var(--bs-body-color);
+    }
+    .pub-authors a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    }
+    .pub-authors a:hover,
+    .pub-authors a:focus {
+      color: var(--bs-warning);
+      text-decoration-color: var(--bs-warning);
+    }
+    .pub-detail {
+      font-size: 0.85rem;
+      color: var(--bs-secondary-color);
+      font-style: italic;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .fade-in.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+    #back-to-top {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: 999px;
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--outline-stroke);
+      color: var(--bs-body-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition:
+        opacity 0.25s ease,
+        transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1),
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+      z-index: 1030;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    #back-to-top.visible {
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
     }
-    .mobile-nav-link {
-      display: block;
-      padding: 0.65rem 0.75rem;
-      font-weight: 600;
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      border-radius: 7px;
-      transition: background 0.15s, color 0.15s;
+    #back-to-top.visible:hover {
+      border-color: var(--bs-body-color);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
     }
-    .mobile-nav-link:first-child { margin-top: 0.75rem; }
-    .mobile-nav-link.active {
-      color: var(--accent);
-      background: rgba(45, 109, 143, 0.18);
-      text-decoration: none;
+    #back-to-top.visible:active {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-    @media (hover: hover) {
-      .mobile-nav-link:hover {
-        color: var(--accent);
-        background: rgba(45, 109, 143, 0.12);
-        text-decoration: none;
-      }
-    }
-
-    /* ─── Main ────────────────────────────────────── */
-    .main {
-      margin-left: var(--sidebar-width);
-      padding: 4.5rem 4rem 5rem 4.5rem;
-      max-width: calc(var(--sidebar-width) + 760px);
-      position: relative;
-      z-index: 1;
-    }
-
-    section { scroll-margin-top: 2rem; margin-bottom: 5.5rem; }
-
-    .section-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.6rem;
-    }
-
-    .section-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      margin-bottom: 2rem;
-    }
-
-    /* ─── Hero ────────────────────────────────────── */
-    .hero-name {
-      font-size: 2.75rem;
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      line-height: 1.05;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: var(--accent-light);
-      color: var(--accent);
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 0.3rem 0.75rem;
-      border-radius: 100px;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-bio {
-      font-size: 0.975rem;
-      line-height: 1.85;
-    }
-
-    /* ─── News Timeline ───────────────────────────── */
-    .news-list {
-      position: relative;
-      padding-left: 24px;
-    }
-    .news-list::before {
-      content: '';
-      position: absolute;
-      left: 7px;  /* center = 8px */
-      top: 10px;
-      bottom: 4px;
-      width: 2px;
-      background: var(--border);
-    }
-    .news-item {
-      position: relative;
-      margin-bottom: 1.375rem;
-    }
-    .news-item::before {
-      content: '';
-      position: absolute;
-      left: -20px; /* center = 24-20+4 = 8px ✓ */
-      top: 9px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      border: 2px solid var(--bg);
-      box-shadow: 0 0 0 1.5px var(--accent);
-    }
-    .news-date {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 0.04em;
-      margin-bottom: 0.15rem;
-    }
-    .news-text {
-      font-size: 0.9rem;
-      color: var(--text);
-      line-height: 1.5;
-    }
-
-    /* ─── Cards ───────────────────────────────────── */
-    .card {
-      padding: 1.375rem 1.5rem;
-      border-left: 3px solid var(--accent);
-      background: var(--bg-secondary);
-      border-radius: 0 10px 10px 0;
-      margin-bottom: 1rem;
-      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-    }
-    @media (hover: hover) {
-      .card:hover {
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      }
-    }
-    .card-inner {
-      display: flex;
-      gap: 1.25rem;
-      align-items: flex-start;
-    }
-    .card-logo-wrap {
-      flex-shrink: 0;
-      width: 64px;
-      min-height: 64px;
-      align-self: stretch;
-      display: flex;
-      align-items: center;
-    }
-    .card-logo {
+    .outline-logo {
+      display: grid;
+      grid-template-columns: repeat(5, 0.75em);
+      justify-content: center;
       width: 100%;
-      height: auto;
-      display: block;
-      background: #ffffff;
-      object-position: left center;
+      font-weight: 800;
+      font-size: 24vw;
+      line-height: 0.85;
+      user-select: none;
     }
-    .card-body { flex: 1; min-width: 0; }
-    .card-header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 0.2rem;
-    }
-    .card-org {
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-    .card-period {
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .card-period-mobile {
-      display: none;
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      margin-top: 0.2rem;
-    }
-    .card-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.1rem;
-    }
-    .card-subtitle {
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-    .card-footer {
-      margin-top: 0.75rem;
-      padding-top: 0;
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    .subsection-label {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* ─── Publications ────────────────────────────── */
-    .pub-item {
-      padding: 1.375rem 1.5rem;
-      border-left: 3px solid var(--accent);
-      background: var(--bg-secondary);
-      border-radius: 0 10px 10px 0;
-      margin-bottom: 1rem;
-      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-    }
-    @media (hover: hover) {
-      .pub-item:hover {
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      }
-    }
-    .pub-venue {
-      display: inline-block;
-      background: var(--accent);
-      color: white;
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 0.15rem 0.55rem;
-      border-radius: 100px;
-      margin-bottom: 0.55rem;
-      letter-spacing: 0.06em;
-    }
-    .pub-title {
-      font-weight: 600;
-      font-size: 0.925rem;
-      color: var(--text);
-      margin-bottom: 0.3rem;
-      line-height: 1.45;
-    }
-    .pub-authors {
-      font-size: 0.83rem;
-      color: var(--text-secondary);
-    }
-    .pub-detail {
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      margin-top: 0.25rem;
-      font-style: italic;
-    }
-
-    /* ─── Footer ──────────────────────────────────── */
-    .footer {
-      margin-top: 1rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--border);
-    }
-    .footer a {
-      color: var(--text-secondary);
-      font-size: 1rem;
-      transition: color 0.15s;
-    }
-    @media (hover: hover) {
-      .footer a:hover {
-        color: var(--accent);
-        text-decoration: none;
-      }
-    }
-
-    /* ─── Mobile Hero Links ──────────────────────── */
-    .mobile-hero-links {
-      display: none;
-    }
-    @media (max-width: 900px) {
-      .mobile-hero-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 1.25rem;
-      }
-      .mobile-hero-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: var(--text-secondary);
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        padding: 0.35rem 0.875rem;
-        transition: background 0.15s, color 0.15s, border-color 0.15s;
-        text-decoration: none;
-      }
-      @media (hover: hover) {
-        .mobile-hero-link:hover {
-          background: var(--accent-light);
-          color: var(--accent);
-          border-color: var(--accent);
-          text-decoration: none;
-        }
-      }
-    }
-
-    /* ─── Fade in ─────────────────────────────────── */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.55s ease, transform 0.55s ease;
-    }
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ─── Back to Top Button ─────────────────────── */
-    .back-to-top {
-      position: fixed;
-      bottom: 1.75rem;
-      right: 1.75rem;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: var(--bg-secondary);
-      color: var(--accent);
-      border: 1px solid var(--border);
+    .outline-logo span {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
+      color: var(--bs-body-bg, #fff);
+      text-shadow:
+        -1px -1px 0 var(--outline-stroke),
+         1px -1px 0 var(--outline-stroke),
+        -1px  1px 0 var(--outline-stroke),
+         1px  1px 0 var(--outline-stroke);
+      transition: text-shadow 0.35s ease;
+      outline: none;
+    }
+    .outline-logo span:not(:empty) {
       cursor: pointer;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(8px);
-      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease,
-                  background 0.15s, color 0.15s, border-color 0.15s;
-      z-index: 150;
     }
-    .back-to-top.visible {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-    @media (hover: hover) {
-      .back-to-top:hover {
-        background: var(--accent-light);
-        border-color: var(--accent);
-      }
-    }
-
-    /* ─── Dot Grid Decoration ────────────────────── */
-    .dot-grid-right {
-      position: fixed;
-      left: calc(var(--sidebar-width));
-      right: 0;
-      top: 0;
-      height: 100vh;
-      z-index: 0;
-      display: none;
-      pointer-events: none;
-    }
-
-    /* ─── Responsive ──────────────────────────────── */
-    @media (min-width: 1280px) {
-      .dot-grid-right { display: block; }
-      section { scroll-margin-top: 5rem; }
-    }
-
-    @media (max-width: 900px) {
-      .sidebar { display: none; }
-      .mobile-nav { display: flex; }
-      .main {
-        margin-left: 0;
-        padding: 4.25rem 1.25rem 3rem;
-        max-width: 100%;
-      }
-      .hero-name { font-size: 2.6rem; }
-      .section-title { font-size: 1.6rem; }
-      section { scroll-margin-top: 5rem; }
-      .card-period { display: none; }
-      .card-period-mobile { display: block; }
+    .outline-logo span.is-active {
+      text-shadow:
+        -1px -1px 0 var(--bs-warning),
+         1px -1px 0 var(--bs-warning),
+        -1px  1px 0 var(--bs-warning),
+         1px  1px 0 var(--bs-warning);
     }
   </style>
 </head>
-<body>
+<body tabindex="0">
+  
+  <!-- Navbar Section -->
+  <nav id="mainNav" class="navbar navbar-expand border-bottom border-secondary fixed-top navbar-glass">
+    <div class="nav-container container-fluid px-4 py-2 d-flex flex-wrap align-items-center justify-content-between">
+      <span class="nav-indicator" aria-hidden="true"></span>
+      <a class="navbar-brand fw-bold" href="#home" style="letter-spacing: 3px;">jaemin-kim.com</a>
+      
+      <div class="d-flex align-items-center ms-auto order-1 order-lg-3">
+        <button id="theme-toggle" type="button" aria-label="Toggle theme">
+          <i class="bi bi-sun-fill theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true"></i>
+          <i class="bi bi-moon-fill theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true"></i>
+          <span class="theme-toggle-thumb" aria-hidden="true">
+            <i class="bi bi-moon-fill"></i>
+            <i class="bi bi-sun-fill"></i>
+          </span>
+        </button>
+      </div>
 
-  <!-- Grid Decoration (desktop only) -->
-  <svg class="dot-grid-right" width="100%" height="100%" fill="none" aria-hidden="true">
-    <defs>
-      <linearGradient id="grid-fade" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="white" stop-opacity="0"/>
-        <stop offset="100%" stop-color="white" stop-opacity="1"/>
-      </linearGradient>
-      <mask id="grid-mask">
-        <rect width="100%" height="100%" fill="url(#grid-fade)"/>
-      </mask>
-      <pattern id="grid-pattern-right" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="var(--border)" stroke-width="0.5"/>
-      </pattern>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#grid-pattern-right)" mask="url(#grid-mask)"></rect>
-  </svg>
-
-  <!-- Mobile Nav -->
-  <nav class="mobile-nav">
-    <a href="https://jaemin-kim.com" class="mobile-nav-name">jaemin-kim.com</a>
-    <div style="display:flex;gap:0.25rem;align-items:center;">
-      <button class="mobile-menu-btn" id="mobileThemeToggle" aria-label="Toggle theme">
-        <i class="bi bi-sun"></i>
-      </button>
-      <button class="mobile-menu-btn" id="menuBtn" aria-label="Toggle menu">
-        <i class="bi bi-list"></i>
-      </button>
+      <div class="menu-scroll-container d-flex justify-content-lg-start mt-2 mt-lg-0 ms-lg-4 order-2 order-lg-2" style="overflow-x: auto; white-space: nowrap; scrollbar-width: none;">
+        <ul class="navbar-nav flex-row gap-2 fw-semibold">
+          <li class="nav-item">
+            <a class="nav-link" href="#news">News</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#publications">Publications</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#home" class="mobile-nav-link" data-section="home">About</a>
-    <a href="#news" class="mobile-nav-link" data-section="news">News</a>
-    <a href="#experience" class="mobile-nav-link" data-section="experience">Experience</a>
-    <a href="#education" class="mobile-nav-link" data-section="education">Education</a>
-    <a href="#publications" class="mobile-nav-link" data-section="publications">Publications</a>
-  </div>
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar-profile">
-      <a href="https://jaemin-kim.com" class="sidebar-name">jaemin-kim.com</a>
-    </div>
-
-    <div class="sidebar-links">
-      <a href="https://drive.google.com/file/d/1SfoyuMM9Y7Qg9fupQOAjshgG9ImITDDC/view?usp=drive_link" class="sidebar-link">
-        <i class="bi bi-file-earmark-text"></i> CV
-      </a>
-      <a href="mailto:jm611@unist.ac.kr" class="sidebar-link">
-        <i class="bi bi-envelope"></i> jm611@unist.ac.kr
-      </a>
-    </div>
-
-    <div class="sidebar-social">
-      <a href="https://github.com/ginjae" class="social-link" title="GitHub">
-        <i class="bi bi-github"></i>
-      </a>
-      <a href="https://www.linkedin.com/in/ginjae/" class="social-link" title="LinkedIn">
-        <i class="bi bi-linkedin"></i>
-      </a>
-    </div>
-
-    <nav class="sidebar-nav">
-      <a href="#home"         class="nav-item" data-section="home">About</a>
-      <a href="#news"         class="nav-item" data-section="news">News</a>
-      <a href="#experience"   class="nav-item" data-section="experience">Experience</a>
-      <a href="#education"    class="nav-item" data-section="education">Education</a>
-      <a href="#publications" class="nav-item" data-section="publications">Publications</a>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <i class="bi bi-sun"></i> Light
-      </button>
-    </nav>
-  </aside>
-
-  <!-- Main Content -->
-  <main class="main">
-
-    <!-- Hero -->
-    <section id="home">
-      <div class="section-label">About</div>
-      <h1 class="hero-name">Jaemin Kim</h1>
-      <div class="hero-badge">
-        <i class="bi bi-cpu"></i> On-Device AI Researcher
+  <!-- Hero Section -->
+  <header class="py-5 text-center d-flex align-items-center" style="min-height: 100vh; padding-top: calc(var(--nav-height, 110px)) !important;" id="home">
+    <div class="container">
+      <div class="section-label">
+        ON-DEVICE AI RESEARCHER
       </div>
-      <p class="hero-bio">
+      <h1 class="display-1 fw-bolder mb-4 tracking-tight" style="letter-spacing: -2px;">
+        Jaemin Kim
+      </h1>
+      <p class="lead mb-5 mx-auto text-secondary" style="max-width: 700px; font-size: 1.1rem;">
         Hello, I'm an Undergraduate Student in the <a href="https://cse.unist.ac.kr/eng/">Department of Computer Science and Engineering</a> at <a href="https://www.unist.ac.kr/">UNIST</a>,
-        <br>
         exploring the intersection of computer systems and artificial intelligence.
-        <br>
         I'm currently a Research Intern at <a href="https://sites.google.com/view/uailab">Ubiquitous AI Lab</a>, advised by <a href="https://taesikgong.com/">Prof. Taesik Gong</a>,
         and will be joining as a Graduate Student next year.
         <br>
         Please feel free to reach out if you'd like to connect or collaborate!
       </p>
-      <div class="mobile-hero-links">
-        <a href="https://drive.google.com/file/d/1SfoyuMM9Y7Qg9fupQOAjshgG9ImITDDC/view?usp=drive_link" class="mobile-hero-link"><i class="bi bi-file-earmark-text"></i> CV</a>
-        <a href="mailto:jm611@unist.ac.kr" class="mobile-hero-link"><i class="bi bi-envelope"></i> Email</a>
-        <div style="display:flex;gap:0.5rem;">
-          <a href="https://github.com/ginjae" class="mobile-hero-link"><i class="bi bi-github"></i> GitHub</a>
-          <a href="https://www.linkedin.com/in/ginjae/" class="mobile-hero-link"><i class="bi bi-linkedin"></i> LinkedIn</a>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="https://drive.google.com/file/d/1SfoyuMM9Y7Qg9fupQOAjshgG9ImITDDC/view?usp=drive_link" target="_blank" class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i class="bi bi-file-earmark-text me-2"></i>CV</a>
+        <a href="mailto:jm611@unist.ac.kr" class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i class="bi bi-envelope me-2"></i>Email</a>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <a href="https://www.linkedin.com/in/ginjae/" target="_blank" class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i class="bi bi-linkedin me-2"></i>LinkedIn</a>
+          <a href="https://github.com/ginjae" target="_blank" class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i class="bi bi-github me-2"></i>GitHub</a>
         </div>
       </div>
-    </section>
+    </div>
+  </header>
 
-    <!-- News -->
-    <section id="news" class="fade-in">
+  <!-- Content Sections -->
+  <main class="container" style="max-width: 900px;">
+    <!-- News Section -->
+    <section id="news" class="content-section fade-in">
       <div class="section-label">Latest</div>
       <h2 class="section-title">News</h2>
       <div class="news-list">
@@ -770,11 +607,11 @@
         </div>
         <div class="news-item">
           <div class="news-date">Mar 2026</div>
-          <div class="news-text">🏆 <a href="https://ib.unist.ac.kr/2025%ED%95%99%EB%85%84%EB%8F%84-2%ED%95%99%EA%B8%B0-deans-list-%EC%8B%9C%EC%83%81%EC%8B%9D-%EA%B0%9C%EC%B5%9C/">Dean's List</a> for Fall 2025 at UNIST</div>
+          <div class="news-text">🏆 <a href="https://ib.unist.ac.kr/2025%ED%95%99%EB%85%84%EB%8F%84-2%ED%95%99%EA%B8%B0-deans-list-%EC%8B%9C%EC%83%81%EC%8B%9D-%EA%B0%9C%EC%B5%9C/" target="_blank">Dean's List</a> for Fall 2025 at UNIST</div>
         </div>
         <div class="news-item">
           <div class="news-date">Feb 2026</div>
-          <div class="news-text">🏆 <a href="https://woonhaefoundation.org/kor/information/news.html?code=share_notice&p=&page=1&bbsData=bm89MjA0MA==%7C%7C&search=&searchstring=&mode=view">Woonhae Scholarship</a> (2026)</div>
+          <div class="news-text">🏆 <a href="https://woonhaefoundation.org/kor/information/news.html?code=share_notice&p=&page=1&bbsData=bm89MjA0MA==%7C%7C&search=&searchstring=&mode=view" target="_blank">Woonhae Scholarship</a> (2026)</div>
         </div>
         <div class="news-item">
           <div class="news-date">Sep 2025</div>
@@ -786,60 +623,59 @@
         </div>
         <div class="news-item">
           <div class="news-date">Mar 2025</div>
-          <div class="news-text">👔 Research Internship at <a href="https://sites.google.com/view/uailab">UAI Lab</a></div>
+          <div class="news-text">👔 Research Internship at <a href="https://sites.google.com/view/uailab" target="_blank">UAI Lab</a></div>
         </div>
         <div class="news-item">
           <div class="news-date">Oct 2024</div>
-          <div class="news-text">🏆 <a href="https://ib.unist.ac.kr/2546-2/">Dean's List</a> for Spring 2024 at UNIST</div>
+          <div class="news-text">🏆 <a href="https://ib.unist.ac.kr/2546-2/" target="_blank">Dean's List</a> for Spring 2024 at UNIST</div>
         </div>
       </div>
     </section>
 
-    <!-- Experience -->
-    <section id="experience" class="fade-in">
-      <h2 class="section-title">Experience</h2>
-      <div class="card">
-        <div class="card-inner">
-          <a href="https://sites.google.com/view/uailab" target="_blank" class="card-logo-wrap">
-            <img src="images/logo/uai.png" alt="UAI Lab" class="card-logo">
+    <!-- About Section (Experience + Education) -->
+    <section id="about" class="content-section fade-in">
+      <h2 class="section-title">About</h2>
+
+      <h3 class="subsection-title">Experience</h3>
+      <div class="entry">
+        <div class="entry-inner">
+          <a href="https://sites.google.com/view/uailab" target="_blank" class="entry-logo-wrap" aria-label="UAI Lab">
+            <img src="images/logo/uai.png" alt="UAI Lab" class="entry-logo" onerror="this.style.display='none'">
           </a>
-          <div class="card-body">
-            <div class="card-header-row">
-              <a href="https://sites.google.com/view/uailab" target="_blank" class="card-org">Ubiquitous AI Lab</a>
-              <div class="card-period">2025.03 — Present</div>
+          <div class="entry-body">
+            <div class="entry-header-row">
+              <a href="https://sites.google.com/view/uailab" target="_blank" class="entry-org">Ubiquitous AI Lab</a>
+              <div class="entry-period">2025.03 — Present</div>
             </div>
-            <div class="card-title">Undergraduate Research Intern</div>
-            <div class="card-subtitle">UNIST, Republic of Korea</div>
-            <div class="card-period-mobile">2025.03 — Present</div>
+            <div class="entry-title">Undergraduate Research Intern</div>
+            <div class="entry-subtitle">UNIST, Republic of Korea</div>
+            <div class="entry-period-mobile">2025.03 — Present</div>
           </div>
         </div>
-        <div class="card-footer">
-          Advisor: <a href="https://taesikgong.com/">Prof. Taesik Gong</a>
+        <div class="entry-footer">
+          Advisor: <a href="https://taesikgong.com/" target="_blank">Prof. Taesik Gong</a>
           <br>
-          Research on On-Device AI · Adaptive & Personalized AI
+          Research on On-Device AI · Adaptive &amp; Personalized AI
         </div>
       </div>
-    </section>
 
-    <!-- Education -->
-    <section id="education" class="fade-in">
-      <h2 class="section-title">Education</h2>
-      <div class="card">
-        <div class="card-inner">
-          <a href="https://www.unist.ac.kr/" target="_blank" class="card-logo-wrap">
-            <img src="images/logo/unist.png" alt="UNIST" class="card-logo">
+      <h3 class="subsection-title">Education</h3>
+      <div class="entry">
+        <div class="entry-inner">
+          <a href="https://www.unist.ac.kr/" target="_blank" class="entry-logo-wrap" aria-label="UNIST">
+            <img src="images/logo/unist.png" alt="UNIST" class="entry-logo" onerror="this.style.display='none'">
           </a>
-          <div class="card-body">
-            <div class="card-header-row">
-              <a href="https://www.unist.ac.kr/" target="_blank" class="card-org">UNIST</a>
-              <div class="card-period">2021.03 — Present</div>
+          <div class="entry-body">
+            <div class="entry-header-row">
+              <a href="https://www.unist.ac.kr/" target="_blank" class="entry-org">UNIST</a>
+              <div class="entry-period">2021.03 — Present</div>
             </div>
-            <div class="card-title">B.S. in Computer Science and Engineering</div>
-            <div class="card-subtitle">Ulsan, Republic of Korea</div>
-            <div class="card-period-mobile">2021.03 — Present</div>
+            <div class="entry-title">B.S. in Computer Science and Engineering</div>
+            <div class="entry-subtitle">Ulsan, Republic of Korea</div>
+            <div class="entry-period-mobile">2021.03 — Present</div>
           </div>
         </div>
-        <div class="card-footer">
+        <div class="entry-footer">
           GPA: 4.12 / 4.3 &nbsp;(Major: 4.23 / 4.3)
           <br>
           Expected Graduation: February 2027
@@ -847,119 +683,144 @@
       </div>
     </section>
 
-    <!-- Publications -->
-    <section id="publications" class="fade-in">
+    <!-- Publications Section -->
+    <section id="publications" class="content-section fade-in">
       <h2 class="section-title">Publications</h2>
 
       <div class="subsection-label">Conferences &amp; Journals</div>
       <div class="pub-item">
         <span class="pub-venue">ICML 2026</span>
         <div class="pub-title">"From Volume to Value: Preference-Aligned Memory Construction for On-Device RAG"</div>
-        <div class="pub-authors">Changmin Lee, <strong>Jaemin Kim</strong>, Taesik Gong</div>
+        <div class="pub-authors"><a href="https://changmin-lee.com/" target="_blank">Changmin Lee</a>, <strong>Jaemin Kim</strong>, <a href="https://taesikgong.com/" target="_blank">Taesik Gong</a></div>
         <div class="pub-detail">International Conference on Machine Learning (<strong>ICML</strong>) 2026.</div>
       </div>
     </section>
-
-    <a href="https://jaemin-kim.com/sokoban/" title="Sokoban" style="display: block; text-align: center; margin-top: 24rem; color: var(--text-secondary);">
-      <i class="bi bi-box-fill"></i>
-    </a>
   </main>
 
-  <!-- Back to Top Button -->
-  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <!-- Giant Outline Logo -->
+  <div class="overflow-hidden d-flex justify-content-center align-items-center mb-5" style="padding-top: 10vh; padding-bottom: 5vh;">
+    <div class="outline-logo">
+      <span>J</span><span>A</span><span>E</span><span></span><span></span>
+      <span></span><span>M</span><span>I</span><span>N</span><span></span>
+      <span></span><span></span><span>K</span><span>I</span><span>M</span>
+    </div>
+  </div>
+
+  <button id="back-to-top" type="button" aria-label="Back to top">
     <i class="bi bi-arrow-up"></i>
   </button>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
   <script>
-    // Theme toggle
-    const THEME_KEY = 'kanagawa-theme';
-    const toggleBtns = [document.getElementById('themeToggle'), document.getElementById('mobileThemeToggle')];
+    document.addEventListener("DOMContentLoaded", function() {
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const htmlElement = document.documentElement;
 
-    function applyTheme(theme) {
-      if (theme === 'dark') {
-        document.documentElement.dataset.theme = 'dark';
-      } else {
-        delete document.documentElement.dataset.theme;
+      // Load saved theme or default to light
+      const savedTheme = localStorage.getItem('site-theme') || 'light';
+      setTheme(savedTheme);
+
+      themeToggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+      });
+
+      function setTheme(theme) {
+        htmlElement.setAttribute('data-bs-theme', theme);
+        localStorage.setItem('site-theme', theme);
       }
-      const isDark = theme === 'dark';
-      toggleBtns.forEach(btn => {
-        if (!btn) return;
-        btn.querySelector('i').className = isDark ? 'bi bi-sun' : 'bi bi-moon';
-        const label = btn.querySelector('i').nextSibling;
-        if (label) label.textContent = isDark ? ' Light' : ' Dark';
-      });
-      localStorage.setItem(THEME_KEY, theme);
-    }
 
-    function toggleTheme(e) {
-      const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
-      applyTheme(current === 'dark' ? 'light' : 'dark');
-      e.currentTarget.blur();
-    }
+      const navEl = document.getElementById('mainNav');
+      const navLinks = Array.from(document.querySelectorAll(
+        '#mainNav .nav-link[href^="#"], #mainNav .navbar-brand[href^="#"]'
+      ));
+      const sections = navLinks
+        .map(link => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
+      const navContainer = navEl.querySelector('.nav-container');
+      const indicator = navContainer?.querySelector('.nav-indicator');
 
-    toggleBtns.forEach(btn => btn?.addEventListener('click', toggleTheme));
-
-    // Apply saved or system preference on load
-    const saved = localStorage.getItem(THEME_KEY);
-    applyTheme(saved ?? 'light');
-
-    // Mobile menu
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('open');
-      menuBtn.querySelector('i').className = mobileMenu.classList.contains('open')
-        ? 'bi bi-x-lg' : 'bi bi-list';
-    });
-    document.querySelectorAll('.mobile-nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-        menuBtn.querySelector('i').className = 'bi bi-list';
-      });
-    });
-
-    // Active nav highlight
-    function updateActive() {
-      const sections = document.querySelectorAll('section');
-      let current = 'home';
-      sections.forEach(section => {
-        if (section.getBoundingClientRect().top <= 120) {
-          current = section.id;
-        }
-      });
-      document.querySelectorAll('.nav-item, .mobile-nav-link').forEach(item => {
-        item.classList.toggle('active', item.dataset.section === current);
-      });
-    }
-    updateActive();
-    window.addEventListener('scroll', updateActive, { passive: true });
-
-    // Back to top button
-    const backToTopBtn = document.getElementById('backToTop');
-    function updateBackToTop() {
-      if (window.scrollY > 300) {
-        backToTopBtn.classList.add('visible');
-      } else {
-        backToTopBtn.classList.remove('visible');
+      function updateNavHeight() {
+        htmlElement.style.setProperty('--nav-height', `${navEl.offsetHeight + 8}px`);
       }
-    }
-    backToTopBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      backToTopBtn.blur();
-    });
-    window.addEventListener('scroll', updateBackToTop, { passive: true });
-    updateBackToTop();
 
-    // Fade-in on scroll
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+      function updateIndicator() {
+        if (!indicator || !navContainer) return;
+        const activeLink = navContainer.querySelector('.nav-link.active, .navbar-brand.active');
+        if (!activeLink) {
+          indicator.classList.remove('visible');
+          return;
         }
+        const linkRect = activeLink.getBoundingClientRect();
+        const parentRect = navContainer.getBoundingClientRect();
+        indicator.style.width = `${linkRect.width}px`;
+        indicator.style.height = `${linkRect.height}px`;
+        indicator.style.transform = `translate(${linkRect.left - parentRect.left}px, ${linkRect.top - parentRect.top}px)`;
+        indicator.classList.add('visible');
+      }
+
+      function updateActiveLink() {
+        const threshold = navEl.offsetHeight + 24;
+        let activeId = sections[0]?.id;
+        for (const section of sections) {
+          if (section.getBoundingClientRect().top - threshold <= 0) {
+            activeId = section.id;
+          }
+        }
+        for (const link of navLinks) {
+          link.classList.toggle('active', link.getAttribute('href') === `#${activeId}`);
+        }
+        updateIndicator();
+      }
+
+      const backToTopBtn = document.getElementById('back-to-top');
+      function updateBackToTop() {
+        if (!backToTopBtn) return;
+        backToTopBtn.classList.toggle('visible', window.scrollY > 300);
+      }
+      backToTopBtn?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+      updateNavHeight();
+      updateActiveLink();
+      updateBackToTop();
+      window.addEventListener('scroll', () => {
+        updateActiveLink();
+        updateBackToTop();
+      }, { passive: true });
+      window.addEventListener('resize', () => {
+        updateNavHeight();
+        updateActiveLink();
+      });
+      if (document.fonts?.ready) {
+        document.fonts.ready.then(updateIndicator);
+      }
+
+      const outlineLogo = document.querySelector('.outline-logo');
+      outlineLogo?.addEventListener('click', (e) => {
+        const span = e.target.closest('span');
+        if (!span || !span.textContent.trim()) return;
+        span.classList.toggle('is-active');
+      });
+
+      const fadeEls = document.querySelectorAll('.fade-in');
+      if ('IntersectionObserver' in window && fadeEls.length) {
+        const fadeObserver = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              fadeObserver.unobserve(entry.target);
+            }
+          }
+        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+        fadeEls.forEach(el => fadeObserver.observe(el));
+      } else {
+        fadeEls.forEach(el => el.classList.add('is-visible'));
+      }
+    });
   </script>
 </body>
 </html>
