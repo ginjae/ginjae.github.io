@@ -62,10 +62,6 @@
       position: relative;
       z-index: 1;
       border-radius: 999px;
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-user-drag: none;
-      touch-action: pan-y;
     }
     #mainNav .nav-link {
       padding-left: 0.85rem;
@@ -611,7 +607,7 @@
             <a class="nav-link" href="#publications">Publications</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0)" onclick="alert('Coming soon!')">
+            <a class="nav-link" href="javascript:void(0)" onclick="alert('Work in progress...');">
               Blog <i class="bi bi-box-arrow-up-right"></i>
             </a>
           </li>
@@ -827,9 +823,7 @@
         indicator.classList.add('visible');
       }
 
-      let isNavDragging = false;
       function updateActiveLink() {
-        if (isNavDragging) return;
         const threshold = navEl.offsetHeight + 24;
         let activeId = sections[0]?.id;
         for (const section of sections) {
@@ -926,114 +920,6 @@
           e.preventDefault();
           e.stopImmediatePropagation();
           suppressNextThemeClick = false;
-        }
-      }, true);
-
-      // --- Drag support: nav links ---
-      let navDragState = null;
-      let suppressNextNavClick = false;
-
-      function findNavLinkAtPoint(x, y) {
-        for (const link of navLinks) {
-          const rect = link.getBoundingClientRect();
-          if (x >= rect.left && x <= rect.right && y >= rect.top - 8 && y <= rect.bottom + 8) {
-            return link;
-          }
-        }
-        return null;
-      }
-
-      function setActiveLinkManual(link) {
-        for (const l of navLinks) {
-          l.classList.toggle('active', l === link);
-        }
-        updateIndicator();
-      }
-
-      navContainer?.addEventListener('dragstart', (e) => {
-        if (e.target.closest('.nav-link, .navbar-brand')) e.preventDefault();
-      });
-
-      navContainer?.addEventListener('pointerdown', (e) => {
-        suppressNextNavClick = false;
-        const link = e.target.closest('.nav-link, .navbar-brand');
-        if (!link || !navLinks.includes(link)) return;
-        navDragState = {
-          pointerId: e.pointerId,
-          startX: e.clientX,
-          startY: e.clientY,
-          initialLink: link,
-          currentLink: link,
-          moved: false,
-        };
-      });
-
-      window.addEventListener('pointermove', (e) => {
-        if (!navDragState || e.pointerId !== navDragState.pointerId) return;
-        const dx = e.clientX - navDragState.startX;
-        const dy = e.clientY - navDragState.startY;
-        if (!navDragState.moved && Math.hypot(dx, dy) > 6) {
-          navDragState.moved = true;
-          isNavDragging = true;
-        }
-        if (!navDragState.moved) return;
-        const link = findNavLinkAtPoint(e.clientX, e.clientY);
-        if (link && link !== navDragState.currentLink) {
-          navDragState.currentLink = link;
-          setActiveLinkManual(link);
-        }
-        const navRect = navContainer.getBoundingClientRect();
-        if (e.clientX < navRect.left || e.clientX > navRect.right ||
-            e.clientY < navRect.top || e.clientY > navRect.bottom) {
-          finishNavDrag(true);
-        }
-      });
-
-      function finishNavDrag(navigate) {
-        if (!navDragState) return;
-        const state = navDragState;
-        navDragState = null;
-        if (!state.moved) {
-          isNavDragging = false;
-          return;
-        }
-        suppressNextNavClick = true;
-        if (navigate) {
-          const href = state.currentLink?.getAttribute('href');
-          if (href?.startsWith('#')) {
-            const target = document.querySelector(href);
-            target?.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
-        let released = false;
-        const releaseDragging = () => {
-          if (released) return;
-          released = true;
-          isNavDragging = false;
-          updateActiveLink();
-        };
-        if ('onscrollend' in window) {
-          window.addEventListener('scrollend', releaseDragging, { once: true });
-          setTimeout(releaseDragging, 1500);
-        } else {
-          setTimeout(releaseDragging, 800);
-        }
-      }
-
-      window.addEventListener('pointerup', (e) => {
-        if (!navDragState || e.pointerId !== navDragState.pointerId) return;
-        finishNavDrag(true);
-      });
-      window.addEventListener('pointercancel', (e) => {
-        if (!navDragState || e.pointerId !== navDragState.pointerId) return;
-        finishNavDrag(false);
-      });
-
-      navContainer?.addEventListener('click', (e) => {
-        if (suppressNextNavClick) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          suppressNextNavClick = false;
         }
       }, true);
 
