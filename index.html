@@ -62,6 +62,9 @@
       position: relative;
       z-index: 1;
       border-radius: 999px;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
     }
     #mainNav .nav-link {
       padding-left: 0.85rem;
@@ -129,6 +132,9 @@
       display: inline-flex;
       align-items: center;
       flex-shrink: 0;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
       transition: border-color 0.2s ease, background-color 0.2s ease;
     }
     #theme-toggle:hover {
@@ -820,7 +826,9 @@
         indicator.classList.add('visible');
       }
 
+      let isNavDragging = false;
       function updateActiveLink() {
+        if (isNavDragging) return;
         const threshold = navEl.offsetHeight + 24;
         let activeId = sections[0]?.id;
         for (const section of sections) {
@@ -875,6 +883,155 @@
           window.location.href = 'https://itsooh.github.io/';
         }
       });
+
+      // --- Drag support: theme toggle ---
+      const themeToggleThumb = themeToggleBtn.querySelector('.theme-toggle-thumb');
+      const THUMB_MAX_TRANSLATE = 26;
+      let themeDragState = null;
+      let suppressNextThemeClick = false;
+
+      function endThemeDrag() {
+        if (!themeDragState) return;
+        const moved = themeDragState.moved;
+        themeDragState = null;
+        themeToggleThumb.style.transition = '';
+        themeToggleThumb.style.transform = '';
+        if (moved) suppressNextThemeClick = true;
+      }
+
+      themeToggleBtn.addEventListener('pointerdown', (e) => {
+        themeDragState = { pointerId: e.pointerId, startX: e.clientX, moved: false };
+        try { themeToggleBtn.setPointerCapture(e.pointerId); } catch (_) {}
+        themeToggleThumb.style.transition = 'none';
+      });
+
+      themeToggleBtn.addEventListener('pointermove', (e) => {
+        if (!themeDragState || e.pointerId !== themeDragState.pointerId) return;
+        const dx = e.clientX - themeDragState.startX;
+        if (!themeDragState.moved && Math.abs(dx) > 3) themeDragState.moved = true;
+        if (!themeDragState.moved) return;
+        const rect = themeToggleBtn.getBoundingClientRect();
+        const translateX = Math.max(0, Math.min(THUMB_MAX_TRANSLATE, e.clientX - rect.left - 14));
+        themeToggleThumb.style.transform = `translateX(${translateX}px)`;
+        const newTheme = translateX > THUMB_MAX_TRANSLATE / 2 ? 'dark' : 'light';
+        if (newTheme !== htmlElement.getAttribute('data-bs-theme')) setTheme(newTheme);
+      });
+
+      themeToggleBtn.addEventListener('pointerup', endThemeDrag);
+      themeToggleBtn.addEventListener('pointercancel', endThemeDrag);
+
+      themeToggleBtn.addEventListener('click', (e) => {
+        if (suppressNextThemeClick) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          suppressNextThemeClick = false;
+        }
+      }, true);
+
+      // --- Drag support: nav links ---
+      let navDragState = null;
+      let suppressNextNavClick = false;
+
+      function findNavLinkAtPoint(x, y) {
+        for (const link of navLinks) {
+          const rect = link.getBoundingClientRect();
+          if (x >= rect.left && x <= rect.right && y >= rect.top - 8 && y <= rect.bottom + 8) {
+            return link;
+          }
+        }
+        return null;
+      }
+
+      function setActiveLinkManual(link) {
+        for (const l of navLinks) {
+          l.classList.toggle('active', l === link);
+        }
+        updateIndicator();
+      }
+
+      navContainer?.addEventListener('dragstart', (e) => {
+        if (e.target.closest('.nav-link, .navbar-brand')) e.preventDefault();
+      });
+
+      navContainer?.addEventListener('pointerdown', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        const link = e.target.closest('.nav-link, .navbar-brand');
+        if (!link || !navLinks.includes(link)) return;
+        navDragState = {
+          pointerId: e.pointerId,
+          startX: e.clientX,
+          startY: e.clientY,
+          initialLink: link,
+          currentLink: link,
+          moved: false,
+        };
+      });
+
+      navContainer?.addEventListener('pointermove', (e) => {
+        if (!navDragState || e.pointerId !== navDragState.pointerId) return;
+        const dx = e.clientX - navDragState.startX;
+        const dy = e.clientY - navDragState.startY;
+        if (!navDragState.moved && Math.hypot(dx, dy) > 6) {
+          navDragState.moved = true;
+          isNavDragging = true;
+          try { navContainer.setPointerCapture(e.pointerId); } catch (_) {}
+        }
+        if (navDragState.moved) {
+          const link = findNavLinkAtPoint(e.clientX, e.clientY);
+          if (link && link !== navDragState.currentLink) {
+            navDragState.currentLink = link;
+            setActiveLinkManual(link);
+          }
+        }
+      });
+
+      function finishNavDrag(navigate) {
+        if (!navDragState) return;
+        const state = navDragState;
+        navDragState = null;
+        if (!state.moved) {
+          isNavDragging = false;
+          return;
+        }
+        suppressNextNavClick = true;
+        if (navigate) {
+          const href = state.currentLink?.getAttribute('href');
+          if (href?.startsWith('#')) {
+            const target = document.querySelector(href);
+            target?.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+        let released = false;
+        const releaseDragging = () => {
+          if (released) return;
+          released = true;
+          isNavDragging = false;
+          updateActiveLink();
+        };
+        if ('onscrollend' in window) {
+          window.addEventListener('scrollend', releaseDragging, { once: true });
+          setTimeout(releaseDragging, 1500);
+        } else {
+          setTimeout(releaseDragging, 800);
+        }
+      }
+
+      navContainer?.addEventListener('pointerup', (e) => {
+        if (!navDragState || e.pointerId !== navDragState.pointerId) return;
+        finishNavDrag(true);
+      });
+      navContainer?.addEventListener('pointercancel', (e) => {
+        if (!navDragState || e.pointerId !== navDragState.pointerId) return;
+        finishNavDrag(false);
+      });
+
+      navContainer?.addEventListener('click', (e) => {
+        if (suppressNextNavClick) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          suppressNextNavClick = false;
+        }
+      }, true);
 
       const fadeEls = document.querySelectorAll('.fade-in');
       if ('IntersectionObserver' in window && fadeEls.length) {
