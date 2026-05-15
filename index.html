@@ -65,6 +65,7 @@
       user-select: none;
       -webkit-user-select: none;
       -webkit-user-drag: none;
+      touch-action: pan-y;
     }
     #mainNav .nav-link {
       padding-left: 0.85rem;
@@ -954,7 +955,7 @@
       });
 
       navContainer?.addEventListener('pointerdown', (e) => {
-        if (e.pointerType !== 'mouse') return;
+        suppressNextNavClick = false;
         const link = e.target.closest('.nav-link, .navbar-brand');
         if (!link || !navLinks.includes(link)) return;
         navDragState = {
@@ -967,21 +968,24 @@
         };
       });
 
-      navContainer?.addEventListener('pointermove', (e) => {
+      window.addEventListener('pointermove', (e) => {
         if (!navDragState || e.pointerId !== navDragState.pointerId) return;
         const dx = e.clientX - navDragState.startX;
         const dy = e.clientY - navDragState.startY;
         if (!navDragState.moved && Math.hypot(dx, dy) > 6) {
           navDragState.moved = true;
           isNavDragging = true;
-          try { navContainer.setPointerCapture(e.pointerId); } catch (_) {}
         }
-        if (navDragState.moved) {
-          const link = findNavLinkAtPoint(e.clientX, e.clientY);
-          if (link && link !== navDragState.currentLink) {
-            navDragState.currentLink = link;
-            setActiveLinkManual(link);
-          }
+        if (!navDragState.moved) return;
+        const link = findNavLinkAtPoint(e.clientX, e.clientY);
+        if (link && link !== navDragState.currentLink) {
+          navDragState.currentLink = link;
+          setActiveLinkManual(link);
+        }
+        const navRect = navContainer.getBoundingClientRect();
+        if (e.clientX < navRect.left || e.clientX > navRect.right ||
+            e.clientY < navRect.top || e.clientY > navRect.bottom) {
+          finishNavDrag(true);
         }
       });
 
@@ -1016,11 +1020,11 @@
         }
       }
 
-      navContainer?.addEventListener('pointerup', (e) => {
+      window.addEventListener('pointerup', (e) => {
         if (!navDragState || e.pointerId !== navDragState.pointerId) return;
         finishNavDrag(true);
       });
-      navContainer?.addEventListener('pointercancel', (e) => {
+      window.addEventListener('pointercancel', (e) => {
         if (!navDragState || e.pointerId !== navDragState.pointerId) return;
         finishNavDrag(false);
       });
