@@ -29,12 +29,14 @@
       --outline-stroke: rgba(0, 0, 0, 0.1);
       --indicator-bg: rgba(0, 0, 0, 0.06);
       --indicator-stroke: rgba(0, 0, 0, 0.08);
+      --indicator-shadow: rgba(0, 0, 0, 0.08);
     }
     :root[data-bs-theme="dark"] {
       --glass-bg: rgba(33, 37, 41, 0.7);
       --outline-stroke: rgba(255, 255, 255, 0.15);
       --indicator-bg: rgba(255, 255, 255, 0.1);
       --indicator-stroke: rgba(255, 255, 255, 0.15);
+      --indicator-shadow: rgba(0, 0, 0, 0.35);
     }
     .navbar-glass {
       background-color: var(--glass-bg) !important;
@@ -79,6 +81,7 @@
       height: 0;
       background-color: var(--indicator-bg);
       border: 1px solid var(--indicator-stroke);
+      box-shadow: 0 4px 12px var(--indicator-shadow);
       backdrop-filter: blur(20px) saturate(180%);
       -webkit-backdrop-filter: blur(20px) saturate(180%);
       border-radius: 999px;
@@ -644,7 +647,7 @@
           class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i
             class="bi bi-file-earmark-text me-2"></i>View CV</a>
         <a href="mailto:jm611@unist.ac.kr" class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i
-            class="bi bi-envelope me-2"></i>E-mail</a>
+            class="bi bi-envelope me-2"></i>Email</a>
         <a href="https://www.linkedin.com/in/ginjae/" target="_blank"
           class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i
             class="bi bi-linkedin me-2"></i>LinkedIn</a>
@@ -663,7 +666,7 @@
       <div class="news-list">
         <div class="news-item">
           <div class="news-date">May 2026</div>
-          <div class="news-text">📝 Paper accepted to ICML '26</div>
+          <div class="news-text">📝 Paper accepted to ICML 2026</div>
         </div>
         <div class="news-item">
           <div class="news-date">Mar 2026</div>
@@ -671,7 +674,7 @@
         </div>
         <div class="news-item">
           <div class="news-date">Feb 2026</div>
-          <div class="news-text">🏆 <a href="https://woonhaefoundation.org/kor/information/news.html?code=share_notice&p=&page=1&bbsData=bm89MjA0MA==%7C%7C&search=&searchstring=&mode=view" target="_blank">Woonhae Scholarship</a> (2026)</div>
+          <div class="news-text">🏆 <a href="https://woonhaefoundation.org/kor/information/news.html?code=share_notice&p=&page=1&bbsData=bm89MjA0MA==%7C%7C&search=&searchstring=&mode=view" target="_blank">Woonhae Scholarship</a> 2026</div>
         </div>
         <div class="news-item">
           <div class="news-date">Sep 2025</div>
@@ -679,7 +682,7 @@
         </div>
         <div class="news-item">
           <div class="news-date">Apr 2025</div>
-          <div class="news-text">🏆 National Scholarship for Science and Engineering (2025–2026)</div>
+          <div class="news-text">🏆 National Excellence Scholarship (Science and Engineering) 2025-2026</div>
         </div>
         <div class="news-item">
           <div class="news-date">Mar 2025</div>
