@@ -827,11 +827,22 @@
       }
 
       function updateActiveLink() {
-        const threshold = navEl.offsetHeight + 24;
+        const viewportTop = navEl.offsetHeight;
+        const viewportBottom = window.innerHeight;
         let activeId = sections[0]?.id;
+        let bestVisible = 0;
         for (const section of sections) {
-          if (section.getBoundingClientRect().top - threshold <= 0) {
+          const rect = section.getBoundingClientRect();
+          const visible = Math.max(0, Math.min(rect.bottom, viewportBottom) - Math.max(rect.top, viewportTop));
+          if (visible > bestVisible) {
+            bestVisible = visible;
             activeId = section.id;
+          }
+        }
+        if (bestVisible === 0 && sections.length) {
+          const lastSection = sections[sections.length - 1];
+          if (lastSection.getBoundingClientRect().bottom <= viewportTop) {
+            activeId = lastSection.id;
           }
         }
         for (const link of navLinks) {
@@ -848,6 +859,17 @@
       backToTopBtn?.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
+
+      for (const link of navLinks) {
+        link.addEventListener('click', (e) => {
+          const href = link.getAttribute('href');
+          const target = document.querySelector(href);
+          if (!target) return;
+          e.preventDefault();
+          const top = target.getBoundingClientRect().top + window.scrollY - navEl.offsetHeight;
+          window.scrollTo({ top, behavior: 'smooth' });
+        });
+      }
 
       updateNavHeight();
       updateActiveLink();
