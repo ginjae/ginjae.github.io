@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jaemin Kim</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
@@ -21,9 +25,11 @@
       scroll-behavior: smooth;
       scroll-padding-top: var(--nav-height, 110px);
     }
+
     body {
       font-family: 'DM Sans', sans-serif;
     }
+
     :root[data-bs-theme="light"] {
       --glass-bg: rgba(255, 255, 255, 0.7);
       --outline-stroke: rgba(0, 0, 0, 0.1);
@@ -31,6 +37,7 @@
       --indicator-stroke: rgba(0, 0, 0, 0.08);
       --indicator-shadow: rgba(0, 0, 0, 0.08);
     }
+
     :root[data-bs-theme="dark"] {
       --glass-bg: rgba(33, 37, 41, 0.7);
       --outline-stroke: rgba(255, 255, 255, 0.15);
@@ -38,41 +45,50 @@
       --indicator-stroke: rgba(255, 255, 255, 0.15);
       --indicator-shadow: rgba(0, 0, 0, 0.35);
     }
+
     .navbar-glass {
       background-color: var(--glass-bg) !important;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
+
     .navbar-toggler {
       border: none;
       box-shadow: none !important;
     }
+
     #mainNav .navbar-brand {
       color: var(--bs-navbar-color);
       transition: color 0.15s ease-in-out;
     }
+
     #mainNav .navbar-brand:hover,
     #mainNav .navbar-brand:focus,
     #mainNav .navbar-brand.active {
       color: var(--bs-navbar-active-color);
     }
+
     #mainNav .nav-container {
       position: relative;
     }
+
     #mainNav .nav-link,
     #mainNav .navbar-brand {
       position: relative;
       z-index: 1;
       border-radius: 999px;
     }
+
     #mainNav .nav-link {
       padding-left: 0.85rem;
       padding-right: 0.85rem;
     }
+
     #mainNav .navbar-brand {
       padding-left: calc(0.75rem + 3px);
       padding-right: 0.75rem;
     }
+
     .nav-indicator {
       position: absolute;
       top: 0;
@@ -94,19 +110,23 @@
         height 0.5s cubic-bezier(0.34, 1.4, 0.64, 1),
         opacity 0.3s ease;
     }
+
     .nav-indicator.visible {
       opacity: 1;
     }
+
     @media (max-width: 767.98px) {
       .menu-scroll-container {
         flex-basis: 100%;
       }
     }
+
     @media (min-width: 768px) {
       .menu-scroll-container {
         flex-grow: 0;
       }
     }
+
     p a {
       color: inherit;
       text-decoration: underline;
@@ -114,12 +134,14 @@
       text-underline-offset: 3px;
       transition: color 0.2s ease, text-decoration-thickness 0.2s ease, text-decoration-color 0.2s ease;
     }
+
     p a:hover,
     p a:focus {
       color: var(--bs-warning);
       /* text-decoration-thickness: 2px; */
       text-decoration-color: var(--bs-warning);
     }
+
     #theme-toggle {
       position: relative;
       width: 56px;
@@ -137,9 +159,11 @@
       -webkit-user-select: none;
       transition: border-color 0.2s ease, background-color 0.2s ease;
     }
+
     #theme-toggle:hover {
       border-color: var(--bs-body-color);
     }
+
     #theme-toggle .theme-toggle-icon {
       position: absolute;
       top: 50%;
@@ -149,12 +173,15 @@
       pointer-events: none;
       transition: opacity 0.2s ease;
     }
+
     #theme-toggle .theme-toggle-icon-sun {
       left: 8px;
     }
+
     #theme-toggle .theme-toggle-icon-moon {
       right: 8px;
     }
+
     #theme-toggle .theme-toggle-thumb {
       position: absolute;
       top: 2px;
@@ -169,22 +196,28 @@
       justify-content: center;
       transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
     }
+
     #theme-toggle .theme-toggle-thumb i {
       font-size: 12px;
       color: var(--bs-body-color);
     }
+
     #theme-toggle .theme-toggle-thumb .bi-moon-fill {
       display: none;
     }
+
     :root[data-bs-theme="dark"] #theme-toggle .theme-toggle-thumb {
       transform: translateX(26px);
     }
+
     :root[data-bs-theme="dark"] #theme-toggle .theme-toggle-thumb .bi-sun-fill {
       display: none;
     }
+
     :root[data-bs-theme="dark"] #theme-toggle .theme-toggle-thumb .bi-moon-fill {
       display: inline-block;
     }
+
     .btn-glass {
       background-color: var(--glass-bg);
       backdrop-filter: blur(12px);
@@ -193,6 +226,7 @@
       color: var(--bs-body-color);
       transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     }
+
     .btn-glass:hover,
     .btn-glass:focus {
       background-color: var(--glass-bg);
@@ -200,17 +234,21 @@
       color: var(--bs-body-color);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
+
     .btn-glass:active {
       background-color: var(--glass-bg) !important;
       border-color: var(--bs-body-color) !important;
       color: var(--bs-body-color) !important;
     }
+
     .content-section {
       padding-block: 4rem;
     }
-    .content-section + .content-section {
+
+    .content-section+.content-section {
       border-top: none;
     }
+
     .section-label {
       font-size: 0.78rem;
       font-weight: 700;
@@ -219,12 +257,14 @@
       color: var(--bs-warning);
       margin-bottom: 0.6rem;
     }
+
     .section-title {
       font-size: 2.25rem;
       font-weight: 800;
       letter-spacing: -0.5px;
       margin-bottom: 2rem;
     }
+
     .subsection-label {
       font-size: 0.95rem;
       font-weight: 700;
@@ -233,6 +273,7 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
+
     .subsection-title {
       font-size: 1.35rem;
       font-weight: 700;
@@ -240,30 +281,36 @@
       margin-top: 2.25rem;
       margin-bottom: 1rem;
     }
+
     .subsection-title:first-of-type {
       margin-top: 0;
     }
+
     .news-list {
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
+
     .news-item {
       display: grid;
       grid-template-columns: 110px 1fr;
       gap: 1.25rem;
       align-items: baseline;
     }
+
     .news-date {
       font-size: 0.88rem;
       font-weight: 600;
       color: var(--bs-secondary-color);
       letter-spacing: 0.02em;
     }
+
     .news-text {
       font-size: 1rem;
       line-height: 1.6;
     }
+
     .news-text a {
       color: inherit;
       text-decoration: underline;
@@ -271,20 +318,24 @@
       text-decoration-thickness: 1px;
       transition: color 0.2s ease, text-decoration-color 0.2s ease;
     }
+
     .news-text a:hover,
     .news-text a:focus {
       color: var(--bs-warning);
       text-decoration-color: var(--bs-warning);
     }
+
     @media (max-width: 575.98px) {
       .news-list {
         gap: 1.5rem;
       }
+
       .news-item {
         grid-template-columns: 1fr;
         gap: 0.35rem;
       }
     }
+
     .entry {
       background-color: var(--glass-bg);
       backdrop-filter: blur(12px);
@@ -294,10 +345,12 @@
       overflow: hidden;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
+
     .entry:hover {
       border-color: var(--bs-body-color);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
     }
+
     .entry-inner {
       display: grid;
       grid-template-columns: 64px 1fr;
@@ -305,6 +358,7 @@
       align-items: center;
       padding: 1.25rem 1.5rem;
     }
+
     .entry-logo-wrap {
       display: flex;
       align-items: center;
@@ -317,14 +371,17 @@
       overflow: hidden;
       flex-shrink: 0;
     }
+
     .entry-logo {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
     }
+
     .entry-body {
       min-width: 0;
     }
+
     .entry-header-row {
       display: flex;
       justify-content: space-between;
@@ -332,6 +389,7 @@
       gap: 1rem;
       flex-wrap: wrap;
     }
+
     .entry-org {
       font-size: 1.15rem;
       font-weight: 700;
@@ -339,47 +397,56 @@
       text-decoration: none;
       transition: color 0.2s ease;
     }
+
     .entry-org:hover,
     .entry-org:focus {
       color: var(--bs-warning);
     }
+
     .entry-period {
       font-size: 0.85rem;
       font-weight: 500;
       color: var(--bs-secondary-color);
       white-space: nowrap;
     }
+
     .entry-title {
       font-size: 0.98rem;
       font-weight: 600;
       color: var(--bs-body-color);
       margin-top: 0.15rem;
     }
+
     .entry-subtitle {
       font-size: 0.88rem;
       color: var(--bs-secondary-color);
       margin-top: 0.1rem;
     }
+
     .entry-period-mobile {
       display: none;
       font-size: 0.82rem;
       color: var(--bs-secondary-color);
       margin-top: 0.35rem;
     }
+
     .entry-footer {
       padding: 0 1.5rem 1.25rem;
       font-size: 0.88rem;
       color: var(--bs-secondary-color);
       line-height: 1.6;
     }
+
     .entry-footer ul {
       list-style: disc outside;
       margin: 0;
       padding-left: 1.1rem;
     }
-    .entry-footer li + li {
+
+    .entry-footer li+li {
       margin-top: 0.15rem;
     }
+
     .entry-footer a {
       color: inherit;
       text-decoration: underline;
@@ -387,37 +454,46 @@
       text-decoration-thickness: 1px;
       transition: color 0.2s ease, text-decoration-color 0.2s ease;
     }
+
     .entry-footer a:hover,
     .entry-footer a:focus {
       color: var(--bs-warning);
       text-decoration-color: var(--bs-warning);
     }
+
     @media (max-width: 575.98px) {
       .entry-inner {
         grid-template-columns: 64px 1fr;
         gap: 1rem;
         padding: 1rem 1.1rem;
       }
+
       .entry-logo-wrap {
         width: 64px;
         height: 64px;
       }
+
       .entry-period {
         display: none;
       }
+
       .entry-period-mobile {
         display: block;
       }
+
       .entry-footer {
         padding: 0 1.1rem 1rem;
       }
     }
+
     .pub-item {
       padding-block: 1rem;
     }
-    .pub-item + .pub-item {
+
+    .pub-item+.pub-item {
       border-top: 1px solid var(--outline-stroke);
     }
+
     .pub-venue {
       display: inline-block;
       font-size: 0.75rem;
@@ -429,29 +505,35 @@
       color: #000;
       margin-bottom: 0.55rem;
     }
+
     .pub-title {
       font-size: 1.02rem;
       font-weight: 600;
       line-height: 1.45;
       margin-bottom: 0.35rem;
     }
+
     .pub-title a {
       color: inherit;
       text-decoration: none;
       transition: color 0.2s ease;
     }
+
     .pub-title a:hover,
     .pub-title a:focus {
       color: var(--bs-warning);
     }
+
     .pub-authors {
       font-size: 0.92rem;
       color: var(--bs-secondary-color);
       margin-bottom: 0.2rem;
     }
+
     .pub-authors strong {
       color: var(--bs-body-color);
     }
+
     .pub-authors a {
       color: inherit;
       text-decoration: underline;
@@ -459,22 +541,26 @@
       text-decoration-thickness: 1px;
       transition: color 0.2s ease, text-decoration-color 0.2s ease;
     }
+
     .pub-authors a:hover,
     .pub-authors a:focus {
       color: var(--bs-warning);
       text-decoration-color: var(--bs-warning);
     }
+
     .pub-detail {
       font-size: 0.85rem;
       color: var(--bs-secondary-color);
       font-style: italic;
     }
+
     .hero-buttons {
       display: flex;
       justify-content: center;
       gap: 0.75rem;
       flex-wrap: wrap;
     }
+
     @media (max-width: 575.98px) {
       .hero-buttons {
         display: grid;
@@ -482,20 +568,24 @@
         justify-content: center;
         gap: 0.75rem;
       }
+
       .hero-buttons>a {
         text-align: center;
         justify-self: stretch;
       }
     }
+
     .fade-in {
       opacity: 0;
       transform: translateY(16px);
       transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
+
     .fade-in.is-visible {
       opacity: 1;
       transform: none;
     }
+
     @media (prefers-reduced-motion: reduce) {
       .fade-in {
         opacity: 1;
@@ -503,6 +593,7 @@
         transition: none;
       }
     }
+
     #back-to-top {
       position: fixed;
       right: 1.5rem;
@@ -531,18 +622,22 @@
       z-index: 1030;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
+
     #back-to-top.visible {
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
     }
+
     #back-to-top.visible:hover {
       border-color: var(--bs-body-color);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
     }
+
     #back-to-top.visible:active {
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
+
     .outline-logo {
       display: grid;
       grid-template-columns: repeat(5, 0.75em);
@@ -553,6 +648,7 @@
       line-height: 0.85;
       user-select: none;
     }
+
     .outline-logo span {
       display: flex;
       align-items: center;
@@ -560,15 +656,17 @@
       color: var(--bs-body-bg, #fff);
       text-shadow:
         -1px -1px 0 var(--outline-stroke),
-         1px -1px 0 var(--outline-stroke),
-        -1px  1px 0 var(--outline-stroke),
-         1px  1px 0 var(--outline-stroke);
+        1px -1px 0 var(--outline-stroke),
+        -1px 1px 0 var(--outline-stroke),
+        1px 1px 0 var(--outline-stroke);
       transition: text-shadow 0.35s ease, color 0.35s ease;
       outline: none;
     }
+
     .outline-logo span:not(:empty) {
       cursor: pointer;
     }
+
     .outline-logo span.is-active {
       color: var(--bs-warning);
       /* text-shadow:
@@ -579,14 +677,15 @@
     }
   </style>
 </head>
+
 <body tabindex="0">
-  
+
   <!-- Navbar Section -->
   <nav id="mainNav" class="navbar navbar-expand border-bottom border-secondary fixed-top navbar-glass">
     <div class="nav-container container-fluid px-4 py-2 d-flex flex-wrap align-items-center justify-content-between">
       <span class="nav-indicator" aria-hidden="true"></span>
       <a class="navbar-brand fw-bold" href="#home" style="letter-spacing: 3px;">jaemin-kim.com</a>
-      
+
       <div class="d-flex align-items-center ms-auto order-1 order-md-3">
         <button id="theme-toggle" type="button" aria-label="Toggle theme">
           <i class="bi bi-sun-fill theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true"></i>
@@ -598,7 +697,8 @@
         </button>
       </div>
 
-      <div class="menu-scroll-container d-flex justify-content-md-start mt-2 mt-md-0 ms-md-4 order-2 order-md-2" style="overflow-x: auto; white-space: nowrap; scrollbar-width: none;">
+      <div class="menu-scroll-container d-flex justify-content-md-start mt-2 mt-md-0 ms-md-4 order-2 order-md-2"
+        style="overflow-x: auto; white-space: nowrap; scrollbar-width: none;">
         <ul class="navbar-nav flex-row gap-2 fw-semibold">
           <li class="nav-item">
             <a class="nav-link" href="#news">News</a>
@@ -620,10 +720,12 @@
   </nav>
 
   <!-- Hero Section -->
-  <header class="py-5 text-center d-flex align-items-center" style="min-height: 100vh; padding-top: calc(var(--nav-height, 110px)) !important;" id="home">
+  <header class="py-5 text-center d-flex align-items-center"
+    style="min-height: 100vh; padding-top: calc(var(--nav-height, 110px)) !important;" id="home">
     <div class="container">
       <div class="d-flex flex-row justify-content-center align-items-center gap-3 gap-md-4 mb-4">
-        <img src="images/profile.jpg" alt="Jaemin Kim" class="rounded-3 shadow-sm" style="width: 120px; height: 120px; object-fit: cover; border: 1px solid var(--outline-stroke);">
+        <img src="images/profile.jpg" alt="Jaemin Kim" class="rounded-3 shadow-sm"
+          style="width: 120px; height: 120px; object-fit: cover; border: 1px solid var(--outline-stroke);">
         <div class="text-start">
           <div class="section-label mb-1" style="font-size: 0.65rem;">
             ON-DEVICE AI RESEARCHER
@@ -634,10 +736,12 @@
         </div>
       </div>
       <p class="lead mb-5 mx-auto text-secondary" style="max-width: 700px; font-size: 1.1rem;">
-        Hello, I'm an Undergraduate Student in the <a href="https://cse.unist.ac.kr/eng/">Department of Computer Science and Engineering</a> at <a href="https://www.unist.ac.kr/">UNIST</a>,
+        Hello, I'm an Undergraduate Student in the <a href="https://cse.unist.ac.kr/eng/">Department of Computer Science
+          and Engineering</a> at <a href="https://www.unist.ac.kr/">UNIST</a>,
         exploring the intersection of computer systems and artificial intelligence.
         <br>
-        I'm currently a Research Intern at <a href="https://sites.google.com/view/uailab">Ubiquitous AI Lab</a>, advised by <a href="https://taesikgong.com/">Prof. Taesik Gong</a>,
+        I'm currently a Research Intern at <a href="https://sites.google.com/view/uailab">Ubiquitous AI Lab</a>, advised
+        by <a href="https://taesikgong.com/">Prof. Taesik Gong</a>,
         and will be joining as a Graduate Student next year.
         <br>
         Please feel free to reach out if you'd like to connect or collaborate!
@@ -670,15 +774,20 @@
         </div>
         <div class="news-item">
           <div class="news-date">Mar 2026</div>
-          <div class="news-text">🏆 <a href="https://ib.unist.ac.kr/2025%ED%95%99%EB%85%84%EB%8F%84-2%ED%95%99%EA%B8%B0-deans-list-%EC%8B%9C%EC%83%81%EC%8B%9D-%EA%B0%9C%EC%B5%9C/" target="_blank">Dean's List</a> for Fall 2025 at UNIST</div>
+          <div class="news-text">🏆 <a
+              href="https://ib.unist.ac.kr/2025%ED%95%99%EB%85%84%EB%8F%84-2%ED%95%99%EA%B8%B0-deans-list-%EC%8B%9C%EC%83%81%EC%8B%9D-%EA%B0%9C%EC%B5%9C/"
+              target="_blank">Dean's List</a> for Fall 2025 at UNIST</div>
         </div>
         <div class="news-item">
           <div class="news-date">Feb 2026</div>
-          <div class="news-text">🏆 <a href="https://woonhaefoundation.org/kor/information/news.html?code=share_notice&p=&page=1&bbsData=bm89MjA0MA==%7C%7C&search=&searchstring=&mode=view" target="_blank">Woonhae Scholarship</a> 2026</div>
+          <div class="news-text">🏆 <a
+              href="https://woonhaefoundation.org/kor/information/news.html?code=share_notice&p=&page=1&bbsData=bm89MjA0MA==%7C%7C&search=&searchstring=&mode=view"
+              target="_blank">Woonhae Scholarship</a> 2026</div>
         </div>
         <div class="news-item">
           <div class="news-date">Sep 2025</div>
-          <div class="news-text">👔 Teaching Assistant for Project-Based Learning at Ulsan AI Novatus Academia (8th)</div>
+          <div class="news-text">👔 Teaching Assistant for Project-Based Learning at Ulsan AI Novatus Academia (8th)
+          </div>
         </div>
         <div class="news-item">
           <div class="news-date">Apr 2025</div>
@@ -686,11 +795,13 @@
         </div>
         <div class="news-item">
           <div class="news-date">Mar 2025</div>
-          <div class="news-text">👔 Research Internship at <a href="https://sites.google.com/view/uailab" target="_blank">UAI Lab</a></div>
+          <div class="news-text">👔 Research Internship at <a href="https://sites.google.com/view/uailab"
+              target="_blank">UAI Lab</a></div>
         </div>
         <div class="news-item">
           <div class="news-date">Oct 2024</div>
-          <div class="news-text">🏆 <a href="https://ib.unist.ac.kr/2546-2/" target="_blank">Dean's List</a> for Spring 2024 at UNIST</div>
+          <div class="news-text">🏆 <a href="https://ib.unist.ac.kr/2546-2/" target="_blank">Dean's List</a> for Spring
+            2024 at UNIST</div>
         </div>
       </div>
     </section>
@@ -752,18 +863,33 @@
     <section id="publications" class="content-section fade-in">
       <h2 class="section-title">Publications</h2>
 
-      <div class="subsection-label">Conferences &amp; Journals</div>
+      <div class="subsection-title">Conferences &amp; Journals</div>
       <div class="pub-item">
         <span class="pub-venue">ICML 2026</span>
-        <div class="pub-title"><a href="https://icml.cc/virtual/2026/poster/62548" target="_blank">"From Volume to Value: Preference-Aligned Memory Construction for On-Device RAG"</a></div>
-        <div class="pub-authors"><a href="https://changmin-lee.com/" target="_blank">Changmin Lee</a>, <strong>Jaemin Kim</strong>, <a href="https://taesikgong.com/" target="_blank">Taesik Gong</a></div>
+        <div class="pub-title"><a href="https://icml.cc/virtual/2026/poster/62548" target="_blank">"From Volume to
+            Value: Preference-Aligned Memory Construction for On-Device RAG"</a></div>
+        <div class="pub-authors"><a href="https://changmin-lee.com/" target="_blank">Changmin Lee</a>, <strong>Jaemin
+            Kim</strong>, <a href="https://taesikgong.com/" target="_blank">Taesik Gong</a></div>
         <div class="pub-detail">International Conference on Machine Learning (<strong>ICML</strong>) 2026.</div>
+        <div class="mt-2 d-flex gap-2">
+          <a href="https://arxiv.org/abs/2605.18271" target="_blank"
+            class="btn btn-glass btn-sm py-1 px-2.5 rounded-pill"
+            style="font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center;">
+            <i class="bi bi-file-earmark-text me-1"></i> Paper
+          </a>
+          <a href="https://github.com/UbiquitousAILab/EPIC" target="_blank"
+            class="btn btn-glass btn-sm py-1 px-2.5 rounded-pill"
+            style="font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center;">
+            <i class="bi bi-github me-1"></i> Code
+          </a>
+        </div>
       </div>
     </section>
   </main>
 
   <!-- Giant Outline Logo -->
-  <div class="overflow-hidden d-flex justify-content-center align-items-center mb-5" style="padding-top: 10vh; padding-bottom: 5vh;">
+  <div class="overflow-hidden d-flex justify-content-center align-items-center mb-5"
+    style="padding-top: 10vh; padding-bottom: 5vh;">
     <div class="outline-logo">
       <span>J</span><span>A</span><span>E</span><span></span><span></span>
       <span></span><span>M</span><span>I</span><span>N</span><span></span>
@@ -775,10 +901,12 @@
     <i class="bi bi-arrow-up"></i>
   </button>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       const themeToggleBtn = document.getElementById('theme-toggle');
       const htmlElement = document.documentElement;
 
@@ -827,24 +955,23 @@
       }
 
       function updateActiveLink() {
-        const viewportTop = navEl.offsetHeight;
-        const viewportBottom = window.innerHeight;
+        const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+        const offset = navEl.offsetHeight + 100; // navbar height + margin offset
         let activeId = sections[0]?.id;
-        let bestVisible = 0;
+
         for (const section of sections) {
-          const rect = section.getBoundingClientRect();
-          const visible = Math.max(0, Math.min(rect.bottom, viewportBottom) - Math.max(rect.top, viewportTop));
-          if (visible > bestVisible) {
-            bestVisible = visible;
+          const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+          if (scrollPosition + offset >= sectionTop) {
             activeId = section.id;
           }
         }
-        if (bestVisible === 0 && sections.length) {
-          const lastSection = sections[sections.length - 1];
-          if (lastSection.getBoundingClientRect().bottom <= viewportTop) {
-            activeId = lastSection.id;
-          }
+
+        // Force active the last section when scrolled to the very bottom
+        const isAtBottom = (window.innerHeight + scrollPosition) >= document.documentElement.scrollHeight - 10;
+        if (isAtBottom && sections.length) {
+          activeId = sections[sections.length - 1].id;
         }
+
         for (const link of navLinks) {
           link.classList.toggle('active', link.getAttribute('href') === `#${activeId}`);
         }
@@ -891,14 +1018,14 @@
         const span = e.target.closest('span');
         if (!span || !span.textContent.trim()) return;
         span.classList.toggle('is-active');
-        
+
         const activeSpans = Array.from(outlineLogo.querySelectorAll('span.is-active'))
-                                 .map(s => s.textContent.trim().toUpperCase());
-        
+          .map(s => s.textContent.trim().toUpperCase());
+
         const hasJ = activeSpans.includes('J');
         const hasA = activeSpans.includes('A');
         const hasM = activeSpans.includes('M');
-        
+
         if (hasJ && hasA && hasM && activeSpans.length === 3) {
           window.location.href = 'https://itsooh.github.io/';
         }
@@ -921,7 +1048,7 @@
 
       themeToggleBtn.addEventListener('pointerdown', (e) => {
         themeDragState = { pointerId: e.pointerId, startX: e.clientX, moved: false };
-        try { themeToggleBtn.setPointerCapture(e.pointerId); } catch (_) {}
+        try { themeToggleBtn.setPointerCapture(e.pointerId); } catch (_) { }
         themeToggleThumb.style.transition = 'none';
       });
 
@@ -965,4 +1092,5 @@
     });
   </script>
 </body>
+
 </html>
