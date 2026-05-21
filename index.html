@@ -675,6 +675,68 @@
         -1px  1px 0 var(--bs-warning),
          1px  1px 0 var(--bs-warning); */
     }
+
+    .keycap-logo {
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s ease, box-shadow 0.2s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-user-drag: none;
+      border-radius: 24px;
+    }
+
+    .keycap-logo:hover {
+      transform: translateY(-2px);
+    }
+
+    .keycap-logo.pressed {
+      transform: translateY(6px) scale(0.92);
+      transition: transform 0.05s ease;
+    }
+
+    .scroll-down-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bs-secondary-color);
+      font-size: 1.8rem;
+      text-decoration: none;
+      cursor: pointer;
+      z-index: 10;
+      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+    }
+
+    .scroll-down-indicator i {
+      display: inline-block;
+      animation: scroll-bounce 2s infinite;
+    }
+
+    .scroll-down-indicator:hover {
+      color: var(--bs-warning);
+      transform: translateX(-50%) scale(1.15);
+    }
+
+    .scroll-down-indicator.fade-out {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%) translateY(15px);
+    }
+
+    @keyframes scroll-bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(6px);
+      }
+      60% {
+        transform: translateY(3px);
+      }
+    }
   </style>
 </head>
 
@@ -721,11 +783,11 @@
 
   <!-- Hero Section -->
   <header class="py-5 text-center d-flex align-items-center"
-    style="min-height: 100vh; padding-top: calc(var(--nav-height, 110px)) !important;" id="home">
+    style="min-height: 100vh; padding-top: calc(var(--nav-height, 110px)) !important; position: relative;" id="home">
     <div class="container">
       <div class="d-flex flex-row justify-content-center align-items-center gap-3 gap-md-4 mb-4">
-        <img src="images/profile.jpg" alt="Jaemin Kim" class="rounded-3 shadow-sm"
-          style="width: 120px; height: 120px; object-fit: cover; border: 1px solid var(--outline-stroke);">
+        <img src="images/logo.png" alt="Jaemin Kim" class="keycap-logo" draggable="false"
+          style="width: 120px; height: 120px; object-fit: cover; cursor: pointer;">
         <div class="text-start">
           <div class="section-label mb-1" style="font-size: 0.65rem;">
             ON-DEVICE AI RESEARCHER
@@ -759,6 +821,11 @@
           class="btn btn-glass btn-sm px-3 py-2 fw-semibold rounded-pill"><i class="bi bi-github me-2"></i>GitHub</a>
       </div>
     </div>
+
+    <!-- Scroll Down Indicator -->
+    <a href="#news" class="scroll-down-indicator" aria-label="Scroll down to News">
+      <i class="bi bi-chevron-double-down"></i>
+    </a>
   </header>
 
   <!-- Content Sections -->
@@ -993,17 +1060,56 @@
           const target = document.querySelector(href);
           if (!target) return;
           e.preventDefault();
-          const top = target.getBoundingClientRect().top + window.scrollY - navEl.offsetHeight;
+
+          // Calculate absolute top offset in the document layout.
+          // This avoids the 16px measurement distortion caused by the temporary 'translateY(16px)'
+          // property of unrevealed '.fade-in' sections on the first click.
+          let absoluteTop = 0;
+          let element = target;
+          while (element) {
+            absoluteTop += element.offsetTop;
+            element = element.offsetParent;
+          }
+
+          const top = absoluteTop - navEl.offsetHeight;
           window.scrollTo({ top, behavior: 'smooth' });
         });
       }
 
+      const scrollIndicator = document.querySelector('.scroll-down-indicator');
+      function updateScrollIndicator() {
+        if (!scrollIndicator) return;
+        if (window.scrollY > 80) {
+          scrollIndicator.classList.add('fade-out');
+        } else {
+          scrollIndicator.classList.remove('fade-out');
+        }
+      }
+      scrollIndicator?.addEventListener('click', (e) => {
+        const href = scrollIndicator.getAttribute('href');
+        const target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+
+        let absoluteTop = 0;
+        let element = target;
+        while (element) {
+          absoluteTop += element.offsetTop;
+          element = element.offsetParent;
+        }
+
+        const top = absoluteTop - navEl.offsetHeight;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+
       updateNavHeight();
       updateActiveLink();
       updateBackToTop();
+      updateScrollIndicator();
       window.addEventListener('scroll', () => {
         updateActiveLink();
         updateBackToTop();
+        updateScrollIndicator();
       }, { passive: true });
       window.addEventListener('resize', () => {
         updateNavHeight();
@@ -1089,6 +1195,135 @@
       } else {
         fadeEls.forEach(el => el.classList.add('is-visible'));
       }
+
+      // Mechanical Blue Switch Audio Synthesizer using Web Audio API
+      let audioCtx = null;
+      function playBlueSwitchSound() {
+        try {
+          if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+
+          const now = audioCtx.currentTime;
+
+          // 1. Mechanical clicky noise (High-frequency Click)
+          const bufferSize = audioCtx.sampleRate * 0.02; // Sharp 20ms click
+          const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+          }
+
+          const noise = audioCtx.createBufferSource();
+          noise.buffer = buffer;
+
+          const hpFilter = audioCtx.createBiquadFilter();
+          hpFilter.type = 'highpass';
+          hpFilter.frequency.setValueAtTime(6500, now); // Clean and crisp sound at 6.5kHz
+          hpFilter.Q.setValueAtTime(3.5, now);
+
+          const noiseGain = audioCtx.createGain();
+          noiseGain.gain.setValueAtTime(0.08, now); // Adjusted click volume
+          noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.012); // Decays extremely fast
+
+          noise.connect(hpFilter);
+          hpFilter.connect(noiseGain);
+          noiseGain.connect(audioCtx.destination);
+
+          // 2. Metallic spring ping resonance (Metallic Ping)
+          const pingOsc = audioCtx.createOscillator();
+          const pingGain = audioCtx.createGain();
+          pingOsc.type = 'sine';
+          pingOsc.frequency.setValueAtTime(3400, now); // Spring resonance frequency at 3.4kHz
+          
+          pingGain.gain.setValueAtTime(0.02, now);
+          pingGain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+          
+          pingOsc.connect(pingGain);
+          pingGain.connect(audioCtx.destination);
+
+          // 3. Bottom-out housing sound (Bottom-out Housing Sound)
+          const bottomOsc = audioCtx.createOscillator();
+          const bottomGain = audioCtx.createGain();
+          bottomOsc.type = 'triangle';
+          bottomOsc.frequency.setValueAtTime(155, now);
+          bottomOsc.frequency.exponentialRampToValueAtTime(95, now + 0.05);
+
+          const lpFilter = audioCtx.createBiquadFilter();
+          lpFilter.type = 'lowpass';
+          lpFilter.frequency.setValueAtTime(300, now);
+
+          bottomGain.gain.setValueAtTime(0.18, now); // Bottom-out volume
+          bottomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+
+          bottomOsc.connect(lpFilter);
+          lpFilter.connect(bottomGain);
+          bottomGain.connect(audioCtx.destination);
+
+          // Playback and release nodes
+          noise.start(now);
+          noise.stop(now + 0.02);
+
+          pingOsc.start(now);
+          pingOsc.stop(now + 0.03);
+
+          bottomOsc.start(now);
+          bottomOsc.stop(now + 0.05);
+        } catch (e) {
+          console.error("Audio Context failed to play", e);
+        }
+      }
+
+      // Keycap animation binding for smooth press feedback (pointerevents)
+      const keycap = document.querySelector('.keycap-logo');
+      if (keycap) {
+        keycap.addEventListener('pointerdown', (e) => {
+          keycap.classList.add('pressed');
+          playBlueSwitchSound();
+        });
+        const releaseKeycap = () => {
+          keycap.classList.remove('pressed');
+        };
+        keycap.addEventListener('pointerup', releaseKeycap);
+        keycap.addEventListener('pointercancel', releaseKeycap);
+        keycap.addEventListener('pointerleave', releaseKeycap);
+
+        // Prevent dragging and iOS long-press context menu on the image
+        keycap.addEventListener('dragstart', (e) => e.preventDefault());
+        keycap.addEventListener('contextmenu', (e) => e.preventDefault());
+      }
+
+      // Keyboard event binding for J / ㅓ key press
+      window.addEventListener('keydown', (e) => {
+        // Prevent triggering when user is typing in form inputs
+        const activeEl = document.activeElement;
+        const isTyping = activeEl && (
+          activeEl.tagName === 'INPUT' || 
+          activeEl.tagName === 'TEXTAREA' || 
+          activeEl.isContentEditable
+        );
+        if (isTyping) return;
+
+        // Detect if key is J / ㅓ (both key value and physical code)
+        if (e.code === 'KeyJ' || e.key === 'j' || e.key === 'J' || e.key === 'ㅓ') {
+          if (e.repeat) return; // Prevent sound spam when key is held down
+          if (keycap) {
+            keycap.classList.add('pressed');
+          }
+          playBlueSwitchSound();
+        }
+      });
+
+      window.addEventListener('keyup', (e) => {
+        if (e.code === 'KeyJ' || e.key === 'j' || e.key === 'J' || e.key === 'ㅓ') {
+          if (keycap) {
+            keycap.classList.remove('pressed');
+          }
+        }
+      });
     });
   </script>
 </body>
