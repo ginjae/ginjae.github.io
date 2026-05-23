@@ -116,8 +116,69 @@
     }
 
     @media (max-width: 767.98px) {
+      #mainNav .nav-container {
+        display: grid !important;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        gap: 0.3rem 0.75rem;
+        align-items: center;
+        padding-block: 0.4rem !important;
+      }
+
+      #mainNav .navbar-brand {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-right: 0;
+        font-size: 1.1rem;
+        padding-block: 0.15rem;
+      }
+
+      #mainNav .order-1 {
+        /* theme-toggle container */
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+      }
+
       .menu-scroll-container {
-        flex-basis: 100%;
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        width: 100%;
+        flex-basis: auto;
+        padding-bottom: 0;
+        overflow: visible !important;
+        white-space: normal !important;
+      }
+
+      #mainNav .navbar-nav {
+        flex-wrap: wrap;
+        gap: 0.35rem 0.5rem !important;
+        padding-inline: 0;
+        justify-content: start;
+      }
+
+      #mainNav .nav-link {
+        font-size: 0.88rem;
+        padding: 0.25rem 0.65rem !important;
+      }
+
+      #theme-toggle {
+        width: 48px;
+        height: 26px;
+      }
+
+      #theme-toggle .theme-toggle-thumb {
+        width: 20px;
+        height: 20px;
+      }
+
+      :root[data-bs-theme="dark"] #theme-toggle .theme-toggle-thumb {
+        transform: translateX(20px);
       }
     }
 
@@ -713,12 +774,19 @@
     }
 
     @keyframes scroll-bounce {
-      0%, 20%, 50%, 80%, 100% {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
         transform: translateY(0);
       }
+
       40% {
         transform: translateY(6px);
       }
+
       60% {
         transform: translateY(3px);
       }
@@ -746,7 +814,7 @@
       </div>
 
       <div class="menu-scroll-container d-flex justify-content-md-start mt-2 mt-md-0 ms-md-4 order-2 order-md-2"
-        style="overflow-x: auto; white-space: nowrap; scrollbar-width: none;">
+        style="overflow-x: auto; white-space: nowrap;">
         <ul class="navbar-nav flex-row gap-2 fw-semibold">
           <li class="nav-item">
             <a class="nav-link" href="#news">News</a>
@@ -757,20 +825,19 @@
           <li class="nav-item">
             <a class="nav-link" href="#publications">Publications</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" onclick="alert('Work in progress...');">
               Blog <i class="bi bi-box-arrow-up-right"></i>
             </a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
   <header class="py-5 text-center d-flex align-items-center"
     style="min-height: 100vh; padding-top: calc(var(--nav-height, 110px)) !important; position: relative;" id="home">
-    <div class="container">
+    <div class="container mt-5 mt-md-0">
       <div class="d-flex flex-row justify-content-center align-items-center gap-3 gap-md-4 mb-4">
         <img src="images/logo.png" alt="Jaemin Kim" class="keycap-logo" draggable="false"
           style="width: 90px; height: 90px; object-fit: cover; cursor: pointer;">
@@ -812,7 +879,7 @@
     </div>
 
     <!-- Scroll Down Indicator -->
-    <a href="#news" class="scroll-down-indicator" aria-label="Scroll down to News">
+    <a href="#news" class="scroll-down-indicator d-none d-md-inline-flex" aria-label="Scroll down to News">
       <i class="bi bi-chevron-double-down"></i>
     </a>
   </header>
@@ -990,7 +1057,6 @@
         .filter(Boolean);
       const navContainer = navEl.querySelector('.nav-container');
       const indicator = navContainer?.querySelector('.nav-indicator');
-
       function updateNavHeight() {
         htmlElement.style.setProperty('--nav-height', `${navEl.offsetHeight + 8}px`);
       }
@@ -1004,6 +1070,7 @@
         }
         const linkRect = activeLink.getBoundingClientRect();
         const parentRect = navContainer.getBoundingClientRect();
+
         indicator.style.width = `${linkRect.width}px`;
         indicator.style.height = `${linkRect.height}px`;
         indicator.style.transform = `translate(${linkRect.left - parentRect.left}px, ${linkRect.top - parentRect.top}px)`;
@@ -1095,15 +1162,18 @@
       updateActiveLink();
       updateBackToTop();
       updateScrollIndicator();
+
       window.addEventListener('scroll', () => {
         updateActiveLink();
         updateBackToTop();
         updateScrollIndicator();
       }, { passive: true });
+
       window.addEventListener('resize', () => {
         updateNavHeight();
         updateActiveLink();
       });
+
       if (document.fonts?.ready) {
         document.fonts.ready.then(updateIndicator);
       }
@@ -1227,10 +1297,10 @@
           const pingGain = audioCtx.createGain();
           pingOsc.type = 'sine';
           pingOsc.frequency.setValueAtTime(3400, now); // Spring resonance frequency at 3.4kHz
-          
+
           pingGain.gain.setValueAtTime(0.02, now);
           pingGain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
-          
+
           pingOsc.connect(pingGain);
           pingGain.connect(audioCtx.destination);
 
@@ -1290,8 +1360,8 @@
         // Prevent triggering when user is typing in form inputs
         const activeEl = document.activeElement;
         const isTyping = activeEl && (
-          activeEl.tagName === 'INPUT' || 
-          activeEl.tagName === 'TEXTAREA' || 
+          activeEl.tagName === 'INPUT' ||
+          activeEl.tagName === 'TEXTAREA' ||
           activeEl.isContentEditable
         );
         if (isTyping) return;
