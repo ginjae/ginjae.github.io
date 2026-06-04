@@ -36,6 +36,14 @@
       --indicator-bg: rgba(0, 0, 0, 0.06);
       --indicator-stroke: rgba(0, 0, 0, 0.08);
       --indicator-shadow: rgba(0, 0, 0, 0.08);
+      /* iOS liquid-glass indicator */
+      --ind-glass-bg: rgba(255, 255, 255, 0.6);
+      --ind-rim: rgba(255, 255, 255, 0.75);
+      --ind-highlight: rgba(255, 255, 255, 0.95);
+      --ind-highlight-bottom: rgba(255, 255, 255, 0.55);
+      --ind-shadow: rgba(0, 0, 0, 0.1);
+      --ind-inner-shadow: rgba(0, 0, 0, 0.13);
+      --ind-inner-shadow-b: rgba(0, 0, 0, 0.1);
     }
 
     :root[data-bs-theme="dark"] {
@@ -44,6 +52,14 @@
       --indicator-bg: rgba(255, 255, 255, 0.1);
       --indicator-stroke: rgba(255, 255, 255, 0.15);
       --indicator-shadow: rgba(0, 0, 0, 0.35);
+      /* iOS liquid-glass indicator */
+      --ind-glass-bg: rgba(255, 255, 255, 0.14);
+      --ind-rim: rgba(255, 255, 255, 0.22);
+      --ind-highlight: rgba(255, 255, 255, 0.45);
+      --ind-highlight-bottom: rgba(255, 255, 255, 0.12);
+      --ind-shadow: rgba(0, 0, 0, 0.28);
+      --ind-inner-shadow: rgba(0, 0, 0, 0.36);
+      --ind-inner-shadow-b: rgba(0, 0, 0, 0.24);
     }
 
     .navbar-glass {
@@ -98,11 +114,17 @@
       left: 0;
       width: 0;
       height: 0;
-      background-color: var(--indicator-bg);
-      border: 1px solid var(--indicator-stroke);
-      box-shadow: 0 4px 12px var(--indicator-shadow);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      background-color: var(--ind-glass-bg);
+      box-shadow:
+        inset 0 1px 1px var(--ind-highlight),
+        inset 0 -1px 1.5px var(--ind-highlight-bottom),
+        inset 0 0 0 0.5px var(--ind-rim),
+        inset 0 8px 14px -2px var(--ind-inner-shadow),
+        inset 0 -3px 6px -1px var(--ind-inner-shadow-b),
+        3px 3px 8px var(--ind-shadow),
+        1px 1px 3px var(--ind-shadow);
+      backdrop-filter: blur(10px) saturate(180%) brightness(1.04);
+      -webkit-backdrop-filter: blur(10px) saturate(180%) brightness(1.04);
       border-radius: 999px;
       pointer-events: none;
       opacity: 0;
