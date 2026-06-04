@@ -1075,9 +1075,12 @@
         const linkRect = activeLink.getBoundingClientRect();
         const parentRect = navContainer.getBoundingClientRect();
 
+        // Optical centering: words without descenders (e.g. "About") sit slightly
+        // high within the line box, so nudge the indicator up by 1px to balance it.
+        const OPTICAL_Y = 1;
         indicator.style.width = `${linkRect.width}px`;
         indicator.style.height = `${linkRect.height}px`;
-        indicator.style.transform = `translate(${linkRect.left - parentRect.left}px, ${linkRect.top - parentRect.top}px)`;
+        indicator.style.transform = `translate(${linkRect.left - parentRect.left}px, ${linkRect.top - parentRect.top - OPTICAL_Y}px)`;
         indicator.classList.add('visible');
       }
 
