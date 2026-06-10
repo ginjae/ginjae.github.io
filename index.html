@@ -719,15 +719,18 @@
     }
 
     @keyframes keycap-shimmer {
-      /* start/end at the MAX so releasing hover/press resumes near opacity:1, not a sudden dip */
-      0%, 100% { opacity: 0.95; }
-      50% { opacity: 0.5; }
+      /* subtle "press me" pulse: rests, then a single soft brighten before
+         easing back. The brief brighten (not an even breathe) gently draws
+         the eye without being showy. */
+      0%, 70%  { opacity: 0.7; }
+      80%      { opacity: 1; }
+      100%     { opacity: 0.7; }
     }
 
     .keycap-logo {
       opacity: 0.75;
-      /* gentle idle shimmer; paused on hover/press */
-      animation: keycap-shimmer 3s ease-in-out infinite;
+      /* subtle idle pulse; paused on hover/press */
+      animation: keycap-shimmer 2.5s ease-in-out infinite;
       transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
       user-select: none;
       -webkit-user-select: none;
@@ -787,6 +790,14 @@
       opacity: 0;
       pointer-events: none;
       transform: translateX(-50%) translateY(15px);
+    }
+
+    .site-footer {
+      padding-block: 2rem 2.5rem;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--bs-secondary-color);
+      border-top: 1px solid var(--outline-stroke);
     }
 
     @keyframes scroll-bounce {
@@ -1028,14 +1039,21 @@
   </main>
 
   <!-- Giant Outline Logo -->
-  <div class="overflow-hidden d-flex justify-content-center align-items-center mb-5"
+  <!-- <div class="overflow-hidden d-flex justify-content-center align-items-center mb-5"
     style="padding-top: 10vh; padding-bottom: 5vh;">
     <div class="outline-logo">
       <span>J</span><span>A</span><span>E</span><span></span><span></span>
       <span></span><span>M</span><span>I</span><span>N</span><span></span>
       <span></span><span></span><span>K</span><span>I</span><span>M</span>
     </div>
-  </div>
+  </div> -->
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container" style="max-width: 900px;">
+      &copy; <span id="footer-year">2026</span> Jaemin Kim. All rights reserved.
+    </div>
+  </footer>
 
   <button id="back-to-top" type="button" aria-label="Back to top">
     <i class="bi bi-arrow-up"></i>
@@ -1181,6 +1199,9 @@
         const top = absoluteTop - navEl.offsetHeight;
         window.scrollTo({ top, behavior: 'smooth' });
       });
+
+      const footerYear = document.getElementById('footer-year');
+      if (footerYear) footerYear.textContent = new Date().getFullYear();
 
       updateNavHeight();
       updateActiveLink();
