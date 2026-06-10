@@ -117,8 +117,8 @@
         inset 0 1px 1px var(--ind-highlight),
         inset 0 -1px 1.5px var(--ind-highlight-bottom),
         inset 0 0 0 0.5px var(--ind-rim),
-        inset 0 8px 14px -2px var(--ind-inner-shadow),
-        inset 0 -3px 6px -1px var(--ind-inner-shadow),
+        inset 0 4px 8px -2px var(--ind-inner-shadow),
+        inset 0 -2px 4px -1px var(--ind-inner-shadow),
         3px 3px 8px var(--ind-shadow),
         1px 1px 3px var(--ind-shadow);
       backdrop-filter: blur(10px) saturate(180%) brightness(1.04);
@@ -1341,12 +1341,52 @@
         }
       }
 
+      let targetScrollIndex = -1;
+      let scrollTimeoutId = null;
+
+      function scrollToDirection(direction) {
+        // Initialize target index based on current scroll position if not already scrolling
+        if (targetScrollIndex === -1) {
+          const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+          const offset = navEl.offsetHeight + 100;
+          targetScrollIndex = 0;
+          for (let i = 0; i < sections.length; i++) {
+            const sectionTop = sections[i].getBoundingClientRect().top + window.scrollY;
+            if (scrollPosition + offset >= sectionTop) {
+              targetScrollIndex = i;
+            }
+          }
+        }
+
+        if (direction === 'next') {
+          if (targetScrollIndex < sections.length - 1) {
+            targetScrollIndex++;
+          }
+        } else if (direction === 'prev') {
+          if (targetScrollIndex > 0) {
+            targetScrollIndex--;
+          }
+        }
+
+        const targetSection = sections[targetScrollIndex];
+        if (targetSection) {
+          const top = targetSection.getBoundingClientRect().top + window.scrollY - navEl.offsetHeight;
+          window.scrollTo({ top, behavior: 'smooth' });
+
+          clearTimeout(scrollTimeoutId);
+          scrollTimeoutId = setTimeout(() => {
+            targetScrollIndex = -1;
+          }, 600); // Reset after scroll animation is likely finished
+        }
+      }
+
       // Keycap animation binding for smooth press feedback (pointerevents)
       const keycap = document.querySelector('.keycap-logo');
       if (keycap) {
         keycap.addEventListener('pointerdown', (e) => {
           keycap.classList.add('pressed');
           playBlueSwitchSound();
+          scrollToDirection('next');
         });
         const releaseKeycap = () => {
           keycap.classList.remove('pressed');
@@ -1360,7 +1400,7 @@
         keycap.addEventListener('contextmenu', (e) => e.preventDefault());
       }
 
-      // Keyboard event binding for J / ㅓ key press
+      // Keyboard event binding for J / ㅓ and K / ㅏ key press
       window.addEventListener('keydown', (e) => {
         // Prevent triggering when user is typing in form inputs
         const activeEl = document.activeElement;
@@ -1371,18 +1411,29 @@
         );
         if (isTyping) return;
 
-        // Detect if key is J / ㅓ (both key value and physical code)
-        if (e.code === 'KeyJ' || e.key === 'j' || e.key === 'J' || e.key === 'ㅓ') {
-          if (e.repeat) return; // Prevent sound spam when key is held down
-          if (keycap) {
-            keycap.classList.add('pressed');
+        const isJ = e.code === 'KeyJ' || e.key === 'j' || e.key === 'J' || e.key === 'ㅓ';
+        const isK = e.code === 'KeyK' || e.key === 'k' || e.key === 'K' || e.key === 'ㅏ';
+
+        if (isJ || isK) {
+          // Play sound and animate for J and K keys
+          if (!e.repeat) {
+            if (isJ && keycap) {
+              keycap.classList.add('pressed');
+            }
+            playBlueSwitchSound();
           }
-          playBlueSwitchSound();
+
+          if (e.repeat) return; // Prevent sound spam and choppy scrolling when key is held down
+
+          e.preventDefault(); // Prevent default scrolling behavior
+
+          scrollToDirection(isJ ? 'next' : 'prev');
         }
       });
 
       window.addEventListener('keyup', (e) => {
-        if (e.code === 'KeyJ' || e.key === 'j' || e.key === 'J' || e.key === 'ㅓ') {
+        const isJ = e.code === 'KeyJ' || e.key === 'j' || e.key === 'J' || e.key === 'ㅓ';
+        if (isJ) {
           if (keycap) {
             keycap.classList.remove('pressed');
           }
