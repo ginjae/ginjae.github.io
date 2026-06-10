@@ -6,6 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jaemin Kim</title>
 
+  <!-- Set theme before first paint to avoid a flash: saved preference, else system -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('site-theme');
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-bs-theme', theme);
+    })();
+  </script>
+
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -32,6 +41,7 @@
     }
 
     :root[data-bs-theme="light"] {
+      /* --bs-warning: #7E9CD8; */
       --glass-bg: rgba(255, 255, 255, 0.7);
       --outline-stroke: rgba(0, 0, 0, 0.1);
       --indicator-bg: rgba(0, 0, 0, 0.06);
@@ -47,6 +57,7 @@
     }
 
     :root[data-bs-theme="dark"] {
+      /* --bs-warning: #7FB4CA; */
       --glass-bg: rgba(33, 37, 41, 0.7);
       --outline-stroke: rgba(255, 255, 255, 0.15);
       --indicator-bg: rgba(255, 255, 255, 0.1);
@@ -707,25 +718,43 @@
          1px  1px 0 var(--bs-warning); */
     }
 
+    @keyframes keycap-shimmer {
+      /* start/end at the MAX so releasing hover/press resumes near opacity:1, not a sudden dip */
+      0%, 100% { opacity: 0.95; }
+      50% { opacity: 0.5; }
+    }
+
     .keycap-logo {
-      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s ease, box-shadow 0.2s ease;
+      opacity: 0.75;
+      /* gentle idle shimmer; paused on hover/press */
+      animation: keycap-shimmer 3s ease-in-out infinite;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
       user-select: none;
       -webkit-user-select: none;
       -webkit-touch-callout: none;
       -webkit-user-drag: none;
+      -webkit-tap-highlight-color: transparent;
       border-radius: 24px;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
     }
 
     .keycap-logo:hover {
+      opacity: 0.95;
+      animation: none;
       transform: translateY(-2px);
-      filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.3));
+      transition: transform 0.05s ease, opacity 0.5s ease;
     }
 
     .keycap-logo.pressed {
-      transform: translateY(6px) scale(0.92);
-      transition: transform 0.05s ease;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+      opacity: 0.95;
+      animation: none;
+      transform: translateY(6px) scale(0.98);
+      transition: transform 0.05s ease, opacity 0.5s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .keycap-logo {
+        animation: none;
+      }
     }
 
     .scroll-down-indicator {
@@ -828,10 +857,10 @@
       <div class="d-flex flex-row justify-content-center align-items-center gap-3 gap-md-4 mb-4">
         <img src="images/logo-256.png" alt="Jaemin Kim" class="keycap-logo" draggable="false"
           width="90" height="90" fetchpriority="high" decoding="async"
-          style="width: 90px; height: 90px; object-fit: cover; cursor: pointer;">
+          style="width: 90px; height: 90px; cursor: pointer;">
         <div class="text-start">
           <div class="section-label mb-1" style="font-size: 0.65rem;">
-            ON-DEVICE AI RESEARCHER
+            On-Device AI &middot; Efficient AI
           </div>
           <h1 class="display-3 fw-bolder mb-0 tracking-tight" style="letter-spacing: -2px;">
             Jaemin Kim
@@ -981,7 +1010,7 @@
             Value: Preference-Aligned Memory Construction for On-Device RAG"</a></div>
         <div class="pub-authors"><a href="https://changmin-lee.com/" target="_blank">Changmin Lee</a>, <strong>Jaemin
             Kim</strong>, <a href="https://taesikgong.com/" target="_blank">Taesik Gong</a></div>
-        <div class="pub-detail">International Conference on Machine Learning (<strong>ICML</strong>) 2026.</div>
+        <div class="pub-detail">International Conference on Machine Learning (<strong>ICML</strong>), 2026.</div>
         <div class="mt-2 d-flex gap-2">
           <a href="https://arxiv.org/abs/2605.18271" target="_blank"
             class="btn btn-glass btn-sm py-1 px-2.5 rounded-pill"
@@ -1017,20 +1046,30 @@
       const themeToggleBtn = document.getElementById('theme-toggle');
       const htmlElement = document.documentElement;
 
-      // Load saved theme or default to light
-      const savedTheme = localStorage.getItem('site-theme') || 'light';
-      setTheme(savedTheme);
+      // Theme follows the system setting unless the user picks one explicitly.
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
-      themeToggleBtn.addEventListener('click', () => {
-        const currentTheme = htmlElement.getAttribute('data-bs-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        setTheme(newTheme);
+      function applyTheme(theme) {
+        htmlElement.setAttribute('data-bs-theme', theme);
+      }
+      function setThemePreference(theme) {
+        // Explicit user choice → persist it; this overrides system from now on.
+        localStorage.setItem('site-theme', theme);
+        applyTheme(theme);
+      }
+
+      // Initial: saved preference if any, otherwise the system's current scheme.
+      applyTheme(localStorage.getItem('site-theme') || (prefersDark.matches ? 'dark' : 'light'));
+
+      // Live-follow system changes, but only while no explicit preference is stored.
+      prefersDark.addEventListener('change', (e) => {
+        if (!localStorage.getItem('site-theme')) applyTheme(e.matches ? 'dark' : 'light');
       });
 
-      function setTheme(theme) {
-        htmlElement.setAttribute('data-bs-theme', theme);
-        localStorage.setItem('site-theme', theme);
-      }
+      themeToggleBtn.addEventListener('click', () => {
+        const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+        setThemePreference(newTheme);
+      });
 
       const navEl = document.getElementById('mainNav');
       const navLinks = Array.from(document.querySelectorAll(
@@ -1216,7 +1255,7 @@
         const translateX = Math.max(0, Math.min(THUMB_MAX_TRANSLATE, e.clientX - rect.left - 14));
         themeToggleThumb.style.transform = `translateX(${translateX}px)`;
         const newTheme = translateX > THUMB_MAX_TRANSLATE / 2 ? 'dark' : 'light';
-        if (newTheme !== htmlElement.getAttribute('data-bs-theme')) setTheme(newTheme);
+        if (newTheme !== htmlElement.getAttribute('data-bs-theme')) setThemePreference(newTheme);
       });
 
       themeToggleBtn.addEventListener('pointerup', endThemeDrag);
