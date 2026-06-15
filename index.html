@@ -85,7 +85,6 @@
 
     #mainNav .navbar-brand {
       color: var(--bs-navbar-color);
-      transition: color 0.15s ease-in-out;
     }
 
     #mainNav .navbar-brand:hover,
@@ -104,18 +103,30 @@
       position: relative;
       z-index: 1;
       border-radius: 999px;
+      transition: color 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    #mainNav .nav-link:hover:not(.active),
+    #mainNav .navbar-brand:hover:not(.active) {
+      background-color: var(--indicator-bg);
+      color: var(--bs-navbar-active-color);
+    }
+
+    #mainNav .nav-link:active,
+    #mainNav .navbar-brand:active {
+      transform: scale(0.95);
     }
 
     #mainNav .nav-link {
       font-size: 0.88rem;
-      padding: 0.25rem 0.65rem;
+      padding: 0.44rem 0.65rem;
     }
 
     #mainNav .navbar-brand {
       font-size: 1.1rem;
       padding-left: calc(0.75rem + 3px);
       padding-right: 0.75rem;
-      padding-block: 0.15rem;
+      padding-block: 0.34rem;
     }
 
     .nav-indicator {
@@ -219,8 +230,8 @@
 
     #theme-toggle {
       position: relative;
-      width: 48px;
-      height: 26px;
+      width: 56px;
+      height: 30px;
       padding: 0;
       border-radius: 999px;
       border: 1px solid var(--outline-stroke);
@@ -232,37 +243,41 @@
       touch-action: none;
       user-select: none;
       -webkit-user-select: none;
-      transition: border-color 0.2s ease, background-color 0.2s ease;
+      transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
     }
 
     #theme-toggle:hover {
       border-color: var(--bs-body-color);
     }
 
+    #theme-toggle:active {
+      transform: scale(0.95);
+    }
+
     #theme-toggle .theme-toggle-icon {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 12px;
+      font-size: 14px;
       color: var(--bs-secondary-color);
       pointer-events: none;
       transition: opacity 0.2s ease;
     }
 
     #theme-toggle .theme-toggle-icon-sun {
-      left: 8px;
+      left: 9px;
     }
 
     #theme-toggle .theme-toggle-icon-moon {
-      right: 8px;
+      right: 9px;
     }
 
     #theme-toggle .theme-toggle-thumb {
       position: absolute;
       top: 2px;
       left: 2px;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       background-color: var(--bs-body-bg);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
@@ -273,7 +288,7 @@
     }
 
     #theme-toggle .theme-toggle-thumb i {
-      font-size: 12px;
+      font-size: 14px;
       color: var(--bs-body-color);
     }
 
@@ -282,7 +297,7 @@
     }
 
     :root[data-bs-theme="dark"] #theme-toggle .theme-toggle-thumb {
-      transform: translateX(20px);
+      transform: translateX(28px);
     }
 
     :root[data-bs-theme="dark"] #theme-toggle .theme-toggle-thumb .bi-sun-fill {
