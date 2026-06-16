@@ -42,7 +42,7 @@
 
     :root[data-bs-theme="light"] {
       /* --bs-warning: #7E9CD8; */
-      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-bg: rgba(255, 255, 255, 0.1);
       --outline-stroke: rgba(0, 0, 0, 0.1);
       --indicator-bg: rgba(0, 0, 0, 0.06);
       --indicator-stroke: rgba(0, 0, 0, 0.08);
@@ -58,7 +58,7 @@
 
     :root[data-bs-theme="dark"] {
       /* --bs-warning: #7FB4CA; */
-      --glass-bg: rgba(33, 37, 41, 0.7);
+      --glass-bg: rgba(33, 37, 41, 0.1);
       --outline-stroke: rgba(255, 255, 255, 0.15);
       --indicator-bg: rgba(255, 255, 255, 0.1);
       --indicator-stroke: rgba(255, 255, 255, 0.15);
@@ -106,10 +106,13 @@
       transition: color 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
     }
 
-    #mainNav .nav-link:hover:not(.active),
-    #mainNav .navbar-brand:hover:not(.active) {
-      background-color: var(--indicator-bg);
-      color: var(--bs-navbar-active-color);
+    @media (hover: hover) {
+
+      #mainNav .nav-link:hover:not(.active),
+      #mainNav .navbar-brand:hover:not(.active) {
+        background-color: var(--indicator-bg);
+        color: var(--bs-navbar-active-color);
+      }
     }
 
     #mainNav .nav-link:active,
@@ -297,7 +300,7 @@
     }
 
     :root[data-bs-theme="dark"] #theme-toggle .theme-toggle-thumb {
-      transform: translateX(28px);
+      transform: translateX(26px);
     }
 
     :root[data-bs-theme="dark"] #theme-toggle .theme-toggle-thumb .bi-sun-fill {
@@ -734,12 +737,22 @@
     }
 
     @keyframes keycap-shimmer {
+
       /* subtle "press me" pulse: rests, then a single soft brighten before
          easing back. The brief brighten (not an even breathe) gently draws
          the eye without being showy. */
-      0%, 70%  { opacity: 0.7; }
-      80%      { opacity: 1; }
-      100%     { opacity: 0.7; }
+      0%,
+      70% {
+        opacity: 0.7;
+      }
+
+      80% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0.7;
+      }
     }
 
     .keycap-logo {
@@ -842,7 +855,7 @@
   <nav id="mainNav" class="navbar navbar-expand border-bottom border-secondary fixed-top navbar-glass">
     <div class="nav-container container-fluid px-4 py-2 d-flex flex-wrap align-items-center justify-content-between">
       <span class="nav-indicator" aria-hidden="true"></span>
-      <a class="navbar-brand fw-bold" href="#home" style="letter-spacing: 3px;">jaemin-kim.com</a>
+      <a class="navbar-brand fw-bolder" href="#home">Jaemin Kim</a>
 
       <div class="d-flex align-items-center ms-auto order-1 order-md-3">
         <button id="theme-toggle" type="button" aria-label="Toggle theme">
@@ -881,14 +894,13 @@
     style="min-height: 100vh; padding-top: calc(var(--nav-height, 110px)) !important; position: relative;" id="home">
     <div class="container mt-5 mt-md-0">
       <div class="d-flex flex-row justify-content-center align-items-center gap-3 gap-md-4 mb-4">
-        <img src="images/logo-256.png" alt="Jaemin Kim" class="keycap-logo" draggable="false"
-          width="90" height="90" fetchpriority="high" decoding="async"
-          style="width: 90px; height: 90px; cursor: pointer;">
+        <img src="images/logo-256.png" alt="Jaemin Kim" class="keycap-logo" draggable="false" width="90" height="90"
+          fetchpriority="high" decoding="async" style="width: 90px; height: 90px; cursor: pointer;">
         <div class="text-start">
           <div class="section-label mb-1" style="font-size: 0.65rem;">
             On-Device AI &middot; Efficient AI
           </div>
-          <h1 class="display-3 fw-bolder mb-0 tracking-tight" style="letter-spacing: -2px;">
+          <h1 class="display-3 fw-bolder mb-0 tracking-tight">
             Jaemin Kim
           </h1>
         </div>
@@ -980,7 +992,8 @@
       <div class="entry">
         <div class="entry-inner">
           <a href="https://sites.google.com/view/uailab" target="_blank" class="entry-logo-wrap" aria-label="UAI Lab">
-            <img src="images/logo/uai.png" alt="UAI Lab" class="entry-logo" loading="lazy" decoding="async" width="64" height="64" onerror="this.style.display='none'">
+            <img src="images/logo/uai.png" alt="UAI Lab" class="entry-logo" loading="lazy" decoding="async" width="64"
+              height="64" onerror="this.style.display='none'">
           </a>
           <div class="entry-body">
             <div class="entry-header-row">
@@ -1004,7 +1017,8 @@
       <div class="entry">
         <div class="entry-inner">
           <a href="https://www.unist.ac.kr/" target="_blank" class="entry-logo-wrap" aria-label="UNIST">
-            <img src="images/logo/unist.png" alt="UNIST" class="entry-logo" loading="lazy" decoding="async" width="64" height="64" onerror="this.style.display='none'">
+            <img src="images/logo/unist.png" alt="UNIST" class="entry-logo" loading="lazy" decoding="async" width="64"
+              height="64" onerror="this.style.display='none'">
           </a>
           <div class="entry-body">
             <div class="entry-header-row">
@@ -1049,6 +1063,40 @@
             <i class="bi bi-github me-1"></i> Code
           </a>
         </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="content-section">
+      <h2 class="section-title">Contact</h2>
+      <p class="lead mb-4 text-secondary" style="font-size: 1.05rem;">
+        I am always open to discussing new ideas, research opportunities, and collaborations.
+        Feel free to reach out to me via email or connect with me on LinkedIn!
+      </p>
+
+      <div class="d-flex flex-column flex-sm-row gap-3">
+        <a href="mailto:jm611@unist.ac.kr"
+          class="btn btn-glass px-4 py-3 text-start flex-grow-1 rounded-4 text-decoration-none">
+          <div class="d-flex align-items-center gap-3">
+            <i class="bi bi-envelope-fill fs-3 text-warning"></i>
+            <div>
+              <div class="fw-bold text-body" style="font-size: 1rem;">Email</div>
+              <div class="text-secondary" style="font-size: 0.85rem;">jm611@unist.ac.kr</div>
+            </div>
+          </div>
+        </a>
+
+        <a href="https://www.linkedin.com/in/ginjae/" target="_blank"
+          class="btn btn-glass px-4 py-3 text-start flex-grow-1 rounded-4 text-decoration-none">
+          <div class="d-flex align-items-center gap-3">
+            <i class="bi bi-linkedin fs-3" style="color: #0077b5;"></i>
+            <div>
+              <div class="fw-bold text-body" style="font-size: 1rem;">LinkedIn</div>
+              <div class="text-secondary" style="font-size: 0.85rem;">Connect with me</div>
+            </div>
+          </div>
+        </a>
+
       </div>
     </section>
   </main>
@@ -1175,6 +1223,7 @@
           const target = document.querySelector(href);
           if (!target) return;
           e.preventDefault();
+          link.blur();
 
           // Calculate absolute top offset in the document layout.
           let absoluteTop = 0;
@@ -1437,7 +1486,6 @@
         };
         keycap.addEventListener('pointerup', () => {
           releaseKeycap();
-          scrollToDirection('next'); // Navigate on release
         });
         keycap.addEventListener('pointercancel', releaseKeycap);
         keycap.addEventListener('pointerleave', releaseKeycap);
